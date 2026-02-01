@@ -483,10 +483,10 @@ function Hero(): JSX.Element {
           className="flex gap-4 md:gap-6 justify-center flex-wrap"
         >
           <BrutalButton color="#3B82F6" size="large" href="#work" ariaLabel="View our portfolio">
-            <span className="text-brutal-bg">See Our Work →</span>
+            <span>See Our Work →</span>
           </BrutalButton>
           <BrutalButton color="#FFE600" size="large" href="#contact" ariaLabel="Start a new project">
-            <span className="text-brutal-black">Start a Project</span>
+            <span>Start a Project</span>
           </BrutalButton>
         </motion.div>
         
@@ -1002,7 +1002,7 @@ function CTA(): JSX.Element {
             size="large"
             ariaLabel="Start a conversation with our team"
           >
-            <span className="text-brutal-bg">Start a Conversation →</span>
+            <span>Start a Conversation →</span>
           </BrutalButton>
         </motion.div>
       </div>
