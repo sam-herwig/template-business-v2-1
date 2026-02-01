@@ -4,6 +4,9 @@ import { useRef } from 'react'
 import { useGSAP } from '@gsap/react'
 import { gsap, ScrollTrigger, SplitText } from '@/lib/gsap'
 import { Zap, Globe, TrendingUp } from 'lucide-react'
+import Nav from '@/components/Nav'
+import Footer from '@/components/Footer'
+import CTA from '@/components/CTA'
 
 // ═══════════════════════════════════════════════════════════════
 // MINIMAL STARTER TEMPLATE
@@ -24,34 +27,6 @@ const features = [
   { title: 'Global Edge', description: 'Automatically distributed across 100+ edge locations for instant loading worldwide.', icon: Globe },
   { title: 'Built for Scale', description: 'From prototype to production, handle millions of requests without breaking a sweat.', icon: TrendingUp },
 ]
-
-// ═══════════════════════════════════════════════════════════════
-// NAVIGATION
-// ═══════════════════════════════════════════════════════════════
-function Nav() {
-  return (
-    <nav className="fixed top-0 left-0 right-0 z-50 flex justify-between items-center px-4 md:px-16 py-4 bg-minimal-bg/80 dark:bg-minimal-dark-bg/80 backdrop-blur-xl border-b border-minimal-border dark:border-minimal-dark-border" aria-label="Main navigation">
-      <div className="flex items-center gap-12">
-        <a href="/" className="text-xl font-bold tracking-tight" aria-label="Acme - Home">▲ Acme</a>
-        <div className="nav-links hidden md:flex gap-8" role="navigation">
-          {['Features', 'Pricing', 'Docs', 'Enterprise'].map((item) => (
-            <a 
-              key={item} 
-              href={`#${item.toLowerCase()}`} 
-              className="text-minimal-muted dark:text-minimal-dark-muted text-sm font-medium hover:text-minimal-text dark:hover:text-minimal-dark-text transition-colors"
-            >
-              {item}
-            </a>
-          ))}
-        </div>
-      </div>
-      <div className="flex items-center gap-6">
-        <a href="#login" className="hidden md:block text-minimal-muted dark:text-minimal-dark-muted text-sm font-medium hover:text-minimal-text dark:hover:text-minimal-dark-text transition-colors">Log In</a>
-        <button className="nav-cta" aria-label="Sign up for an account">Sign Up</button>
-      </div>
-    </nav>
-  )
-}
 
 // ═══════════════════════════════════════════════════════════════
 // HERO SECTION
@@ -344,118 +319,6 @@ function Features() {
         })}
       </div>
     </section>
-  )
-}
-
-// ═══════════════════════════════════════════════════════════════
-// CTA SECTION
-// ═══════════════════════════════════════════════════════════════
-function CTA() {
-  const ctaRef = useRef<HTMLElement>(null)
-  const headlineRef = useRef<HTMLHeadingElement>(null)
-  
-  useGSAP(() => {
-    if (typeof window === 'undefined') return
-    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-    if (prefersReducedMotion) return
-    
-    const ctx = gsap.context(() => {
-      if (headlineRef.current) {
-        const split = new SplitText(headlineRef.current, { type: 'words' })
-        gsap.from(split.words, {
-          y: 40,
-          opacity: 0,
-          stagger: 0.05,
-          duration: 0.8,
-          ease: 'power3.out',
-          scrollTrigger: {
-            trigger: ctaRef.current,
-            start: 'top 75%',
-          },
-        })
-      }
-      
-      gsap.from('.cta-subheadline', {
-        y: 30,
-        opacity: 0,
-        duration: 0.8,
-        ease: 'power3.out',
-        scrollTrigger: {
-          trigger: ctaRef.current,
-          start: 'top 70%',
-        },
-      })
-      
-      gsap.from('.cta-button', {
-        y: 20,
-        opacity: 0,
-        duration: 0.6,
-        ease: 'power3.out',
-        scrollTrigger: {
-          trigger: ctaRef.current,
-          start: 'top 65%',
-        },
-      })
-    }, ctaRef)
-    
-    return () => ctx.revert()
-  }, [])
-  
-  return (
-    <section ref={ctaRef} className="py-16 md:py-32 px-4 md:px-16 text-center bg-white dark:bg-minimal-dark-card border-t border-minimal-border dark:border-minimal-dark-border" aria-labelledby="cta-heading">
-      <h2 id="cta-heading" ref={headlineRef} className="font-display text-[clamp(2rem,4vw,3rem)] font-bold tracking-tight mb-4">
-        Start building today.
-      </h2>
-      <p className="cta-subheadline text-xl text-minimal-muted dark:text-minimal-dark-muted mb-10">
-        Join thousands of developers shipping faster with Acme.
-      </p>
-      <button className="cta-button btn-primary text-lg" aria-label="Get started with Acme for free">
-        Get Started Free <span aria-hidden="true">→</span>
-      </button>
-    </section>
-  )
-}
-
-// ═══════════════════════════════════════════════════════════════
-// FOOTER
-// ═══════════════════════════════════════════════════════════════
-function Footer() {
-  const footerLinks = [
-    { title: 'Product', links: ['Features', 'Pricing', 'Changelog'] },
-    { title: 'Company', links: ['About', 'Blog', 'Careers'] },
-    { title: 'Resources', links: ['Docs', 'Support', 'API'] },
-  ] as const
-
-  return (
-    <footer className="py-12 md:py-16 px-4 md:px-16 border-t border-minimal-border dark:border-minimal-dark-border" role="contentinfo">
-      <div className="max-w-6xl mx-auto">
-        <div className="flex flex-col md:flex-row justify-between gap-8 mb-12">
-          <div className="max-w-xs">
-            <a href="/" className="text-xl font-bold tracking-tight" aria-label="Acme - Home">▲ Acme</a>
-            <p className="text-minimal-muted dark:text-minimal-dark-muted text-sm mt-3">Build faster. Deploy smarter.</p>
-          </div>
-          
-          <div className="flex flex-wrap gap-12 md:gap-20">
-            {footerLinks.map((col) => (
-              <nav key={col.title} aria-label={`${col.title} navigation`} className="flex flex-col gap-3">
-                <h3 className="text-xs font-semibold uppercase tracking-wider text-minimal-muted dark:text-minimal-dark-muted mb-2">{col.title}</h3>
-                <ul role="list">
-                  {col.links.map((link) => (
-                    <li key={link} className="mb-2">
-                      <a href={`#${link.toLowerCase()}`} className="text-minimal-muted dark:text-minimal-dark-muted hover:text-minimal-text dark:hover:text-minimal-dark-text transition-colors">{link}</a>
-                    </li>
-                  ))}
-                </ul>
-              </nav>
-            ))}
-          </div>
-        </div>
-        
-        <div className="pt-8 border-t border-minimal-border dark:border-minimal-dark-border text-center">
-          <p className="text-minimal-muted dark:text-minimal-dark-muted text-sm">© 2026 Acme Inc. All rights reserved.</p>
-        </div>
-      </div>
-    </footer>
   )
 }
 
