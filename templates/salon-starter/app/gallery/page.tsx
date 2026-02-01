@@ -22,7 +22,7 @@ const GALLERY = [
   { src: "https://images.unsplash.com/photo-1560066984-138dadb4c035?w=600&h=600&fit=crop&q=85", alt: "Sleek bob haircut", category: "Cuts", stylist: "Michelle Chen" },
   { src: "https://images.unsplash.com/photo-1522337094846-8a818192de1f?w=600&h=600&fit=crop&q=85", alt: "Platinum blonde transformation", category: "Before & After", stylist: "Jessica Rivera" },
   { src: "https://images.unsplash.com/photo-1580618864180-f6d7d39b8ff6?w=600&h=600&fit=crop&q=85", alt: "Wedding day updo styling", category: "Bridal", stylist: "Sarah Johnson" },
-  { src: "https://images.unsplash.com/photo-1595959183082-7b570b7e1dfa?w=600&h=600&fit=crop&q=85", alt: "Caramel balayage highlights", category: "Balayage", stylist: "Sarah Johnson" },
+  { src: "https://images.unsplash.com/photo-1605980776566-0486c3ac7617?w=600&h=600&fit=crop&q=85", alt: "Caramel balayage highlights", category: "Balayage", stylist: "Sarah Johnson" },
 ]
 
 const scaleIn = {

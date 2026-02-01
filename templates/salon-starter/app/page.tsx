@@ -98,7 +98,7 @@ const STYLISTS = [
     name: "Michelle Chen", 
     role: "Senior Stylist", 
     specialty: "Precision Cuts", 
-    image: "https://images.unsplash.com/photo-1595959183082-7b570b7e1dfa?w=400&h=500&fit=crop&q=85", 
+    image: "https://images.unsplash.com/photo-1605980776566-0486c3ac7617?w=400&h=500&fit=crop&q=85", 
     instagram: "@michelle.cuts",
     bio: "Trained in NYC & LA"
   },

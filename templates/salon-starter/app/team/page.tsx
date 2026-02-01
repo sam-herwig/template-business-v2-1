@@ -21,7 +21,7 @@ const STYLISTS = [
     name: "Michelle Chen", 
     role: "Senior Stylist", 
     specialty: ["Precision Cuts", "Short Hair"], 
-    image: "https://images.unsplash.com/photo-1595959183082-7b570b7e1dfa?w=400&h=500&fit=crop&q=85", 
+    image: "https://images.unsplash.com/photo-1605980776566-0486c3ac7617?w=400&h=500&fit=crop&q=85", 
     instagram: "@michelle.cuts",
     bio: "Michelle brings NYC precision and LA creativity to every cut. Known for her meticulous attention to detail and ability to translate your vision into reality, she excels at both classic and avant-garde styles.",
     yearsExperience: 10
