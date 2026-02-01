@@ -15,6 +15,7 @@ module.exports = {
           fuchsia: '#c026d3',
           pink: '#ec4899',
           cyan: '#06b6d4',
+          yellow: '#fbbf24',
           text: '#ffffff',
           muted: 'rgba(255,255,255,0.8)',
           dim: 'rgba(255,255,255,0.6)',
