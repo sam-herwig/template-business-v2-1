@@ -3,56 +3,93 @@
 import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Leaf, Coffee, Apple, Mountain, UtensilsCrossed, Heart, Instagram as InstagramIcon, Facebook as FacebookIcon, Music2 } from 'lucide-react'
+import { 
+  ShoppingBag, 
+  CalendarDays, 
+  MapPin, 
+  Instagram, 
+  Facebook, 
+  X,
+  Menu as MenuIcon,
+  ChevronRight,
+  Clock,
+  Phone,
+  Mail,
+  ExternalLink,
+  Sun,
+  Moon,
+  Leaf,
+  Coffee,
+  Heart,
+  Sparkles
+} from 'lucide-react'
 
 // ═══════════════════════════════════════════════════════════════
-// SKIP LINK
+// DATA - Would come from Sanity CMS in production
 // ═══════════════════════════════════════════════════════════════
-function SkipLink() {
-  return (
-    <a href="#main-content" className="skip-link">
-      Skip to main content
-    </a>
-  )
+
+const siteConfig = {
+  name: 'Sunny Side',
+  tagline: "Denver's Favorite Brunch Spot",
+  description: 'Farm-fresh breakfast & brunch in the heart of RiNo. Good vibes, great coffee, and food that makes you smile.',
+  phone: '(303) 555-0147',
+  email: 'hello@sunnysidedenver.com',
+  address: {
+    street: '2850 Larimer Street',
+    city: 'Denver',
+    state: 'CO',
+    zip: '80205',
+    neighborhood: 'RiNo Arts District',
+  },
+  hours: {
+    weekday: '7am - 3pm',
+    weekend: '8am - 4pm',
+  },
+  social: {
+    instagram: 'https://instagram.com/sunnysidedenver',
+    facebook: 'https://facebook.com/sunnysidedenver',
+    tiktok: 'https://tiktok.com/@sunnysidedenver',
+  },
+  instagramHandle: '@SunnySideDenver',
 }
 
-// ═══════════════════════════════════════════════════════════════
-// MENU DATA
-// ═══════════════════════════════════════════════════════════════
+const announcement = {
+  active: true,
+  message: '🥞 New: Pumpkin Spice Pancakes — Limited Time!',
+  link: '#menu',
+}
+
 const menuHighlights = [
   {
     name: 'The Denver Scramble',
     description: 'Farm eggs, green chili, pepper jack, avocado, crispy potatoes',
-    price: '$16',
+    price: 16,
     image: 'https://images.unsplash.com/photo-1525351484163-7529414344d8?w=400&h=300&fit=crop',
-    tag: 'Fan Favorite',
+    badge: 'favorite',
   },
   {
     name: 'Buttermilk Stack',
     description: 'Three fluffy pancakes, whipped butter, pure maple syrup',
-    price: '$14',
+    price: 14,
     image: 'https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?w=400&h=300&fit=crop',
-    tag: null,
+    badge: null,
   },
   {
     name: 'Avocado Toast',
     description: 'Sourdough, smashed avo, everything seasoning, poached eggs',
-    price: '$15',
+    price: 15,
     image: 'https://images.unsplash.com/photo-1541519227354-08fa5d50c44d?w=400&h=300&fit=crop',
-    tag: 'Vegetarian',
+    badge: 'veg',
   },
   {
     name: 'Huevos Rancheros',
     description: 'Crispy tortillas, black beans, ranchero sauce, queso fresco',
-    price: '$17',
+    price: 17,
     image: 'https://images.unsplash.com/photo-1582234372722-50d7ccc30ebd?w=400&h=300&fit=crop',
-    tag: 'Spicy',
+    badge: 'spicy',
   },
 ]
 
-// ═══════════════════════════════════════════════════════════════
-// INSTAGRAM DATA
-// ═══════════════════════════════════════════════════════════════
 const instagramPosts = [
   { image: 'https://images.unsplash.com/photo-1504754524776-8f4f37790ca0?w=400&h=400&fit=crop', caption: 'Sunday morning vibes ☀️' },
   { image: 'https://images.unsplash.com/photo-1495147466023-ac5c588e2e94?w=400&h=400&fit=crop', caption: 'Fresh from the garden 🌿' },
@@ -63,81 +100,78 @@ const instagramPosts = [
 ]
 
 // ═══════════════════════════════════════════════════════════════
-// MOBILE MENU
+// UTILITIES
 // ═══════════════════════════════════════════════════════════════
-function MobileMenu({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {
-  useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = 'hidden'
-    } else {
-      document.body.style.overflow = ''
-    }
-    return () => {
-      document.body.style.overflow = ''
-    }
-  }, [isOpen])
+
+function formatPrice(price: number) {
+  return `$${price}`
+}
+
+function getBadgeLabel(badge: string | null) {
+  switch (badge) {
+    case 'new': return 'New ✨'
+    case 'veg': return 'Veggie 🌿'
+    case 'spicy': return 'Spicy 🔥'
+    case 'favorite': return 'Fan Favorite'
+    default: return null
+  }
+}
+
+function getBadgeClass(badge: string | null) {
+  switch (badge) {
+    case 'new': return 'badge badge-new'
+    case 'veg': return 'badge badge-veg'
+    case 'spicy': return 'badge badge-spicy'
+    case 'favorite': return 'badge badge-favorite'
+    default: return ''
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════
+// SKIP LINK
+// ═══════════════════════════════════════════════════════════════
+
+function SkipLink() {
+  return (
+    <a href="#main-content" className="skip-link">
+      Skip to main content
+    </a>
+  )
+}
+
+// ═══════════════════════════════════════════════════════════════
+// ANNOUNCEMENT BAR
+// ═══════════════════════════════════════════════════════════════
+
+function AnnouncementBar() {
+  const [isVisible, setIsVisible] = useState(true)
+
+  if (!announcement.active || !isVisible) return null
 
   return (
-    <AnimatePresence>
-      {isOpen && (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          className="fixed inset-0 z-[60] md:hidden"
-        >
-          <motion.div
-            className="absolute inset-0 bg-brunch-brown/80 dark:bg-black/80"
-            onClick={onClose}
-            aria-hidden="true"
-          />
-          <motion.nav
-            initial={{ x: '100%' }}
-            animate={{ x: 0 }}
-            exit={{ x: '100%' }}
-            transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-            className="absolute top-0 right-0 w-[80%] max-w-sm h-full bg-brunch-cream dark:bg-[#1F1A16] p-8 flex flex-col"
-            aria-label="Mobile navigation"
-          >
-            <button
-              onClick={onClose}
-              className="self-end p-2 min-w-[44px] min-h-[44px] flex items-center justify-center text-brunch-brown dark:text-brunch-cream"
-              aria-label="Close menu"
-            >
-              <span className="text-2xl">✕</span>
-            </button>
-            <div className="flex flex-col gap-6 mt-8">
-              {['Menu', 'About', 'Visit'].map((item) => (
-                <a
-                  key={item}
-                  href={`#${item.toLowerCase()}`}
-                  onClick={onClose}
-                  className="text-xl font-medium text-brunch-brown dark:text-brunch-cream hover:text-brunch-terracotta transition-colors py-2"
-                >
-                  {item}
-                </a>
-              ))}
-            </div>
-            <div className="mt-auto">
-              <a href="#reserve" onClick={onClose} className="btn-primary text-center block">
-                Reserve a Table
-              </a>
-            </div>
-          </motion.nav>
-        </motion.div>
-      )}
-    </AnimatePresence>
+    <div className="announcement-bar bg-sage text-white relative">
+      <a href={announcement.link} className="hover:underline">
+        {announcement.message}
+      </a>
+      <button
+        onClick={() => setIsVisible(false)}
+        className="absolute right-4 top-1/2 -translate-y-1/2 p-1 hover:bg-white/10 rounded-full transition-colors"
+        aria-label="Dismiss announcement"
+      >
+        <X className="w-4 h-4" />
+      </button>
+    </div>
   )
 }
 
 // ═══════════════════════════════════════════════════════════════
 // DARK MODE TOGGLE
 // ═══════════════════════════════════════════════════════════════
+
 function DarkModeToggle() {
   const [isDark, setIsDark] = useState(false)
 
   useEffect(() => {
-    // Check initial state
     setIsDark(document.documentElement.classList.contains('dark'))
   }, [])
 
@@ -157,18 +191,117 @@ function DarkModeToggle() {
   return (
     <button
       onClick={toggleDarkMode}
-      className="p-2 min-w-[44px] min-h-[44px] flex items-center justify-center rounded-full hover:bg-brunch-brown/10 dark:hover:bg-white/10 transition-colors"
+      className="p-2 min-w-[44px] min-h-[44px] flex items-center justify-center rounded-full hover:bg-charcoal/10 dark:hover:bg-white/10 transition-colors"
       aria-label={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
     >
-      <span className="text-xl" aria-hidden="true">{isDark ? '☀️' : '🌙'}</span>
+      {isDark ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
     </button>
+  )
+}
+
+// ═══════════════════════════════════════════════════════════════
+// MOBILE MENU
+// ═══════════════════════════════════════════════════════════════
+
+function MobileMenu({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden'
+    } else {
+      document.body.style.overflow = ''
+    }
+    return () => {
+      document.body.style.overflow = ''
+    }
+  }, [isOpen])
+
+  return (
+    <AnimatePresence>
+      {isOpen && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          className="fixed inset-0 z-[60] lg:hidden"
+        >
+          {/* Backdrop */}
+          <motion.div
+            className="absolute inset-0 bg-charcoal/60 dark:bg-black/80"
+            onClick={onClose}
+            aria-hidden="true"
+          />
+          
+          {/* Drawer */}
+          <motion.nav
+            initial={{ x: '100%' }}
+            animate={{ x: 0 }}
+            exit={{ x: '100%' }}
+            transition={{ type: 'spring', damping: 25, stiffness: 200 }}
+            className="absolute top-0 right-0 w-[85%] max-w-sm h-full bg-cream dark:bg-dark-bg p-8 flex flex-col"
+            aria-label="Mobile navigation"
+          >
+            <button
+              onClick={onClose}
+              className="self-end p-2 min-w-[44px] min-h-[44px] flex items-center justify-center text-charcoal dark:text-cream"
+              aria-label="Close menu"
+            >
+              <X className="w-6 h-6" />
+            </button>
+            
+            <div className="flex flex-col gap-6 mt-8">
+              {['Menu', 'About', 'Locations'].map((item) => (
+                <a
+                  key={item}
+                  href={`#${item.toLowerCase()}`}
+                  onClick={onClose}
+                  className="text-xl font-medium text-charcoal dark:text-cream hover:text-coral transition-colors py-2"
+                >
+                  {item}
+                </a>
+              ))}
+            </div>
+            
+            <div className="mt-8 pt-8 border-t border-charcoal/10 dark:border-white/10">
+              <a 
+                href="#order" 
+                onClick={onClose}
+                className="btn-ghost w-full justify-center mb-4"
+              >
+                <ShoppingBag className="w-4 h-4" />
+                Order Online
+              </a>
+              <a 
+                href="#reserve" 
+                onClick={onClose} 
+                className="btn-primary w-full justify-center"
+              >
+                <CalendarDays className="w-4 h-4" />
+                Reserve a Table
+              </a>
+            </div>
+            
+            <div className="mt-auto pt-8 text-charcoal-light dark:text-cream/70 text-sm">
+              <p className="flex items-center gap-2 mb-2">
+                <Clock className="w-4 h-4" />
+                Mon-Sun 7am - 3pm
+              </p>
+              <p className="flex items-center gap-2">
+                <Phone className="w-4 h-4" />
+                {siteConfig.phone}
+              </p>
+            </div>
+          </motion.nav>
+        </motion.div>
+      )}
+    </AnimatePresence>
   )
 }
 
 // ═══════════════════════════════════════════════════════════════
 // NAVIGATION
 // ═══════════════════════════════════════════════════════════════
-function Nav() {
+
+function Navigation() {
   const [scrolled, setScrolled] = useState(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
@@ -181,26 +314,43 @@ function Nav() {
   return (
     <header>
       <nav 
-        className={`fixed top-0 left-0 right-0 z-50 flex justify-between items-center px-4 md:px-16 py-4 transition-all duration-300 ${scrolled ? 'nav-scrolled py-3' : ''}`}
+        className={`fixed top-0 left-0 right-0 z-50 flex justify-between items-center px-4 lg:px-16 transition-all duration-300 ${
+          scrolled ? 'nav-scrolled h-16' : 'h-[72px]'
+        }`}
         aria-label="Main navigation"
       >
         {/* Logo */}
-        <a href="/" className="flex items-center gap-2">
-          <span className="text-2xl transition-transform hover:rotate-12" aria-hidden="true">☀️</span>
-          <span className="font-display text-xl md:text-2xl font-bold text-brunch-brown dark:text-brunch-cream">Sunny Side</span>
+        <a href="/" className="flex items-center gap-2 group">
+          <span 
+            className="text-2xl transition-transform duration-300 group-hover:rotate-[15deg]" 
+            aria-hidden="true"
+          >
+            ☀️
+          </span>
+          <span className="font-display text-xl lg:text-2xl font-semibold text-charcoal dark:text-cream">
+            {siteConfig.name}
+          </span>
         </a>
         
         {/* Desktop Nav */}
-        <div className="hidden md:flex items-center gap-8">
-          <a href="#menu" className="text-brunch-brownLight dark:text-brunch-cream/80 font-medium hover:text-brunch-brown dark:hover:text-brunch-cream transition-colors py-2">Menu</a>
-          <a href="#about" className="text-brunch-brownLight dark:text-brunch-cream/80 font-medium hover:text-brunch-brown dark:hover:text-brunch-cream transition-colors py-2">About</a>
-          <a href="#location" className="text-brunch-brownLight dark:text-brunch-cream/80 font-medium hover:text-brunch-brown dark:hover:text-brunch-cream transition-colors py-2">Visit</a>
+        <div className="hidden lg:flex items-center gap-8">
+          <a href="#menu" className="nav-link">Menu</a>
+          <a href="#about" className="nav-link">About</a>
+          <a href="#location" className="nav-link">Locations</a>
+          
           <DarkModeToggle />
-          <a href="#reserve" className="btn-primary text-sm px-6 py-3">Reserve a Table</a>
+          
+          <a href="#order" className="btn-ghost">
+            Order Online
+          </a>
+          <a href="#reserve" className="btn-primary text-sm px-6 py-3 min-h-0">
+            Reserve
+            <ExternalLink className="w-4 h-4" />
+          </a>
         </div>
 
-        {/* Mobile Menu Button */}
-        <div className="flex md:hidden items-center gap-2">
+        {/* Mobile Controls */}
+        <div className="flex lg:hidden items-center gap-2">
           <DarkModeToggle />
           <button
             onClick={() => setMobileMenuOpen(true)}
@@ -208,7 +358,7 @@ function Nav() {
             aria-label="Open menu"
             aria-expanded={mobileMenuOpen}
           >
-            <span className="text-2xl text-brunch-brown dark:text-brunch-cream">☰</span>
+            <MenuIcon className="w-6 h-6 text-charcoal dark:text-cream" />
           </button>
         </div>
       </nav>
@@ -221,75 +371,124 @@ function Nav() {
 // ═══════════════════════════════════════════════════════════════
 // HERO SECTION
 // ═══════════════════════════════════════════════════════════════
+
 function Hero() {
   return (
-    <section className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 px-4 md:px-16 pt-24 pb-8 md:pt-32 md:pb-16 max-w-7xl mx-auto items-center">
-      {/* Content */}
-      <div className="text-center lg:text-left">
-        <p className="section-tag">Denver&apos;s Favorite Brunch Spot</p>
-        
-        <h1 className="font-display text-[clamp(2.5rem,5vw,4rem)] font-semibold leading-tight text-brunch-brown dark:text-brunch-cream mb-6">
-          Start Your Day
-          <br />
-          <span className="text-brunch-terracotta">Sunny Side Up</span>
-        </h1>
-        
-        <p className="text-lg md:text-xl text-brunch-brownLight dark:text-brunch-cream/80 leading-relaxed mb-8 max-w-lg mx-auto lg:mx-0">
-          Farm-fresh breakfast & brunch in the heart of RiNo. 
-          Good vibes, great coffee, and food that makes you smile.
-        </p>
-        
-        <div className="flex gap-4 flex-wrap justify-center lg:justify-start">
-          <a href="#menu" className="btn-primary">View Menu</a>
-          <a href="#reserve" className="btn-secondary">Make Reservation</a>
-        </div>
-      </div>
+    <section className="relative min-h-[90vh] pt-24 lg:pt-32 pb-16 lg:pb-24 overflow-hidden">
+      {/* Background texture */}
+      <div className="texture-paper" aria-hidden="true" />
+      
+      <div className="container-wide">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center">
+          {/* Content */}
+          <motion.div 
+            className="text-center lg:text-left"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+          >
+            <p className="section-tag">{siteConfig.tagline}</p>
+            
+            <h1 className="font-display text-display-xl text-charcoal dark:text-cream mb-6">
+              Start Your Day
+              <br />
+              <span className="text-coral">Sunny Side Up</span>
+            </h1>
+            
+            <p className="text-body-lg text-charcoal-light dark:text-cream/80 max-w-lg mx-auto lg:mx-0 mb-8">
+              {siteConfig.description}
+            </p>
+            
+            <div className="flex gap-4 flex-wrap justify-center lg:justify-start">
+              <a href="#order" className="btn-primary">
+                <ShoppingBag className="w-5 h-5" />
+                Order Online
+              </a>
+              <a href="#reserve" className="btn-secondary">
+                Make a Reservation
+              </a>
+            </div>
+          </motion.div>
 
-      {/* Hero Image */}
-      <div className="relative">
-        <div className="relative rounded-3xl overflow-hidden shadow-2xl animate-float">
-          <Image
-            src="https://images.unsplash.com/photo-1533089860892-a7c6f0a88666?w=600&h=500&fit=crop"
-            alt="Delicious brunch spread with fresh eggs, avocado toast, and fresh juice"
-            width={600}
-            height={500}
-            className="w-full h-auto object-cover"
-            priority
-          />
+          {/* Hero Image */}
+          <motion.div 
+            className="relative"
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+          >
+            {/* Decorative blob */}
+            <div 
+              className="hidden lg:block absolute -top-6 -right-6 w-full h-full bg-peach dark:bg-coral/20 rounded-3xl -z-10"
+              aria-hidden="true"
+            />
+            
+            {/* Main image */}
+            <div className="relative rounded-3xl overflow-hidden shadow-hero animate-float">
+              <Image
+                src="https://images.unsplash.com/photo-1533089860892-a7c6f0a88666?w=600&h=500&fit=crop"
+                alt="Delicious brunch spread with fresh eggs, avocado toast, and fresh juice"
+                width={600}
+                height={500}
+                className="w-full h-auto object-cover"
+                priority
+              />
+            </div>
+            
+            {/* Floating polaroid */}
+            <motion.div 
+              className="hidden lg:block absolute -bottom-8 -left-8 w-32"
+              initial={{ opacity: 0, rotate: -15 }}
+              animate={{ opacity: 1, rotate: -5 }}
+              transition={{ duration: 0.6, delay: 0.4 }}
+            >
+              <div className="polaroid">
+                <Image
+                  src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=150&h=150&fit=crop"
+                  alt="Beautiful latte art"
+                  width={150}
+                  height={150}
+                  className="rounded"
+                />
+              </div>
+            </motion.div>
+          </motion.div>
         </div>
-        {/* Decorative background */}
-        <div className="hidden lg:block absolute -top-5 -right-5 w-full h-full bg-brunch-peach dark:bg-brunch-terracotta/20 rounded-3xl -z-10" aria-hidden="true" />
       </div>
     </section>
   )
 }
 
 // ═══════════════════════════════════════════════════════════════
-// FEATURES MARQUEE
+// QUICK ACTIONS BAR
 // ═══════════════════════════════════════════════════════════════
-function FeaturesMarquee() {
-  const features = [
-    { icon: Leaf, text: 'Locally Sourced' },
-    { icon: Coffee, text: 'Fresh Roasted Coffee' },
-    { icon: Apple, text: 'Veggie Friendly' },
-    { icon: Mountain, text: 'Mountain Views' },
-    { icon: UtensilsCrossed, text: 'Made Fresh Daily' },
-    { icon: Heart, text: 'Family Owned' },
+
+function QuickActions() {
+  const actions = [
+    { icon: ShoppingBag, label: 'Order Online', href: '#order' },
+    { icon: CalendarDays, label: 'Reservations', href: '#reserve' },
+    { icon: MapPin, label: 'Find a Location', href: '#location' },
   ]
 
   return (
-    <section className="py-4 bg-brunch-sageDark overflow-hidden" aria-label="Restaurant features">
-      <div className="animate-marquee flex whitespace-nowrap">
-        {[...features, ...features].map((feature, i) => {
-          const IconComponent = feature.icon
-          return (
-            <div key={i} className="flex items-center gap-2 text-white font-semibold px-4">
-              <IconComponent className="w-5 h-5" aria-hidden="true" />
-              <span>{feature.text}</span>
-              <span className="text-white/50 mx-4" aria-hidden="true">✦</span>
-            </div>
-          )
-        })}
+    <section className="relative -mt-10 z-10 px-4 lg:px-8">
+      <div className="max-w-3xl mx-auto bg-white dark:bg-dark-elevated rounded-2xl shadow-card p-5 lg:p-6">
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4">
+          {actions.map((action, index) => (
+            <a
+              key={action.label}
+              href={action.href}
+              className={`quick-action flex-1 justify-center sm:justify-start ${
+                index < actions.length - 1 ? 'sm:border-r border-charcoal/10 dark:border-white/10' : ''
+              }`}
+            >
+              <action.icon className="w-6 h-6 text-coral" />
+              <span className="font-body font-medium text-charcoal dark:text-cream">
+                {action.label}
+              </span>
+            </a>
+          ))}
+        </div>
       </div>
     </section>
   )
@@ -298,39 +497,82 @@ function FeaturesMarquee() {
 // ═══════════════════════════════════════════════════════════════
 // ABOUT SECTION
 // ═══════════════════════════════════════════════════════════════
+
 function About() {
   return (
-    <section id="about" className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-24 px-4 md:px-16 py-16 md:py-24 max-w-7xl mx-auto items-center" aria-labelledby="about-heading">
-      {/* Image */}
-      <div className="relative rounded-3xl overflow-hidden">
-        <Image
-          src="https://images.unsplash.com/photo-1559305616-3f99cd43e353?w=500&h=600&fit=crop"
-          alt="Sunny restaurant interior with natural light and modern decor"
-          width={500}
-          height={600}
-          className="w-full h-auto object-cover"
-        />
-      </div>
+    <section id="about" className="section-padding" aria-labelledby="about-heading">
+      <div className="container-wide">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24 items-center">
+          {/* Image */}
+          <motion.div 
+            className="relative"
+            initial={{ opacity: 0, x: -20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+          >
+            <div className="relative rounded-3xl rounded-tr-[48px] overflow-hidden">
+              <Image
+                src="https://images.unsplash.com/photo-1559305616-3f99cd43e353?w=500&h=600&fit=crop"
+                alt="Sunny restaurant interior with natural light and modern decor"
+                width={500}
+                height={600}
+                className="w-full h-auto object-cover"
+              />
+            </div>
+            
+            {/* Polaroid accent */}
+            <motion.div 
+              className="hidden lg:block absolute -bottom-6 -right-6 w-40"
+              initial={{ opacity: 0, rotate: 10 }}
+              whileInView={{ opacity: 1, rotate: 5 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.3 }}
+            >
+              <div className="polaroid" style={{ transform: 'rotate(5deg)' }}>
+                <Image
+                  src="https://images.unsplash.com/photo-1551024506-0bccd828d307?w=180&h=180&fit=crop"
+                  alt="Fresh pastries"
+                  width={180}
+                  height={180}
+                  className="rounded"
+                />
+              </div>
+            </motion.div>
+          </motion.div>
 
-      {/* Content */}
-      <div>
-        <p className="section-tag">Our Story</p>
-        <h2 id="about-heading" className="section-title dark:text-brunch-cream mb-6">Where Every Morning Feels Like Sunday</h2>
-        
-        <p className="text-lg text-brunch-brownLight dark:text-brunch-cream/80 leading-relaxed mb-4">
-          We started Sunny Side in 2019 with a simple idea: breakfast should make you happy. 
-          Not just fed — genuinely, ridiculously happy.
-        </p>
-        
-        <p className="text-lg text-brunch-brownLight dark:text-brunch-cream/80 leading-relaxed mb-8">
-          Our team sources ingredients from Colorado farms, roasts our coffee in-house, 
-          and treats every guest like a neighbor popping by for a bite. Whether you&apos;re 
-          fueling up for a mountain adventure or recovering from one, we&apos;ve got you.
-        </p>
-        
-        <div className="flex flex-col">
-          <span className="font-display text-xl italic text-brunch-brown dark:text-brunch-cream">— Maria & Jake</span>
-          <span className="text-brunch-brownLight dark:text-brunch-cream/70 text-sm mt-1">Founders</span>
+          {/* Content */}
+          <motion.div
+            initial={{ opacity: 0, x: 20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+          >
+            <p className="section-tag">Our Story</p>
+            <h2 id="about-heading" className="font-display text-h2 text-charcoal dark:text-cream mb-6">
+              Where Every Morning Feels Like Sunday
+            </h2>
+            
+            <p className="text-lg text-charcoal-light dark:text-cream/80 leading-relaxed mb-4">
+              We started Sunny Side in 2019 with a simple idea: breakfast should make you happy. 
+              Not just fed — genuinely, ridiculously happy.
+            </p>
+            
+            <p className="text-lg text-charcoal-light dark:text-cream/80 leading-relaxed mb-8">
+              Our team sources ingredients from Colorado farms, roasts our coffee in-house, 
+              and treats every guest like a neighbor popping by for a bite. Whether you&apos;re 
+              fueling up for a mountain adventure or recovering from one, we&apos;ve got you.
+            </p>
+            
+            <div className="flex flex-col">
+              <span className="font-script text-2xl text-charcoal dark:text-cream">
+                — Maria & Jake
+              </span>
+              <span className="text-charcoal-light dark:text-cream/70 text-sm mt-1">
+                Founders
+              </span>
+            </div>
+          </motion.div>
         </div>
       </div>
     </section>
@@ -338,55 +580,88 @@ function About() {
 }
 
 // ═══════════════════════════════════════════════════════════════
-// MENU SECTION
+// MENU HIGHLIGHTS SECTION
 // ═══════════════════════════════════════════════════════════════
-function Menu() {
+
+function MenuHighlights() {
   return (
-    <section id="menu" className="px-4 md:px-16 py-16 md:py-24 bg-brunch-white dark:bg-[#252019]" aria-labelledby="menu-heading">
-      {/* Header */}
-      <div className="text-center max-w-2xl mx-auto mb-12">
-        <p className="section-tag">The Good Stuff</p>
-        <h2 id="menu-heading" className="section-title dark:text-brunch-cream mb-4">Menu Highlights</h2>
-        <p className="text-lg text-brunch-brownLight dark:text-brunch-cream/80">
-          Can&apos;t-miss dishes that keep our regulars coming back every weekend
-        </p>
-      </div>
+    <section id="menu" className="section-padding bg-white dark:bg-dark-card" aria-labelledby="menu-heading">
+      <div className="container-wide">
+        {/* Header */}
+        <motion.div 
+          className="text-center max-w-2xl mx-auto mb-12"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+        >
+          <p className="section-tag">The Good Stuff</p>
+          <h2 id="menu-heading" className="font-display text-h2 text-charcoal dark:text-cream mb-4">
+            Menu Favorites
+          </h2>
+          <p className="text-lg text-charcoal-light dark:text-cream/80">
+            Can&apos;t-miss dishes our regulars swear by
+          </p>
+        </motion.div>
 
-      {/* Menu Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
-        {menuHighlights.map((item) => (
-          <article key={item.name} className="menu-card bg-brunch-cream dark:bg-[#2A2320] rounded-2xl overflow-hidden shadow-md">
-            {/* Image */}
-            <div className="relative h-48 overflow-hidden">
-              <Image
-                src={item.image}
-                alt={item.name}
-                fill
-                className="object-cover transition-transform duration-500"
-                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-              />
-              {item.tag && (
-                <span className="absolute top-3 left-3 bg-brunch-terracotta text-white text-xs font-semibold uppercase tracking-wide px-3 py-1 rounded-full">
-                  {item.tag}
-                </span>
-              )}
-            </div>
-            
-            {/* Content */}
-            <div className="p-5">
-              <div className="flex justify-between items-start mb-2">
-                <h3 className="font-display text-lg font-medium text-brunch-brown dark:text-brunch-cream">{item.name}</h3>
-                <span className="text-brunch-terracotta font-semibold">{item.price}</span>
+        {/* Menu Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          {menuHighlights.map((item, index) => (
+            <motion.article 
+              key={item.name}
+              className="menu-card card"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: index * 0.1 }}
+            >
+              {/* Image */}
+              <div className="relative h-48 overflow-hidden">
+                <Image
+                  src={item.image}
+                  alt={item.name}
+                  fill
+                  className="object-cover transition-transform duration-500"
+                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                />
+                {item.badge && (
+                  <span className={getBadgeClass(item.badge)}>
+                    {getBadgeLabel(item.badge)}
+                  </span>
+                )}
               </div>
-              <p className="text-sm text-brunch-brownLight dark:text-brunch-cream/70 leading-relaxed">{item.description}</p>
-            </div>
-          </article>
-        ))}
-      </div>
+              
+              {/* Content */}
+              <div className="p-5">
+                <div className="flex justify-between items-start gap-2 mb-2">
+                  <h3 className="font-display text-h4 text-charcoal dark:text-cream">
+                    {item.name}
+                  </h3>
+                  <span className="text-coral font-semibold whitespace-nowrap">
+                    {formatPrice(item.price)}
+                  </span>
+                </div>
+                <p className="text-body-sm text-charcoal-light dark:text-cream/70">
+                  {item.description}
+                </p>
+              </div>
+            </motion.article>
+          ))}
+        </div>
 
-      {/* CTA */}
-      <div className="text-center mt-12">
-        <a href="#" className="btn-outline">See Full Menu →</a>
+        {/* CTA */}
+        <motion.div 
+          className="text-center mt-12"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, delay: 0.4 }}
+        >
+          <a href="#" className="btn-outline group">
+            See Full Menu
+            <ChevronRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+          </a>
+        </motion.div>
       </div>
     </section>
   )
@@ -395,78 +670,109 @@ function Menu() {
 // ═══════════════════════════════════════════════════════════════
 // LOCATION SECTION
 // ═══════════════════════════════════════════════════════════════
+
 function Location() {
   return (
-    <section id="location" className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 px-4 md:px-16 py-16 md:py-24 max-w-7xl mx-auto" aria-labelledby="location-heading">
-      {/* Content */}
-      <div>
-        <p className="section-tag">Find Us</p>
-        <h2 id="location-heading" className="section-title dark:text-brunch-cream mb-8">In the Heart of RiNo</h2>
-        
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div>
-            <h3 className="text-brunch-terracotta text-xs font-semibold uppercase tracking-widest mb-2">Address</h3>
-            <address className="text-brunch-brownLight dark:text-brunch-cream/80 leading-relaxed not-italic">
-              2850 Larimer Street<br />
-              Denver, CO 80205
-            </address>
-          </div>
-          <div>
-            <h3 className="text-brunch-terracotta text-xs font-semibold uppercase tracking-widest mb-2">Hours</h3>
-            <p className="text-brunch-brownLight dark:text-brunch-cream/80 leading-relaxed">
-              Mon–Fri: 7am – 3pm<br />
-              Sat–Sun: 8am – 4pm
-            </p>
-          </div>
-          <div>
-            <h3 className="text-brunch-terracotta text-xs font-semibold uppercase tracking-widest mb-2">Contact</h3>
-            <p className="text-brunch-brownLight dark:text-brunch-cream/80 leading-relaxed">
-              <a href="tel:+13035550147" className="hover:text-brunch-terracotta transition-colors">(303) 555-0147</a><br />
-              <a href="mailto:hello@sunnysidedenver.com" className="hover:text-brunch-terracotta transition-colors">hello@sunnysidedenver.com</a>
-            </p>
-          </div>
+    <section id="location" className="section-padding" aria-labelledby="location-heading">
+      <div className="container-wide">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16">
+          {/* Map Placeholder */}
+          <motion.div 
+            className="bg-sage dark:bg-sage/30 rounded-3xl flex items-center justify-center min-h-[400px] overflow-hidden"
+            initial={{ opacity: 0, scale: 0.95 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+          >
+            <div className="text-center text-white p-8">
+              <MapPin className="w-12 h-12 mx-auto mb-4" />
+              <p className="text-2xl font-display font-semibold mb-2">
+                {siteConfig.address.neighborhood}
+              </p>
+              <p className="text-white/80 mb-6">
+                {siteConfig.address.street}<br />
+                {siteConfig.address.city}, {siteConfig.address.state} {siteConfig.address.zip}
+              </p>
+              <a 
+                href={`https://maps.google.com/?q=${encodeURIComponent(`${siteConfig.address.street}, ${siteConfig.address.city}, ${siteConfig.address.state}`)}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 text-white font-semibold hover:underline"
+              >
+                Get Directions
+                <ExternalLink className="w-4 h-4" />
+              </a>
+            </div>
+          </motion.div>
+
+          {/* Content */}
+          <motion.div
+            initial={{ opacity: 0, x: 20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+          >
+            <p className="section-tag">Find Us</p>
+            <h2 id="location-heading" className="font-display text-h2 text-charcoal dark:text-cream mb-8">
+              Come Hungry, Leave Happy
+            </h2>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <div>
+                <h3 className="text-coral text-overline uppercase tracking-widest mb-3 flex items-center gap-2">
+                  <MapPin className="w-4 h-4" />
+                  Address
+                </h3>
+                <address className="text-charcoal-light dark:text-cream/80 leading-relaxed not-italic">
+                  {siteConfig.address.street}<br />
+                  {siteConfig.address.city}, {siteConfig.address.state} {siteConfig.address.zip}
+                </address>
+              </div>
+              
+              <div>
+                <h3 className="text-coral text-overline uppercase tracking-widest mb-3 flex items-center gap-2">
+                  <Clock className="w-4 h-4" />
+                  Hours
+                </h3>
+                <p className="text-charcoal-light dark:text-cream/80 leading-relaxed">
+                  Mon – Fri: {siteConfig.hours.weekday}<br />
+                  Sat – Sun: {siteConfig.hours.weekend}
+                </p>
+              </div>
+              
+              <div>
+                <h3 className="text-coral text-overline uppercase tracking-widest mb-3 flex items-center gap-2">
+                  <Phone className="w-4 h-4" />
+                  Phone
+                </h3>
+                <p className="text-charcoal-light dark:text-cream/80">
+                  <a href={`tel:${siteConfig.phone.replace(/[^0-9]/g, '')}`} className="hover:text-coral transition-colors">
+                    {siteConfig.phone}
+                  </a>
+                </p>
+              </div>
+              
+              <div>
+                <h3 className="text-coral text-overline uppercase tracking-widest mb-3 flex items-center gap-2">
+                  <Mail className="w-4 h-4" />
+                  Email
+                </h3>
+                <p className="text-charcoal-light dark:text-cream/80">
+                  <a href={`mailto:${siteConfig.email}`} className="hover:text-coral transition-colors">
+                    {siteConfig.email}
+                  </a>
+                </p>
+              </div>
+            </div>
+
+            <div className="mt-8 pt-8 border-t border-charcoal/10 dark:border-white/10">
+              <a href="#reserve" className="btn-primary">
+                <CalendarDays className="w-5 h-5" />
+                Book a Table
+              </a>
+            </div>
+          </motion.div>
         </div>
-      </div>
-
-      {/* Map Placeholder */}
-      <div className="bg-brunch-sage dark:bg-brunch-sageDark rounded-2xl flex items-center justify-center min-h-[300px]">
-        <div className="text-center text-white">
-          <span className="text-5xl block mb-4" aria-hidden="true">📍</span>
-          <p className="text-xl font-semibold mb-4">RiNo Arts District</p>
-          <a href="https://maps.google.com" target="_blank" rel="noopener noreferrer" className="text-white underline hover:no-underline">
-            Get Directions →
-          </a>
-        </div>
-      </div>
-    </section>
-  )
-}
-
-// ═══════════════════════════════════════════════════════════════
-// RESERVE CTA SECTION
-// ═══════════════════════════════════════════════════════════════
-function Reserve() {
-  return (
-    <section id="reserve" className="relative bg-brunch-peach dark:bg-brunch-terracotta/20 py-16 md:py-24 px-4 text-center overflow-hidden" aria-labelledby="reserve-heading">
-      {/* Animated background */}
-      <div className="absolute inset-0 overflow-hidden" aria-hidden="true">
-        <div className="absolute top-[-50%] left-[-50%] w-[200%] h-[200%] bg-gradient-radial from-white/10 to-transparent animate-pulse-bg" />
-      </div>
-
-      <div className="relative z-10 max-w-xl mx-auto">
-        <h2 id="reserve-heading" className="font-display text-[clamp(2rem,4vw,2.75rem)] font-medium text-brunch-brown dark:text-brunch-cream mb-4">
-          Ready for the Best Brunch in Denver?
-        </h2>
-        <p className="text-lg text-brunch-brownLight dark:text-brunch-cream/80 mb-8">
-          Walk-ins welcome, but weekends fill up fast. 
-          Reserve ahead and skip the wait.
-        </p>
-        <a href="#" className="inline-block bg-brunch-brown dark:bg-brunch-terracotta text-white px-10 py-5 rounded-full font-semibold text-lg hover:bg-brunch-brownLight dark:hover:bg-brunch-terracottaDark transition-all min-h-[44px]">
-          Book a Table
-        </a>
-        <p className="text-brunch-brownLight dark:text-brunch-cream/70 mt-4">
-          Or call us at <a href="tel:+13035550147" className="hover:text-brunch-brown dark:hover:text-brunch-terracotta transition-colors">(303) 555-0147</a>
-        </p>
       </div>
     </section>
   )
@@ -475,46 +781,142 @@ function Reserve() {
 // ═══════════════════════════════════════════════════════════════
 // INSTAGRAM SECTION
 // ═══════════════════════════════════════════════════════════════
-function Instagram() {
+
+function InstagramFeed() {
   return (
-    <section className="px-4 md:px-16 py-16 md:py-24 bg-brunch-white dark:bg-[#252019]" aria-labelledby="instagram-heading">
-      {/* Header */}
-      <div className="text-center mb-12">
-        <p className="section-tag">Follow Along</p>
-        <h2 id="instagram-heading" className="section-title dark:text-brunch-cream">@SunnySideDenver</h2>
-      </div>
+    <section className="section-padding bg-sage-light dark:bg-dark-card" aria-labelledby="instagram-heading">
+      <div className="container-wide">
+        {/* Header */}
+        <motion.div 
+          className="text-center mb-10"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+        >
+          <p className="section-tag">Follow the Vibes</p>
+          <h2 id="instagram-heading" className="font-display text-h2 text-charcoal dark:text-cream">
+            <a 
+              href={siteConfig.social.instagram}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-coral transition-colors"
+            >
+              {siteConfig.instagramHandle}
+            </a>
+          </h2>
+        </motion.div>
 
-      {/* Grid */}
-      <div className="grid grid-cols-3 md:grid-cols-6 gap-1 max-w-6xl mx-auto mb-8">
-        {instagramPosts.map((post, i) => (
+        {/* Grid */}
+        <motion.div 
+          className="grid grid-cols-3 md:grid-cols-6 gap-1"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+        >
+          {instagramPosts.map((post, i) => (
+            <a 
+              key={i}
+              href={siteConfig.social.instagram}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="instagram-item aspect-square"
+              aria-label={post.caption}
+            >
+              <Image
+                src={post.image}
+                alt=""
+                fill
+                className="object-cover"
+                sizes="(max-width: 768px) 33vw, 16vw"
+              />
+              <div className="instagram-overlay">
+                <Instagram className="w-6 h-6 text-white" />
+              </div>
+            </a>
+          ))}
+        </motion.div>
+
+        {/* CTA */}
+        <motion.div 
+          className="text-center mt-10"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+        >
           <a 
-            key={i} 
-            href="https://instagram.com/sunnysidedenver" 
-            target="_blank" 
+            href={siteConfig.social.instagram}
+            target="_blank"
             rel="noopener noreferrer"
-            className="instagram-item relative aspect-square overflow-hidden cursor-pointer block"
-            aria-label={post.caption}
+            className="btn-outline group"
           >
-            <Image
-              src={post.image}
-              alt=""
-              fill
-              className="object-cover transition-transform duration-500"
-              sizes="(max-width: 768px) 33vw, 16vw"
-            />
-            <div className="instagram-overlay absolute inset-0 bg-brunch-terracotta/90 flex items-center justify-center opacity-0 transition-opacity duration-300">
-              <span className="text-white font-semibold text-sm text-center px-4">{post.caption}</span>
-            </div>
+            <Instagram className="w-5 h-5" />
+            Follow on Instagram
+            <ChevronRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
           </a>
-        ))}
+        </motion.div>
       </div>
+    </section>
+  )
+}
 
-      {/* CTA */}
-      <div className="text-center">
-        <a href="https://instagram.com/sunnysidedenver" target="_blank" rel="noopener noreferrer" className="btn-outline inline-flex items-center gap-2 group">
-          <span>Follow on Instagram</span>
-          <span className="transition-transform group-hover:translate-x-1" aria-hidden="true">→</span>
-        </a>
+// ═══════════════════════════════════════════════════════════════
+// NEWSLETTER SECTION
+// ═══════════════════════════════════════════════════════════════
+
+function Newsletter() {
+  const [email, setEmail] = useState('')
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+    // Handle newsletter signup
+    console.log('Newsletter signup:', email)
+    setEmail('')
+  }
+
+  return (
+    <section className="section-padding" aria-labelledby="newsletter-heading">
+      <div className="container-wide">
+        <motion.div 
+          className="bg-peach dark:bg-coral/20 rounded-4xl p-8 md:p-16 text-center max-w-3xl mx-auto"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+        >
+          {/* Icon */}
+          <span className="text-5xl mb-4 block" aria-hidden="true">🍳</span>
+          
+          <h2 id="newsletter-heading" className="font-display text-h2 text-charcoal dark:text-cream mb-3">
+            Get 10% Off Your First Order
+          </h2>
+          
+          <p className="text-charcoal-light dark:text-cream/80 mb-8 max-w-md mx-auto">
+            Plus insider updates on new dishes, events & specials. 
+            Zero spam, we promise.
+          </p>
+          
+          <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="your@email.com"
+              className="input flex-1"
+              required
+            />
+            <button type="submit" className="btn-primary whitespace-nowrap">
+              Sign Me Up
+              <Sparkles className="w-4 h-4" />
+            </button>
+          </form>
+          
+          <p className="text-charcoal-light/70 dark:text-cream/50 text-sm mt-4">
+            We promise not to spam. Unsubscribe anytime.
+          </p>
+        </motion.div>
       </div>
     </section>
   )
@@ -523,43 +925,90 @@ function Instagram() {
 // ═══════════════════════════════════════════════════════════════
 // FOOTER
 // ═══════════════════════════════════════════════════════════════
+
 function Footer() {
+  const footerLinks = [
+    { label: 'Menu', href: '#menu' },
+    { label: 'About', href: '#about' },
+    { label: 'Catering', href: '#' },
+    { label: 'Careers', href: '#' },
+    { label: 'Gift Cards', href: '#' },
+  ]
+
   return (
-    <footer className="bg-brunch-brown dark:bg-[#151210] px-4 md:px-16 py-12 md:py-16">
-      {/* Top */}
-      <div className="flex flex-col md:flex-row justify-between items-start gap-8 max-w-6xl mx-auto pb-8 border-b border-white/10">
-        {/* Brand */}
-        <div>
-          <span className="font-display text-2xl text-white font-semibold">☀️ Sunny Side</span>
-          <p className="text-white/60 mt-2">Denver&apos;s happiest breakfast.</p>
+    <footer className="bg-charcoal text-white px-4 md:px-16 pt-16 pb-8">
+      <div className="container-wide">
+        {/* Top Section */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 pb-8 border-b border-white/10">
+          {/* Brand */}
+          <div>
+            <div className="flex items-center gap-2 mb-3">
+              <span className="text-2xl" aria-hidden="true">☀️</span>
+              <span className="font-display text-xl font-semibold">{siteConfig.name}</span>
+            </div>
+            <p className="text-white/60 text-sm">
+              Denver&apos;s happiest breakfast spot.
+            </p>
+          </div>
+
+          {/* Links */}
+          <nav className="flex flex-wrap gap-x-6 gap-y-2" aria-label="Footer navigation">
+            {footerLinks.map((link) => (
+              <a 
+                key={link.label}
+                href={link.href}
+                className="text-white/70 hover:text-white transition-colors text-sm py-1"
+              >
+                {link.label}
+              </a>
+            ))}
+          </nav>
+
+          {/* Social */}
+          <nav className="flex gap-4 md:justify-end" aria-label="Social media">
+            <a 
+              href={siteConfig.social.instagram}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="p-2 text-white/70 hover:text-white transition-colors"
+              aria-label="Instagram"
+            >
+              <Instagram className="w-5 h-5" />
+            </a>
+            <a 
+              href={siteConfig.social.facebook}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="p-2 text-white/70 hover:text-white transition-colors"
+              aria-label="Facebook"
+            >
+              <Facebook className="w-5 h-5" />
+            </a>
+            <a 
+              href={siteConfig.social.tiktok}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="p-2 text-white/70 hover:text-white transition-colors"
+              aria-label="TikTok"
+            >
+              <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-5.2 1.74 2.89 2.89 0 012.31-4.64 2.93 2.93 0 01.88.13V9.4a6.84 6.84 0 00-1-.05A6.33 6.33 0 005 20.1a6.34 6.34 0 0010.86-4.43v-7a8.16 8.16 0 004.77 1.52v-3.4a4.85 4.85 0 01-1-.1z"/>
+              </svg>
+            </a>
+          </nav>
         </div>
 
-        {/* Links */}
-        <nav className="flex gap-8 flex-wrap" aria-label="Footer navigation">
-          {['Menu', 'About', 'Catering', 'Careers'].map((link) => (
-            <a key={link} href="#" className="text-white/80 hover:text-white transition-colors py-1">
-              {link}
-            </a>
-          ))}
-        </nav>
-
-        {/* Social */}
-        <nav className="flex gap-6" aria-label="Social media links">
-          <a href="#" className="text-white/80 hover:text-white transition-colors py-1" aria-label="Follow us on Instagram">
-            <InstagramIcon className="w-5 h-5" />
-          </a>
-          <a href="#" className="text-white/80 hover:text-white transition-colors py-1" aria-label="Follow us on Facebook">
-            <FacebookIcon className="w-5 h-5" />
-          </a>
-          <a href="#" className="text-white/80 hover:text-white transition-colors py-1" aria-label="Follow us on TikTok">
-            <Music2 className="w-5 h-5" />
-          </a>
-        </nav>
-      </div>
-
-      {/* Bottom */}
-      <div className="text-center pt-8 max-w-6xl mx-auto">
-        <p className="text-white/50 text-sm flex items-center justify-center gap-1">© 2026 Sunny Side Denver. Made with <UtensilsCrossed className="w-4 h-4 inline" /> in Colorado.</p>
+        {/* Bottom Section */}
+        <div className="pt-8 text-center">
+          <p className="text-white/50 text-sm mb-4">
+            {siteConfig.hours.weekday} Mon–Fri • {siteConfig.hours.weekend} Sat–Sun • {siteConfig.phone}
+          </p>
+          <p className="text-white/40 text-xs">
+            © {new Date().getFullYear()} {siteConfig.name}. Made with{' '}
+            <Heart className="w-3 h-3 inline text-coral" />{' '}
+            in Colorado. • <a href="#" className="hover:text-white">Privacy</a> • <a href="#" className="hover:text-white">Terms</a>
+          </p>
+        </div>
       </div>
     </footer>
   )
@@ -568,21 +1017,22 @@ function Footer() {
 // ═══════════════════════════════════════════════════════════════
 // STRUCTURED DATA
 // ═══════════════════════════════════════════════════════════════
+
 function StructuredData() {
   const schema = {
     '@context': 'https://schema.org',
     '@type': 'Restaurant',
-    name: 'Sunny Side',
-    description: 'Farm-fresh breakfast & brunch in the heart of RiNo. Good vibes, great coffee, and food that makes you smile.',
+    name: siteConfig.name,
+    description: siteConfig.description,
     url: 'https://sunnysidedenver.com',
     telephone: '+1-303-555-0147',
-    email: 'hello@sunnysidedenver.com',
+    email: siteConfig.email,
     address: {
       '@type': 'PostalAddress',
-      streetAddress: '2850 Larimer Street',
-      addressLocality: 'Denver',
-      addressRegion: 'CO',
-      postalCode: '80205',
+      streetAddress: siteConfig.address.street,
+      addressLocality: siteConfig.address.city,
+      addressRegion: siteConfig.address.state,
+      postalCode: siteConfig.address.zip,
       addressCountry: 'US',
     },
     geo: {
@@ -608,9 +1058,9 @@ function StructuredData() {
     priceRange: '$$',
     acceptsReservations: true,
     sameAs: [
-      'https://instagram.com/sunnysidedenver',
-      'https://facebook.com/sunnysidedenver',
-      'https://tiktok.com/@sunnysidedenver',
+      siteConfig.social.instagram,
+      siteConfig.social.facebook,
+      siteConfig.social.tiktok,
     ],
   }
 
@@ -625,20 +1075,22 @@ function StructuredData() {
 // ═══════════════════════════════════════════════════════════════
 // MAIN PAGE EXPORT
 // ═══════════════════════════════════════════════════════════════
+
 export default function BrunchPage() {
   return (
     <>
       <StructuredData />
       <SkipLink />
-      <Nav />
+      <AnnouncementBar />
+      <Navigation />
       <main id="main-content">
         <Hero />
-        <FeaturesMarquee />
+        <QuickActions />
         <About />
-        <Menu />
+        <MenuHighlights />
         <Location />
-        <Reserve />
-        <Instagram />
+        <InstagramFeed />
+        <Newsletter />
       </main>
       <Footer />
     </>
