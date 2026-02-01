@@ -94,6 +94,13 @@ function BrutalButton({
   const padding = size === 'large' ? 'px-10 py-5' : 'px-7 py-3.5'
   const fontSize = size === 'large' ? 'text-lg' : 'text-base'
   
+  // Determine text color based on button background for proper contrast
+  const getTextColor = (bg: string): string => {
+    const darkBgs = ['#3B82F6', '#A855F7', '#1a1a1a', '#000000']
+    return darkBgs.includes(bg) ? '#FFFEF5' : '#1a1a1a'
+  }
+  const textColor = getTextColor(color)
+  
   const buttonContent = (
     <motion.button
       type={type}
@@ -102,6 +109,7 @@ function BrutalButton({
       className={`${padding} ${fontSize} font-display font-bold cursor-pointer border-[3px] border-brutal-black dark:border-brutal-bg relative min-h-[44px] min-w-[44px]`}
       style={{
         background: color,
+        color: textColor,
         boxShadow: `6px 6px 0 ${shadowColor}`,
       }}
       whileHover={{ 
@@ -141,17 +149,22 @@ function BrutalCard({ children, color = '#fff', delay = 0 }: BrutalCardProps): J
   const isInView = useInView(ref, { once: true, margin: '-50px' })
   
   // Determine text color based on background for WCAG AA compliance
-  const needsLightText = color === '#3B82F6' || color === '#A855F7'
-  const textClass = needsLightText ? 'text-brutal-bg' : 'text-brutal-black'
+  // Use explicit colors that work regardless of dark/light mode
+  const getTextColor = (bg: string): string => {
+    const darkBgs = ['#3B82F6', '#A855F7', '#1a1a1a', '#000000']
+    return darkBgs.includes(bg) ? '#FFFEF5' : '#1a1a1a'
+  }
+  const textColor = getTextColor(color)
   
   return (
     <motion.div
       ref={ref}
       initial={{ opacity: 0, y: 30 }}
       animate={isInView ? { opacity: 1, y: 0 } : {}}
-      className={`border-[3px] border-brutal-black dark:border-brutal-bg p-8 relative ${textClass}`}
+      className="border-[3px] border-brutal-black dark:border-brutal-bg p-8 relative"
       style={{
         background: color,
+        color: textColor,
         boxShadow: '8px 8px 0 #1a1a1a',
       }}
       whileHover={{
@@ -700,11 +713,11 @@ function TruchetPlane(): JSX.Element {
 
 function TruchetBackground(): JSX.Element {
   return (
-    <div className="absolute inset-0 z-0 opacity-85" aria-hidden="true">
+    <div className="absolute inset-0 z-0 w-full h-full" aria-hidden="true">
       <Canvas
         camera={{ position: [0, 0, 1], fov: 90 }}
-        style={{ background: 'transparent' }}
-        gl={{ antialias: true, alpha: true }}
+        style={{ background: '#1a1a1a', width: '100%', height: '100%' }}
+        gl={{ antialias: true, alpha: false }}
       >
         <TruchetPlane />
       </Canvas>
