@@ -1,0 +1,410 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ═══════════════════════════════════════════════════════════════
+   LENIS SMOOTH SCROLL
+   ═══════════════════════════════════════════════════════════════ */
+html.lenis, html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+.lenis.lenis-scrolling iframe {
+  pointer-events: none;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   COACH STARTER - Warm Personal Brand Design
+   Approachable, trustworthy aesthetic for coaches & consultants
+   ═══════════════════════════════════════════════════════════════ */
+
+@layer base {
+  :root {
+    /* Warm cream tones */
+    --background: 249 248 241;
+    --foreground: 60 26 18;
+    --surface: 255 255 255;
+    --surface-elevated: 255 255 255;
+    
+    /* Terracotta accent */
+    --accent: 217 114 84;
+    --accent-foreground: 255 255 255;
+    
+    /* Warm neutrals */
+    --muted: 244 241 222;
+    --muted-foreground: 135 62 44;
+    --border: 235 230 201;
+    
+    /* Sage green secondary */
+    --secondary: 129 178 154;
+  }
+  
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  
+  body {
+    @apply bg-cream-200 text-primary-900;
+  }
+  
+  /* Elegant serif typography */
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-display text-balance;
+  }
+  
+  h1 {
+    @apply text-4xl md:text-5xl lg:text-6xl leading-[1.1] font-bold;
+  }
+  
+  h2 {
+    @apply text-3xl md:text-4xl leading-[1.15] font-bold;
+  }
+  
+  h3 {
+    @apply text-xl md:text-2xl leading-[1.2] font-semibold;
+  }
+  
+  p {
+    @apply leading-relaxed;
+  }
+  
+  /* Focus states */
+  *:focus-visible {
+    @apply outline-none ring-2 ring-primary-400 ring-offset-2 ring-offset-cream-200;
+  }
+  
+  ::selection {
+    @apply bg-primary-200 text-primary-900;
+  }
+}
+
+@layer components {
+  /* ─────────────────────────────────────────────────────────────
+     BUTTONS - Warm, inviting styling
+     ───────────────────────────────────────────────────────────── */
+  .btn-primary {
+    @apply relative inline-flex items-center justify-center 
+           px-8 py-4 text-base font-medium text-white 
+           bg-primary-500 rounded-full
+           overflow-hidden
+           transition-all duration-300 ease-out
+           hover:bg-primary-600 hover:shadow-xl hover:shadow-primary-500/25
+           active:scale-[0.98]
+           focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 focus:ring-offset-cream-200;
+  }
+  
+  .btn-primary:hover {
+    transform: translateY(-2px);
+  }
+  
+  .btn-secondary {
+    @apply inline-flex items-center justify-center 
+           px-8 py-4 text-base font-medium
+           text-primary-700 bg-white
+           border-2 border-primary-200 rounded-full
+           transition-all duration-300 ease-out
+           hover:bg-primary-50 hover:border-primary-300
+           active:scale-[0.98];
+  }
+  
+  .btn-ghost {
+    @apply inline-flex items-center justify-center
+           px-4 py-2 text-base font-medium
+           text-primary-700
+           transition-colors duration-200
+           hover:text-primary-800;
+  }
+  
+  /* ─────────────────────────────────────────────────────────────
+     SECTION SPACING
+     ───────────────────────────────────────────────────────────── */
+  .section-padding {
+    @apply py-20 md:py-28 lg:py-32;
+  }
+  
+  .section-padding-sm {
+    @apply py-12 md:py-16;
+  }
+  
+  /* ─────────────────────────────────────────────────────────────
+     SECTION HEADERS
+     ───────────────────────────────────────────────────────────── */
+  .section-eyebrow {
+    @apply text-sage-500 font-semibold text-sm uppercase tracking-wider mb-2;
+  }
+  
+  .section-title {
+    @apply font-display text-3xl md:text-4xl text-primary-900 mb-4;
+  }
+  
+  .section-description {
+    @apply text-primary-800/70 text-lg max-w-2xl leading-relaxed;
+  }
+  
+  /* ─────────────────────────────────────────────────────────────
+     SERVICE CARDS
+     ───────────────────────────────────────────────────────────── */
+  .service-card {
+    @apply bg-white rounded-3xl p-8
+           border border-cream-300
+           transition-all duration-300 ease-out;
+    box-shadow: 0 4px 20px -5px rgba(0,0,0,0.05);
+  }
+  
+  .service-card:hover {
+    @apply border-primary-200;
+    transform: translateY(-4px);
+    box-shadow: 0 20px 40px -15px rgba(0,0,0,0.1);
+  }
+  
+  .service-card-title {
+    @apply font-display text-2xl text-primary-900 mb-3;
+  }
+  
+  .service-card-description {
+    @apply text-primary-800/70 mb-6 leading-relaxed;
+  }
+  
+  .service-card-features {
+    @apply space-y-2 mb-6;
+  }
+  
+  .service-card-feature {
+    @apply flex items-center gap-3 text-sm text-primary-800/80;
+  }
+  
+  .service-card-feature-check {
+    @apply w-5 h-5 rounded-full bg-sage-100 text-sage-500
+           flex items-center justify-center flex-shrink-0;
+  }
+  
+  .service-card-price {
+    @apply text-2xl font-display text-primary-900 mb-4;
+  }
+  
+  .service-card-cta {
+    @apply w-full py-3.5 rounded-full font-medium text-center
+           transition-all duration-300
+           active:scale-[0.98];
+  }
+  
+  /* ─────────────────────────────────────────────────────────────
+     TESTIMONIAL CARDS
+     ───────────────────────────────────────────────────────────── */
+  .testimonial-card {
+    @apply bg-cream-100 rounded-3xl p-8
+           border border-cream-300
+           transition-all duration-300;
+  }
+  
+  .testimonial-card:hover {
+    @apply border-sage-300;
+    box-shadow: 0 15px 30px -10px rgba(0,0,0,0.06);
+  }
+  
+  .testimonial-badge {
+    @apply inline-block bg-sage-700 text-white 
+           text-sm font-medium px-4 py-1.5 rounded-full mb-5;
+  }
+  
+  .testimonial-quote {
+    @apply text-primary-800/80 leading-relaxed mb-6 text-lg;
+  }
+  
+  .testimonial-author {
+    @apply flex items-center gap-4;
+  }
+  
+  .testimonial-avatar {
+    @apply w-14 h-14 rounded-full object-cover
+           ring-4 ring-cream-200;
+  }
+  
+  .testimonial-name {
+    @apply font-semibold text-primary-900;
+  }
+  
+  .testimonial-role {
+    @apply text-sm text-primary-800/60;
+  }
+  
+  /* ─────────────────────────────────────────────────────────────
+     RESULTS BAR
+     ───────────────────────────────────────────────────────────── */
+  .results-bar {
+    @apply bg-primary-500 relative overflow-hidden;
+  }
+  
+  .results-bar::before {
+    content: '';
+    @apply absolute inset-0 opacity-10;
+    background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23ffffff' fill-opacity='1' fill-rule='evenodd'%3E%3Cpath d='M0 40L40 0H20L0 20M40 40V20L20 40'/%3E%3C/g%3E%3C/svg%3E");
+  }
+  
+  .result-item {
+    @apply text-center py-2;
+  }
+  
+  .result-number {
+    @apply font-display text-4xl md:text-5xl text-white mb-1;
+  }
+  
+  .result-label {
+    @apply text-white/80 font-medium;
+  }
+  
+  /* ─────────────────────────────────────────────────────────────
+     LEAD MAGNET
+     ───────────────────────────────────────────────────────────── */
+  .lead-magnet {
+    @apply bg-white rounded-[2rem] p-10 md:p-14
+           shadow-2xl shadow-sage-500/10;
+  }
+  
+  .lead-magnet-input {
+    @apply w-full px-6 py-4 rounded-xl
+           bg-cream-100 border-2 border-cream-300
+           text-primary-900 placeholder:text-primary-800/40
+           transition-all duration-200
+           focus:border-primary-500 focus:ring-2 focus:ring-primary-400/50 focus:bg-white focus:outline-none;
+  }
+  
+  /* ─────────────────────────────────────────────────────────────
+     FAQ ACCORDION
+     ───────────────────────────────────────────────────────────── */
+  .faq-item {
+    @apply bg-white rounded-2xl
+           border border-cream-300
+           overflow-hidden
+           transition-all duration-300;
+  }
+  
+  .faq-item:hover {
+    @apply border-primary-200;
+  }
+  
+  .faq-button {
+    @apply w-full px-6 py-5 text-left 
+           flex items-center justify-between gap-4
+           transition-colors duration-200
+           hover:bg-cream-50;
+  }
+  
+  .faq-question {
+    @apply font-display text-lg text-primary-900;
+  }
+  
+  .faq-icon {
+    @apply w-8 h-8 rounded-full bg-cream-200
+           flex items-center justify-center
+           transition-all duration-300 flex-shrink-0;
+  }
+  
+  .faq-icon-open {
+    @apply bg-primary-100 rotate-180;
+  }
+  
+  .faq-icon svg {
+    @apply w-4 h-4 text-primary-500 transition-colors;
+  }
+  
+  .faq-answer {
+    @apply px-6 pb-5 text-primary-800/70 leading-relaxed;
+  }
+  
+  /* ─────────────────────────────────────────────────────────────
+     ABOUT IMAGE FRAME
+     ───────────────────────────────────────────────────────────── */
+  .about-image-frame {
+    @apply relative;
+  }
+  
+  .about-image-frame::before {
+    content: '';
+    @apply absolute -inset-4 rounded-3xl
+           bg-gradient-to-br from-primary-200/50 to-sage-200/50
+           -rotate-3;
+  }
+  
+  .about-image-frame img {
+    @apply relative rounded-2xl shadow-xl w-full object-cover;
+  }
+  
+  /* ─────────────────────────────────────────────────────────────
+     CREDENTIALS CHIP
+     ───────────────────────────────────────────────────────────── */
+  .credential-chip {
+    @apply inline-flex items-center px-4 py-2
+           bg-cream-200 text-primary-700
+           rounded-full text-sm font-medium
+           border border-cream-300
+           transition-all duration-200
+           hover:bg-cream-300;
+  }
+  
+  /* ─────────────────────────────────────────────────────────────
+     CTA SECTION
+     ───────────────────────────────────────────────────────────── */
+  .cta-section {
+    @apply bg-primary-900 relative overflow-hidden;
+  }
+  
+  .cta-section::before {
+    content: '';
+    @apply absolute inset-0 opacity-5;
+    background-image: radial-gradient(circle at 20% 50%, rgb(var(--secondary)) 0%, transparent 50%),
+                      radial-gradient(circle at 80% 50%, rgb(var(--accent)) 0%, transparent 50%);
+  }
+  
+  /* ─────────────────────────────────────────────────────────────
+     NAV STYLES
+     ───────────────────────────────────────────────────────────── */
+  .nav-link {
+    @apply text-primary-800/70 font-medium
+           transition-colors duration-200
+           hover:text-primary-800;
+  }
+  
+  /* ─────────────────────────────────────────────────────────────
+     UTILITIES
+     ───────────────────────────────────────────────────────────── */
+  .text-balance {
+    text-wrap: balance;
+  }
+  
+  /* Decorative line */
+  .decorative-line {
+    @apply w-16 h-1 bg-primary-400 rounded-full;
+  }
+  
+  /* Scrollbar */
+  ::-webkit-scrollbar {
+    @apply w-2;
+  }
+  
+  ::-webkit-scrollbar-track {
+    @apply bg-cream-200;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    @apply bg-cream-400 rounded-full;
+  }
+  
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-cream-500;
+  }
+}

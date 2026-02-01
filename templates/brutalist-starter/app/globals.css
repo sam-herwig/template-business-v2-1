@@ -1,0 +1,358 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ═══════════════════════════════════════════════════════════════
+   LENIS SMOOTH SCROLL
+   ═══════════════════════════════════════════════════════════════ */
+html.lenis, html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+.lenis.lenis-scrolling iframe {
+  pointer-events: none;
+}
+
+/* Custom cursor - Hide default on hover devices */
+@media (hover: hover) {
+  * {
+    cursor: none !important;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   CSS CUSTOM PROPERTIES (Light Mode - Default)
+   ═══════════════════════════════════════════════════════════════ */
+:root {
+  --brutal-bg: #FFFEF5;
+  --brutal-black: #1a1a1a;
+  --brutal-yellow: #FFE600;
+  --brutal-pink: #FF5CAA;
+  --brutal-blue: #3B82F6;
+  --brutal-green: #22C55E;
+  --brutal-purple: #A855F7;
+  --brutal-orange: #FF6B35;
+  
+  /* Semantic colors for accessibility */
+  --brutal-text: #1a1a1a;
+  --brutal-text-muted: rgba(26, 26, 26, 0.7);
+  --brutal-surface: #FFFEF5;
+  --brutal-border: #1a1a1a;
+  
+  /* Focus ring color */
+  --brutal-focus: #3B82F6;
+  --brutal-focus-dark: #FFE600;
+  
+  /* High contrast text for colored backgrounds */
+  --brutal-on-yellow: #1a1a1a;
+  --brutal-on-pink: #1a1a1a;
+  --brutal-on-blue: #FFFEF5;
+  --brutal-on-green: #1a1a1a;
+  --brutal-on-purple: #FFFEF5;
+  --brutal-on-orange: #1a1a1a;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   DARK MODE
+   ═══════════════════════════════════════════════════════════════ */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --brutal-bg: #1a1a1a;
+    --brutal-black: #FFFEF5;
+    --brutal-text: #FFFEF5;
+    --brutal-text-muted: rgba(255, 254, 245, 0.7);
+    --brutal-surface: #252525;
+    --brutal-border: #FFFEF5;
+    
+    /* Focus ring - brighter for dark mode */
+    --brutal-focus: #FFE600;
+  }
+  
+  /* Swap shadow colors for dark mode */
+  .shadow-brutal {
+    box-shadow: 6px 6px 0 #FFFEF5 !important;
+  }
+  
+  .shadow-brutal-lg {
+    box-shadow: 8px 8px 0 #FFFEF5 !important;
+  }
+  
+  .shadow-brutal-xl {
+    box-shadow: 12px 12px 0 #FFFEF5 !important;
+  }
+}
+
+/* Manual dark mode class support */
+.dark {
+  --brutal-bg: #1a1a1a;
+  --brutal-black: #FFFEF5;
+  --brutal-text: #FFFEF5;
+  --brutal-text-muted: rgba(255, 254, 245, 0.7);
+  --brutal-surface: #252525;
+  --brutal-border: #FFFEF5;
+  --brutal-focus: #FFE600;
+}
+
+/* Base styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  color-scheme: light dark;
+}
+
+body {
+  background-color: var(--brutal-bg);
+  color: var(--brutal-text);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+::selection {
+  background: var(--brutal-yellow);
+  color: var(--brutal-black);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   ACCESSIBILITY: Skip Link
+   ═══════════════════════════════════════════════════════════════ */
+.skip-link {
+  @apply absolute -top-full left-4 z-[9999] px-4 py-2 font-bold;
+  background: var(--brutal-yellow);
+  color: #1a1a1a;
+  border: 3px solid #1a1a1a;
+  transition: top 0.2s;
+}
+
+.skip-link:focus {
+  top: 1rem;
+  outline: none;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   ACCESSIBILITY: Focus Visible (WCAG 2.1 Compliant)
+   ═══════════════════════════════════════════════════════════════ */
+*:focus {
+  outline: none;
+}
+
+*:focus-visible {
+  outline: 3px solid var(--brutal-focus);
+  outline-offset: 2px;
+}
+
+/* Focus for buttons and links */
+button:focus-visible,
+a:focus-visible,
+[role="button"]:focus-visible {
+  outline: 3px solid var(--brutal-focus);
+  outline-offset: 2px;
+}
+
+/* High contrast focus for dark sections */
+.dark-section *:focus-visible,
+[data-theme="dark"] *:focus-visible {
+  outline-color: var(--brutal-focus-dark);
+}
+
+/* Focus visible on colored backgrounds */
+.bg-brutal-yellow *:focus-visible,
+.bg-brutal-pink *:focus-visible,
+.bg-brutal-green *:focus-visible,
+.bg-brutal-orange *:focus-visible {
+  outline-color: #1a1a1a;
+}
+
+.bg-brutal-blue *:focus-visible,
+.bg-brutal-purple *:focus-visible,
+.bg-brutal-black *:focus-visible {
+  outline-color: var(--brutal-yellow);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   ACCESSIBILITY: Reduced Motion
+   ═══════════════════════════════════════════════════════════════ */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  
+  .animate-marquee,
+  .animate-marquee-reverse,
+  .animate-float {
+    animation: none !important;
+  }
+}
+
+/* Screen reader only */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   COLOR CONTRAST: Accessible Text on Colored Backgrounds
+   ═══════════════════════════════════════════════════════════════ */
+/* Yellow background - use dark text only */
+.bg-brutal-yellow {
+  color: #1a1a1a;
+}
+
+/* Pink background - use dark text for AA compliance */
+.bg-brutal-pink {
+  color: #1a1a1a;
+}
+
+/* Blue background - use light text */
+.bg-brutal-blue {
+  color: #FFFEF5;
+}
+
+/* Green background - use dark text */
+.bg-brutal-green {
+  color: #1a1a1a;
+}
+
+/* Purple background - use light text */
+.bg-brutal-purple {
+  color: #FFFEF5;
+}
+
+/* Orange background - use dark text */
+.bg-brutal-orange {
+  color: #1a1a1a;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   BRUTAL COMPONENT STYLES
+   ═══════════════════════════════════════════════════════════════ */
+/* Brutal button base styles */
+.brutal-btn {
+  @apply relative font-display font-bold cursor-pointer transition-all;
+  border: 3px solid var(--brutal-border);
+  box-shadow: 6px 6px 0 var(--brutal-black);
+}
+
+.brutal-btn:hover {
+  transform: translate(-3px, -3px);
+  box-shadow: 9px 9px 0 var(--brutal-black);
+}
+
+.brutal-btn:active {
+  transform: translate(3px, 3px);
+  box-shadow: 3px 3px 0 var(--brutal-black);
+}
+
+/* Brutal card styles */
+.brutal-card {
+  @apply p-8 transition-all;
+  border: 3px solid var(--brutal-border);
+  box-shadow: 8px 8px 0 var(--brutal-black);
+}
+
+.brutal-card:hover {
+  transform: translate(-4px, -4px);
+  box-shadow: 12px 12px 0 var(--brutal-black);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   ANIMATIONS
+   ═══════════════════════════════════════════════════════════════ */
+/* Marquee animation */
+@keyframes marquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-marquee {
+  animation: marquee 20s linear infinite;
+}
+
+.animate-marquee-reverse {
+  animation: marquee 20s linear infinite reverse;
+}
+
+/* Float animation for shapes */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0) rotate(var(--rotate, 0deg));
+  }
+  50% {
+    transform: translateY(-20px) rotate(calc(var(--rotate, 0deg) + 5deg));
+  }
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   UTILITY CLASSES
+   ═══════════════════════════════════════════════════════════════ */
+/* Hide scrollbar but keep functionality */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Mobile nav hide */
+@media (max-width: 768px) {
+  .nav-desktop {
+    display: none !important;
+  }
+}
+
+/* Minimum touch target size (44x44px per WCAG) */
+.touch-target {
+  min-width: 44px;
+  min-height: 44px;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  :root {
+    --brutal-yellow: #FFD700;
+    --brutal-pink: #FF1493;
+    --brutal-blue: #0066CC;
+    --brutal-green: #008000;
+    --brutal-purple: #6600CC;
+    --brutal-orange: #FF4500;
+  }
+  
+  *:focus-visible {
+    outline-width: 4px;
+  }
+}

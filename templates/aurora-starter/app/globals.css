@@ -1,0 +1,269 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ═══════════════════════════════════════════════════════════════
+   LENIS SMOOTH SCROLL
+   ═══════════════════════════════════════════════════════════════ */
+html.lenis, html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+.lenis.lenis-scrolling iframe {
+  pointer-events: none;
+}
+
+:root {
+  --aurora-bg: #030014;
+  --aurora-indigo: #6366f1;
+  --aurora-violet: #8b5cf6;
+  --aurora-fuchsia: #c026d3;
+  --aurora-pink: #ec4899;
+  --aurora-cyan: #06b6d4;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: var(--aurora-bg);
+  color: white;
+  overflow-x: hidden;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   ACCESSIBILITY
+   ═══════════════════════════════════════════════════════════════ */
+.skip-link {
+  @apply absolute -top-full left-4 z-[9999] px-4 py-2 rounded-full font-bold text-black;
+  background: white;
+  transition: top 0.2s;
+}
+.skip-link:focus { 
+  top: 1rem; 
+  outline: 3px solid var(--aurora-indigo);
+  outline-offset: 2px;
+}
+
+/* Focus states - high visibility for keyboard navigation */
+*:focus-visible {
+  outline: 2px solid var(--aurora-indigo);
+  outline-offset: 3px;
+}
+
+/* Enhanced focus for interactive elements */
+a:focus-visible,
+button:focus-visible {
+  outline: 2px solid var(--aurora-indigo);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* Focus ring for buttons with backgrounds */
+.btn-primary:focus-visible,
+.btn-secondary:focus-visible,
+.nav-cta:focus-visible {
+  outline: 3px solid white;
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+.sr-only {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border-width: 0;
+}
+
+/* Gradient text utility */
+.gradient-text {
+  background: linear-gradient(135deg, #818cf8 0%, #c084fc 50%, #f472b6 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Grain overlay */
+.grain-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0.15;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+}
+
+/* Primary CTA button */
+.btn-primary {
+  @apply inline-flex items-center gap-3 px-8 py-5 rounded-full font-bold text-lg transition-all duration-300;
+  background: white;
+  color: var(--aurora-bg);
+}
+
+.btn-primary:hover {
+  transform: scale(1.05);
+  box-shadow: 0 20px 50px rgba(255, 255, 255, 0.25);
+}
+
+/* Secondary CTA button */
+.btn-secondary {
+  @apply inline-flex items-center gap-3 px-8 py-5 rounded-full font-semibold text-lg transition-all duration-300;
+  background: transparent;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+.btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.5);
+}
+
+/* Nav CTA */
+.nav-cta {
+  @apply px-5 py-3 rounded-full font-bold transition-all duration-300;
+  background: white;
+  color: var(--aurora-bg);
+}
+
+.nav-cta:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 30px rgba(255, 255, 255, 0.3);
+}
+
+/* Badge - WCAG AA compliant contrast */
+.badge {
+  @apply inline-flex items-center gap-2 px-5 py-2 rounded-full text-sm font-semibold;
+  background: rgba(129, 140, 248, 0.2);
+  border: 1px solid rgba(129, 140, 248, 0.5);
+  color: #e0e7ff; /* Lighter for better contrast against dark background */
+}
+
+.badge-dot {
+  @apply w-2 h-2 rounded-full;
+  background: #4ade80;
+  box-shadow: 0 0 12px #4ade80;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; box-shadow: 0 0 12px #4ade80; }
+  50% { opacity: 0.7; box-shadow: 0 0 20px #4ade80; }
+}
+
+/* Feature card */
+.feature-card {
+  @apply p-8 rounded-3xl backdrop-blur-xl transition-all duration-300;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.02) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.feature-card:hover {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0.04) 100%);
+  border-color: rgba(129, 140, 248, 0.4);
+  transform: translateY(-8px);
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4);
+}
+
+/* Testimonial dot - accessible with focus states */
+.testimonial-dot {
+  @apply w-2.5 h-2.5 rounded-full transition-all duration-300;
+  background: rgba(255, 255, 255, 0.4);
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+.testimonial-dot:hover {
+  background: rgba(255, 255, 255, 0.6);
+}
+
+.testimonial-dot:focus-visible {
+  outline: 2px solid white;
+  outline-offset: 2px;
+}
+
+.testimonial-dot.active {
+  background: #818cf8;
+  width: 32px;
+  border-radius: 5px;
+  box-shadow: 0 4px 15px rgba(129, 140, 248, 0.5);
+}
+
+/* Marquee animation */
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.animate-marquee {
+  animation: marquee 20s linear infinite;
+}
+
+/* Scroll line animation */
+@keyframes scroll-line {
+  0% { transform: scaleY(0); opacity: 1; }
+  50% { transform: scaleY(1); opacity: 1; }
+  100% { transform: scaleY(0); opacity: 0; }
+}
+
+.scroll-line {
+  animation: scroll-line 1.5s ease-in-out infinite;
+  transform-origin: top;
+}
+
+/* Section tag - WCAG AA compliant */
+.section-tag {
+  @apply inline-block px-5 py-2 rounded-full text-xs font-bold uppercase tracking-widest mb-6;
+  background: rgba(129, 140, 248, 0.2);
+  border: 1px solid rgba(129, 140, 248, 0.4);
+  color: #e0e7ff;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--aurora-bg);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(129, 140, 248, 0.4);
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(129, 140, 248, 0.6);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .btn-primary,
+  .btn-secondary {
+    @apply w-full justify-center;
+  }
+}

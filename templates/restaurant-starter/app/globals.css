@@ -1,0 +1,551 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ═══════════════════════════════════════════════════════════════
+   LENIS SMOOTH SCROLL
+   ═══════════════════════════════════════════════════════════════ */
+html.lenis, html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+.lenis.lenis-scrolling iframe {
+  pointer-events: none;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   RESTAURANT STARTER - Premium Design System
+   A warm, sophisticated design for fine dining establishments
+   ═══════════════════════════════════════════════════════════════ */
+
+@layer base {
+  :root {
+    /* Light mode surfaces */
+    --background: 255 253 250;
+    --foreground: 26 26 26;
+    --surface: 255 255 255;
+    --surface-elevated: 255 255 255;
+    
+    /* Warm accent for restaurant */
+    --accent: 236 122 20;
+    --accent-foreground: 255 255 255;
+    
+    /* Neutral tones - improved contrast for WCAG AA (4.5:1 ratio) */
+    --muted: 248 245 240;
+    --muted-foreground: 82 72 62; /* Darkened from 115 100 85 for better contrast */
+    --border: 235 228 218;
+    
+    /* Semantic colors */
+    --success: 34 197 94;
+    --warning: 251 191 36;
+  }
+  
+  .dark {
+    --background: 13 13 13;
+    --foreground: 250 248 245;
+    --surface: 26 26 26;
+    --surface-elevated: 38 36 34;
+    
+    --accent: 240 148 50;
+    --accent-foreground: 13 13 13;
+    
+    --muted: 38 36 34;
+    --muted-foreground: 185 178 170; /* Lightened for better contrast on dark backgrounds */
+    --border: 55 50 45;
+  }
+  
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  
+  body {
+    @apply bg-[rgb(var(--background))] text-[rgb(var(--foreground))];
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  }
+  
+  /* Typography scale with refined line heights */
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-display text-balance;
+    letter-spacing: -0.02em;
+  }
+  
+  h1 {
+    @apply text-5xl md:text-6xl lg:text-7xl leading-[1.1];
+  }
+  
+  h2 {
+    @apply text-3xl md:text-4xl lg:text-5xl leading-[1.15];
+  }
+  
+  h3 {
+    @apply text-2xl md:text-3xl leading-[1.2];
+  }
+  
+  p {
+    @apply leading-relaxed;
+  }
+  
+  /* Better focus states for accessibility - WCAG AA compliant */
+  *:focus-visible {
+    @apply outline-none ring-2 ring-primary-500 ring-offset-2 ring-offset-[rgb(var(--background))];
+  }
+  
+  /* High contrast focus for dark backgrounds */
+  .dark *:focus-visible {
+    @apply ring-offset-dark-950;
+  }
+  
+  /* Screen reader only utility */
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+  }
+  
+  .sr-only.focus\:not-sr-only:focus,
+  .sr-only.focus-visible\:not-sr-only:focus-visible {
+    position: static;
+    width: auto;
+    height: auto;
+    padding: inherit;
+    margin: inherit;
+    overflow: visible;
+    clip: auto;
+    white-space: normal;
+  }
+  
+  /* Selection color */
+  ::selection {
+    @apply bg-primary-500/20 text-primary-900;
+  }
+}
+
+@layer components {
+  /* ─────────────────────────────────────────────────────────────
+     BUTTONS - Premium, tactile feel
+     ───────────────────────────────────────────────────────────── */
+  .btn-primary {
+    @apply relative inline-flex items-center justify-center 
+           px-8 py-4 text-base font-medium
+           text-white bg-primary-500
+           rounded-sm overflow-hidden
+           transition-all duration-300 ease-out
+           hover:bg-primary-600 hover:shadow-lg hover:shadow-primary-500/25
+           active:scale-[0.98] active:shadow-md;
+    /* Subtle inner glow */
+    box-shadow: 
+      inset 0 1px 0 0 rgba(255,255,255,0.1),
+      0 2px 4px 0 rgba(0,0,0,0.05);
+  }
+  
+  .btn-primary:hover {
+    box-shadow: 
+      inset 0 1px 0 0 rgba(255,255,255,0.1),
+      0 8px 20px -4px rgba(236, 122, 20, 0.4);
+    transform: translateY(-1px);
+  }
+  
+  .btn-outline {
+    @apply relative inline-flex items-center justify-center 
+           px-8 py-4 text-base font-medium
+           border-2 border-current rounded-sm
+           transition-all duration-300 ease-out
+           hover:bg-white hover:text-dark-900 hover:border-white
+           active:scale-[0.98];
+  }
+  
+  .btn-secondary {
+    @apply relative inline-flex items-center justify-center 
+           px-8 py-4 text-base font-medium
+           text-dark-900 bg-[rgb(var(--muted))]
+           rounded-sm
+           transition-all duration-300 ease-out
+           hover:bg-secondary-100
+           active:scale-[0.98];
+  }
+  
+  .btn-ghost {
+    @apply inline-flex items-center justify-center
+           px-4 py-2 text-sm font-medium
+           text-[rgb(var(--muted-foreground))]
+           rounded-sm
+           transition-colors duration-200
+           hover:text-[rgb(var(--foreground))] hover:bg-[rgb(var(--muted))];
+  }
+  
+  /* ─────────────────────────────────────────────────────────────
+     SECTION SPACING - Consistent vertical rhythm
+     ───────────────────────────────────────────────────────────── */
+  .section-padding {
+    @apply py-24 md:py-32 lg:py-40;
+  }
+  
+  .section-padding-sm {
+    @apply py-16 md:py-20 lg:py-24;
+  }
+  
+  /* ─────────────────────────────────────────────────────────────
+     CARDS - Elevated surfaces with subtle depth
+     ───────────────────────────────────────────────────────────── */
+  .card {
+    @apply bg-[rgb(var(--surface))] rounded-xl
+           border border-[rgb(var(--border))]
+           transition-all duration-300 ease-out;
+    box-shadow: 
+      0 1px 2px 0 rgba(0,0,0,0.03),
+      0 1px 3px 0 rgba(0,0,0,0.05);
+  }
+  
+  .card-elevated {
+    @apply bg-[rgb(var(--surface-elevated))] rounded-xl
+           border border-[rgb(var(--border))];
+    box-shadow: 
+      0 4px 6px -1px rgba(0,0,0,0.05),
+      0 2px 4px -2px rgba(0,0,0,0.05);
+  }
+  
+  .card-interactive {
+    @apply card cursor-pointer;
+  }
+  
+  .card-interactive:hover {
+    @apply border-primary-200;
+    box-shadow: 
+      0 10px 25px -5px rgba(0,0,0,0.08),
+      0 8px 10px -6px rgba(0,0,0,0.04);
+    transform: translateY(-2px);
+  }
+  
+  /* ─────────────────────────────────────────────────────────────
+     SECTION HEADERS - Consistent section titling
+     ───────────────────────────────────────────────────────────── */
+  .section-eyebrow {
+    @apply text-primary-500 uppercase tracking-[0.2em] text-sm font-medium mb-3;
+  }
+  
+  .section-title {
+    @apply font-display text-4xl md:text-5xl text-dark-900 mb-4;
+  }
+  
+  .dark .section-title {
+    @apply text-white;
+  }
+  
+  .section-description {
+    @apply text-[rgb(var(--muted-foreground))] text-lg max-w-2xl;
+  }
+  
+  /* ─────────────────────────────────────────────────────────────
+     MENU ITEMS - Restaurant-specific styling
+     ───────────────────────────────────────────────────────────── */
+  .menu-item {
+    @apply relative p-5 rounded-lg
+           border border-transparent
+           transition-all duration-300 ease-out;
+  }
+  
+  .menu-item::before {
+    content: '';
+    @apply absolute inset-0 rounded-lg opacity-0
+           bg-gradient-to-r from-primary-50 to-transparent
+           transition-opacity duration-300;
+  }
+  
+  .menu-item:hover {
+    @apply border-primary-100;
+  }
+  
+  .menu-item:hover::before {
+    @apply opacity-100;
+  }
+  
+  .menu-item-name {
+    @apply font-display text-xl text-dark-900 mb-1;
+  }
+  
+  .dark .menu-item-name {
+    @apply text-white;
+  }
+  
+  .menu-item-description {
+    @apply text-[rgb(var(--muted-foreground))] text-sm leading-relaxed;
+  }
+  
+  .menu-item-price {
+    @apply font-display text-xl text-primary-600 tabular-nums;
+  }
+  
+  /* Dotted line between name and price */
+  .menu-item-dots {
+    @apply flex-1 mx-4 border-b-2 border-dotted border-gray-200 
+           relative top-[-4px];
+  }
+  
+  .dark .menu-item-dots {
+    @apply border-gray-700;
+  }
+  
+  /* ─────────────────────────────────────────────────────────────
+     DIETARY BADGES - Clear visual indicators
+     ───────────────────────────────────────────────────────────── */
+  .dietary-icon {
+    @apply inline-flex items-center justify-center 
+           w-6 h-6 text-[10px] font-bold uppercase
+           rounded-full border-2
+           transition-transform duration-200;
+  }
+  
+  .dietary-icon:hover {
+    @apply scale-110;
+  }
+  
+  .dietary-v { 
+    @apply bg-emerald-50 text-emerald-600 border-emerald-200;
+  }
+  
+  .dietary-vg { 
+    @apply bg-green-50 text-green-700 border-green-200;
+  }
+  
+  .dietary-gf { 
+    @apply bg-amber-50 text-amber-700 border-amber-200;
+  }
+  
+  .dark .dietary-v { 
+    @apply bg-emerald-950 text-emerald-400 border-emerald-800;
+  }
+  
+  .dark .dietary-gf { 
+    @apply bg-amber-950 text-amber-400 border-amber-800;
+  }
+  
+  /* ─────────────────────────────────────────────────────────────
+     CATEGORY TABS - Menu navigation
+     ───────────────────────────────────────────────────────────── */
+  .category-tab {
+    @apply px-6 py-3 text-sm font-medium
+           rounded-full border border-transparent
+           transition-all duration-300 ease-out;
+  }
+  
+  .category-tab-inactive {
+    @apply category-tab bg-[rgb(var(--muted))] text-[rgb(var(--muted-foreground))]
+           hover:bg-secondary-100 hover:text-secondary-700;
+  }
+  
+  .category-tab-active {
+    @apply category-tab bg-primary-500 text-white
+           shadow-md shadow-primary-500/25;
+  }
+  
+  /* ─────────────────────────────────────────────────────────────
+     TESTIMONIAL CARDS - Elegant review display
+     ───────────────────────────────────────────────────────────── */
+  .testimonial-card {
+    @apply relative p-8 rounded-2xl
+           bg-white/5 backdrop-blur-md
+           border border-white/10
+           transition-all duration-300;
+  }
+  
+  .testimonial-card:hover {
+    @apply bg-white/10 border-white/20;
+    transform: translateY(-4px);
+  }
+  
+  .testimonial-stars {
+    @apply text-primary-400 text-lg tracking-wider mb-4;
+  }
+  
+  .testimonial-quote {
+    @apply text-gray-300 text-lg leading-relaxed italic mb-6;
+  }
+  
+  .testimonial-author {
+    @apply text-white font-medium;
+  }
+  
+  /* ─────────────────────────────────────────────────────────────
+     GALLERY - Image grid with smooth interactions
+     ───────────────────────────────────────────────────────────── */
+  .gallery-item {
+    @apply relative overflow-hidden rounded-xl aspect-[4/3] cursor-pointer;
+  }
+  
+  .gallery-item img {
+    @apply w-full h-full object-cover
+           transition-transform duration-700 ease-out;
+  }
+  
+  .gallery-item:hover img {
+    @apply scale-110;
+  }
+  
+  .gallery-overlay {
+    @apply absolute inset-0 bg-dark-950/0
+           transition-all duration-500 ease-out
+           flex items-center justify-center;
+  }
+  
+  .gallery-item:hover .gallery-overlay {
+    @apply bg-dark-950/40;
+  }
+  
+  /* ─────────────────────────────────────────────────────────────
+     NAVIGATION - Premium sticky header
+     ───────────────────────────────────────────────────────────── */
+  .nav-link {
+    @apply relative text-gray-600 font-medium
+           transition-colors duration-200
+           hover:text-primary-500;
+  }
+  
+  .nav-link::after {
+    content: '';
+    @apply absolute -bottom-1 left-0 w-0 h-0.5
+           bg-primary-500 rounded-full
+           transition-all duration-300 ease-out;
+  }
+  
+  .nav-link:hover::after {
+    @apply w-full;
+  }
+  
+  .dark .nav-link {
+    @apply text-gray-300 hover:text-primary-400;
+  }
+  
+  /* ─────────────────────────────────────────────────────────────
+     CTA SECTIONS - High-impact call to action
+     ───────────────────────────────────────────────────────────── */
+  .cta-section {
+    @apply relative overflow-hidden;
+    background: linear-gradient(135deg, 
+      theme('colors.primary.500') 0%, 
+      theme('colors.primary.600') 50%,
+      theme('colors.primary.700') 100%
+    );
+  }
+  
+  .cta-section::before {
+    content: '';
+    @apply absolute inset-0 opacity-10;
+    background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  }
+  
+  /* ─────────────────────────────────────────────────────────────
+     DECORATIVE ELEMENTS
+     ───────────────────────────────────────────────────────────── */
+  .divider {
+    @apply w-16 h-1 bg-primary-500 rounded-full mx-auto;
+  }
+  
+  .divider-sm {
+    @apply w-12 h-0.5 bg-primary-500/50 rounded-full;
+  }
+  
+  /* Decorative quote marks */
+  .quote-mark {
+    @apply text-6xl text-primary-400/30 font-display leading-none;
+  }
+  
+  /* ─────────────────────────────────────────────────────────────
+     ANIMATIONS - Smooth, premium feel
+     ───────────────────────────────────────────────────────────── */
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+  }
+  
+  @keyframes shimmer {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+  }
+  
+  .animate-float {
+    animation: float 6s ease-in-out infinite;
+  }
+  
+  /* Staggered fade-in for lists */
+  .fade-in-stagger > * {
+    opacity: 0;
+    animation: fadeInUp 0.5s ease-out forwards;
+  }
+  
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  /* ─────────────────────────────────────────────────────────────
+     UTILITY CLASSES
+     ───────────────────────────────────────────────────────────── */
+  .text-balance {
+    text-wrap: balance;
+  }
+  
+  .text-gradient {
+    @apply bg-clip-text text-transparent 
+           bg-gradient-to-r from-primary-500 to-primary-700;
+  }
+  
+  /* Glass effect */
+  .glass {
+    @apply bg-white/80 backdrop-blur-lg border border-white/20;
+  }
+  
+  .dark .glass {
+    @apply bg-dark-950/80 border-white/10;
+  }
+  
+  /* Scrollbar styling */
+  ::-webkit-scrollbar {
+    @apply w-2;
+  }
+  
+  ::-webkit-scrollbar-track {
+    @apply bg-transparent;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    @apply bg-gray-300 rounded-full;
+  }
+  
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-gray-400;
+  }
+  
+  .dark ::-webkit-scrollbar-thumb {
+    @apply bg-gray-700;
+  }
+  
+  .dark ::-webkit-scrollbar-thumb:hover {
+    @apply bg-gray-600;
+  }
+}

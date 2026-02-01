@@ -1,0 +1,493 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ═══════════════════════════════════════════════════════════════
+   LENIS SMOOTH SCROLL
+   ═══════════════════════════════════════════════════════════════ */
+html.lenis, html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+.lenis.lenis-scrolling iframe {
+  pointer-events: none;
+}
+
+/* Custom cursor - Hide default on hover devices */
+@media (hover: hover) {
+  * {
+    cursor: none !important;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   AGENCY STARTER - Bold Creative Studio Design
+   Dark, portfolio-focused aesthetic for creative agencies
+   ═══════════════════════════════════════════════════════════════ */
+
+@layer base {
+  :root {
+    /* Dark mode by default */
+    --background: 3 7 18;
+    --foreground: 255 255 255;
+    --surface: 17 24 39;
+    --surface-elevated: 31 41 55;
+    
+    /* Vibrant red accent */
+    --accent: 239 68 68;
+    --accent-foreground: 255 255 255;
+    
+    /* Cool neutrals */
+    --muted: 31 41 55;
+    --muted-foreground: 156 163 175;
+    --border: 55 65 81;
+  }
+  
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  
+  body {
+    @apply bg-dark-950 text-white;
+  }
+  
+  /* Modern sans-serif typography */
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-display font-bold tracking-tight;
+  }
+  
+  h1 {
+    @apply text-5xl md:text-7xl lg:text-8xl leading-[0.95];
+  }
+  
+  h2 {
+    @apply text-4xl md:text-5xl leading-[1];
+  }
+  
+  h3 {
+    @apply text-2xl md:text-3xl leading-[1.1];
+  }
+  
+  p {
+    @apply leading-relaxed;
+  }
+  
+  /* Focus states */
+  *:focus-visible {
+    @apply outline-none ring-2 ring-primary-500 ring-offset-2 ring-offset-dark-950;
+  }
+  
+  ::selection {
+    @apply bg-primary-500 text-white;
+  }
+}
+
+@layer components {
+  /* ─────────────────────────────────────────────────────────────
+     BUTTONS - Bold, geometric styling
+     ───────────────────────────────────────────────────────────── */
+  .btn-primary {
+    @apply relative inline-flex items-center justify-center 
+           px-8 py-4 text-base font-medium text-white 
+           bg-primary-500 
+           overflow-hidden
+           transition-all duration-300 ease-out
+           hover:bg-primary-600
+           active:scale-[0.98];
+    box-shadow: 
+      0 4px 20px 0 rgba(239, 68, 68, 0.3),
+      inset 0 1px 0 0 rgba(255,255,255,0.1);
+  }
+  
+  .btn-primary:hover {
+    box-shadow: 
+      0 8px 30px 0 rgba(239, 68, 68, 0.4),
+      inset 0 1px 0 0 rgba(255,255,255,0.1);
+    transform: translateY(-2px);
+  }
+  
+  .btn-outline {
+    @apply inline-flex items-center justify-center 
+           px-8 py-4 text-base font-medium text-white 
+           bg-transparent border border-white
+           transition-all duration-300 ease-out
+           hover:bg-white hover:text-dark-950
+           active:scale-[0.98];
+  }
+  
+  .btn-ghost {
+    @apply inline-flex items-center justify-center
+           px-4 py-2 text-sm font-medium
+           text-dark-400
+           transition-colors duration-200
+           hover:text-white;
+  }
+  
+  /* ─────────────────────────────────────────────────────────────
+     SECTION SPACING
+     ───────────────────────────────────────────────────────────── */
+  .section-padding {
+    @apply py-24 md:py-32 lg:py-40;
+  }
+  
+  .section-padding-sm {
+    @apply py-16 md:py-20;
+  }
+  
+  .container-default {
+    @apply max-w-7xl mx-auto px-6 lg:px-8;
+  }
+  
+  /* ─────────────────────────────────────────────────────────────
+     SECTION HEADERS
+     ───────────────────────────────────────────────────────────── */
+  .section-title {
+    @apply font-display text-4xl md:text-5xl font-bold text-white mb-4;
+  }
+  
+  .section-description {
+    @apply text-dark-400 text-lg max-w-xl;
+  }
+  
+  /* ─────────────────────────────────────────────────────────────
+     GRADIENT TEXT
+     ───────────────────────────────────────────────────────────── */
+  .text-gradient {
+    @apply bg-clip-text text-transparent;
+    background-image: linear-gradient(135deg, 
+      white 0%, 
+      rgba(156, 163, 175, 0.8) 100%
+    );
+  }
+  
+  .text-gradient-accent {
+    @apply bg-clip-text text-transparent;
+    background-image: linear-gradient(135deg, 
+      rgb(239, 68, 68) 0%, 
+      rgb(251, 113, 133) 100%
+    );
+  }
+  
+  /* ─────────────────────────────────────────────────────────────
+     CASE STUDY CARDS
+     ───────────────────────────────────────────────────────────── */
+  .case-study-card {
+    @apply relative overflow-hidden block
+           border border-dark-800
+           transition-all duration-500 ease-out;
+  }
+  
+  .case-study-card:hover {
+    @apply border-dark-600;
+  }
+  
+  .case-study-card::after {
+    content: '';
+    @apply absolute inset-0 
+           bg-gradient-to-t from-dark-950 via-dark-950/50 to-transparent
+           opacity-70 transition-opacity duration-500;
+  }
+  
+  .case-study-card:hover::after {
+    @apply opacity-50;
+  }
+  
+  .case-study-image {
+    @apply w-full h-full object-cover
+           transition-transform duration-700 ease-out;
+  }
+  
+  .case-study-card:hover .case-study-image {
+    @apply scale-105;
+  }
+  
+  .case-study-content {
+    @apply absolute bottom-0 left-0 right-0 p-8 z-10;
+  }
+  
+  .case-study-category {
+    @apply text-primary-400 text-sm uppercase tracking-wider font-medium mb-2;
+  }
+  
+  .case-study-title {
+    @apply font-display text-2xl md:text-3xl font-bold mb-2
+           transition-colors duration-300;
+  }
+  
+  .case-study-card:hover .case-study-title {
+    @apply text-primary-400;
+  }
+  
+  .case-study-description {
+    @apply text-dark-300;
+  }
+  
+  /* ─────────────────────────────────────────────────────────────
+     FILTER BUTTONS
+     ───────────────────────────────────────────────────────────── */
+  .filter-btn {
+    @apply px-5 py-2.5 text-sm uppercase tracking-wider font-medium
+           border transition-all duration-300;
+  }
+  
+  .filter-btn-active {
+    @apply filter-btn bg-white text-dark-950 border-white;
+  }
+  
+  .filter-btn-inactive {
+    @apply filter-btn bg-transparent text-dark-400 border-dark-700
+           hover:border-dark-500 hover:text-dark-300;
+  }
+  
+  /* ─────────────────────────────────────────────────────────────
+     SERVICE ACCORDION
+     ───────────────────────────────────────────────────────────── */
+  .service-item {
+    @apply border-t border-dark-700 py-8 cursor-pointer
+           transition-all duration-300;
+  }
+  
+  .service-item-active {
+    @apply opacity-100;
+  }
+  
+  .service-item-inactive {
+    @apply opacity-50 hover:opacity-80;
+  }
+  
+  .service-number {
+    @apply text-primary-500 font-mono text-sm;
+  }
+  
+  .service-title {
+    @apply font-display text-2xl md:text-3xl font-bold
+           transition-colors duration-300;
+  }
+  
+  .service-item-active .service-title {
+    @apply text-white;
+  }
+  
+  .service-item-inactive .service-title {
+    @apply text-dark-300;
+  }
+  
+  .service-item-inactive:hover .service-title {
+    @apply text-white;
+  }
+  
+  .service-description {
+    @apply text-dark-400 mb-4 max-w-lg;
+  }
+  
+  .service-tag {
+    @apply text-sm text-dark-500 bg-dark-800 px-3 py-1.5
+           inline-block mr-2 mb-2;
+  }
+  
+  /* ─────────────────────────────────────────────────────────────
+     STAT ITEMS
+     ───────────────────────────────────────────────────────────── */
+  .stat-item {
+    @apply text-center;
+  }
+  
+  .stat-number {
+    @apply font-display text-5xl md:text-6xl font-bold text-white mb-2;
+  }
+  
+  .stat-label {
+    @apply text-dark-400 uppercase tracking-wider text-sm;
+  }
+  
+  /* ─────────────────────────────────────────────────────────────
+     TEAM CARDS
+     ───────────────────────────────────────────────────────────── */
+  .team-card {
+    @apply group;
+  }
+  
+  .team-card-image {
+    @apply relative overflow-hidden mb-5 aspect-[3/4];
+  }
+  
+  .team-card-image img {
+    @apply w-full h-full object-cover
+           grayscale group-hover:grayscale-0
+           transition-all duration-500 ease-out;
+  }
+  
+  .team-card:hover .team-card-image img {
+    @apply scale-105;
+  }
+  
+  .team-card-image::after {
+    content: '';
+    @apply absolute inset-0 
+           bg-primary-500/0 group-hover:bg-primary-500/20
+           transition-colors duration-300;
+  }
+  
+  .team-card-name {
+    @apply font-display text-lg font-bold;
+  }
+  
+  .team-card-role {
+    @apply text-dark-400 text-sm;
+  }
+  
+  /* ─────────────────────────────────────────────────────────────
+     PROCESS TIMELINE
+     ───────────────────────────────────────────────────────────── */
+  .process-item {
+    @apply relative;
+  }
+  
+  .process-connector {
+    @apply hidden md:block absolute top-6 left-full w-full h-px bg-dark-700 -z-10;
+  }
+  
+  .process-number {
+    @apply text-primary-500 font-mono text-sm mb-4;
+  }
+  
+  .process-title {
+    @apply font-display text-2xl font-bold mb-3;
+  }
+  
+  .process-description {
+    @apply text-dark-400;
+  }
+  
+  /* ─────────────────────────────────────────────────────────────
+     CTA SECTION
+     ───────────────────────────────────────────────────────────── */
+  .cta-section {
+    @apply relative overflow-hidden;
+  }
+  
+  .cta-glow {
+    @apply absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2
+           w-[800px] h-[800px] rounded-full
+           bg-primary-500/10 blur-[200px];
+  }
+  
+  /* ─────────────────────────────────────────────────────────────
+     NAV STYLES
+     ───────────────────────────────────────────────────────────── */
+  .nav-link {
+    @apply text-dark-300 text-sm uppercase tracking-wider
+           transition-colors duration-200
+           hover:text-white;
+  }
+  
+  /* ─────────────────────────────────────────────────────────────
+     HERO GLOW
+     ───────────────────────────────────────────────────────────── */
+  .hero-glow {
+    @apply absolute rounded-full blur-[150px];
+  }
+  
+  .hero-glow-primary {
+    @apply hero-glow bg-primary-500/10 w-[600px] h-[600px]
+           top-1/4 -right-1/4;
+  }
+  
+  .hero-glow-accent {
+    @apply hero-glow bg-accent-violet/5 w-[400px] h-[400px]
+           bottom-1/4 -left-1/4;
+  }
+  
+  /* ─────────────────────────────────────────────────────────────
+     LOGO
+     ───────────────────────────────────────────────────────────── */
+  .logo {
+    @apply font-display text-2xl font-bold tracking-tight;
+  }
+  
+  .logo-dot {
+    @apply text-primary-500;
+  }
+  
+  /* ─────────────────────────────────────────────────────────────
+     CLIENT LOGOS
+     ───────────────────────────────────────────────────────────── */
+  .client-logo {
+    @apply text-2xl font-display font-bold 
+           opacity-50 hover:opacity-100
+           transition-opacity duration-300;
+  }
+  
+  /* ─────────────────────────────────────────────────────────────
+     GEOMETRIC DECORATION
+     ───────────────────────────────────────────────────────────── */
+  .geometric-decoration {
+    @apply relative w-full aspect-square max-w-md;
+  }
+  
+  .geometric-square {
+    @apply absolute border border-dark-700;
+  }
+  
+  .geometric-square-outer { @apply inset-0; }
+  .geometric-square-mid { @apply inset-8; }
+  .geometric-square-inner { @apply inset-16; }
+  
+  .geometric-number {
+    @apply absolute inset-0 flex items-center justify-center
+           font-display text-8xl font-bold text-dark-800;
+  }
+  
+  /* ─────────────────────────────────────────────────────────────
+     UTILITIES
+     ───────────────────────────────────────────────────────────── */
+  .text-balance {
+    text-wrap: balance;
+  }
+  
+  /* Horizontal marquee */
+  .marquee {
+    @apply flex overflow-hidden whitespace-nowrap;
+  }
+  
+  .marquee-content {
+    @apply flex;
+    animation: marquee 20s linear infinite;
+  }
+  
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+  
+  /* Scrollbar */
+  ::-webkit-scrollbar {
+    @apply w-2;
+  }
+  
+  ::-webkit-scrollbar-track {
+    @apply bg-dark-950;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    @apply bg-dark-700 rounded-full;
+  }
+  
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-dark-600;
+  }
+}

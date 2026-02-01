@@ -1,0 +1,539 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ═══════════════════════════════════════════════════════════════
+   LENIS SMOOTH SCROLL
+   ═══════════════════════════════════════════════════════════════ */
+html.lenis, html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+.lenis.lenis-scrolling iframe {
+  pointer-events: none;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   GYM STARTER - Bold Energetic Fitness Design
+   High-energy aesthetic for gyms & fitness studios
+   ═══════════════════════════════════════════════════════════════ */
+
+@layer base {
+  :root {
+    /* Dark theme by default for fitness vibe */
+    --background: 3 7 18;
+    --foreground: 248 250 252;
+    --surface: 17 24 39;
+    --surface-elevated: 31 41 55;
+    
+    /* Energetic red/pink accent */
+    --accent: 244 63 94;
+    --accent-foreground: 255 255 255;
+    
+    /* Dark neutrals */
+    --muted: 31 41 55;
+    --muted-foreground: 156 163 175;
+    --border: 55 65 81;
+  }
+  
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  
+  body {
+    @apply bg-[rgb(var(--background))] text-[rgb(var(--foreground))];
+  }
+  
+  /* Bold, impactful typography */
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-display tracking-wider uppercase;
+  }
+  
+  h1 {
+    @apply text-6xl md:text-7xl lg:text-8xl leading-[0.9];
+  }
+  
+  h2 {
+    @apply text-4xl md:text-5xl lg:text-6xl leading-[0.95];
+  }
+  
+  h3 {
+    @apply text-2xl md:text-3xl leading-[1];
+  }
+  
+  p {
+    @apply leading-relaxed;
+  }
+  
+  /* Focus states */
+  *:focus-visible {
+    @apply outline-none ring-2 ring-primary-500 ring-offset-2 ring-offset-dark-950;
+  }
+  
+  ::selection {
+    @apply bg-primary-500/30 text-white;
+  }
+}
+
+@layer components {
+  /* ─────────────────────────────────────────────────────────────
+     BUTTONS - Bold, action-oriented
+     ───────────────────────────────────────────────────────────── */
+  .btn-primary {
+    @apply relative inline-flex items-center justify-center 
+           px-8 py-4 text-base font-bold text-white 
+           uppercase tracking-widest
+           bg-primary-500 
+           overflow-hidden
+           transition-all duration-300 ease-out
+           hover:bg-primary-600
+           active:scale-[0.98];
+    box-shadow: 
+      0 4px 20px 0 rgba(244, 63, 94, 0.4),
+      inset 0 1px 0 0 rgba(255,255,255,0.1);
+  }
+  
+  .btn-primary:hover {
+    box-shadow: 
+      0 8px 30px 0 rgba(244, 63, 94, 0.5),
+      inset 0 1px 0 0 rgba(255,255,255,0.1);
+    transform: translateY(-2px);
+  }
+  
+  .btn-primary::after {
+    content: '';
+    @apply absolute inset-0 opacity-0;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    transition: opacity 0.3s;
+  }
+  
+  .btn-primary:hover::after {
+    @apply opacity-100;
+    animation: btn-shine 0.6s ease-out;
+  }
+  
+  @keyframes btn-shine {
+    from { transform: translateX(-100%); }
+    to { transform: translateX(100%); }
+  }
+  
+  .btn-outline {
+    @apply inline-flex items-center justify-center 
+           px-8 py-4 text-base font-bold
+           uppercase tracking-widest
+           border-2 border-white text-white
+           transition-all duration-300 ease-out
+           hover:bg-white hover:text-dark-950
+           active:scale-[0.98];
+  }
+  
+  .btn-secondary {
+    @apply inline-flex items-center justify-center 
+           px-8 py-4 text-base font-bold
+           uppercase tracking-widest
+           bg-dark-700 text-white
+           transition-all duration-300 ease-out
+           hover:bg-dark-600
+           active:scale-[0.98];
+  }
+  
+  .btn-ghost {
+    @apply inline-flex items-center justify-center
+           px-4 py-2 text-sm font-bold
+           uppercase tracking-widest
+           text-gray-400
+           transition-colors duration-200
+           hover:text-white;
+  }
+  
+  /* ─────────────────────────────────────────────────────────────
+     SECTION SPACING
+     ───────────────────────────────────────────────────────────── */
+  .section-padding {
+    @apply py-20 md:py-28 lg:py-32;
+  }
+  
+  .section-padding-sm {
+    @apply py-12 md:py-16;
+  }
+  
+  /* ─────────────────────────────────────────────────────────────
+     SECTION HEADERS
+     ───────────────────────────────────────────────────────────── */
+  .section-eyebrow {
+    @apply text-primary-500 uppercase tracking-[0.3em] text-sm font-bold mb-4 block;
+  }
+  
+  .section-title {
+    @apply font-display text-4xl md:text-5xl lg:text-6xl text-white mb-4 tracking-wider;
+  }
+  
+  .section-description {
+    @apply text-gray-400 text-lg max-w-2xl;
+  }
+  
+  /* ─────────────────────────────────────────────────────────────
+     STATS BAR - Impact numbers
+     ───────────────────────────────────────────────────────────── */
+  .stats-bar {
+    @apply bg-primary-500 relative overflow-hidden;
+  }
+  
+  .stats-bar::before {
+    content: '';
+    @apply absolute inset-0;
+    background: linear-gradient(90deg, 
+      transparent 0%, 
+      rgba(255,255,255,0.1) 50%, 
+      transparent 100%
+    );
+  }
+  
+  .stat-item {
+    @apply text-center py-2;
+  }
+  
+  .stat-number {
+    @apply font-display text-4xl md:text-5xl text-white tracking-wider;
+  }
+  
+  .stat-label {
+    @apply text-white/80 text-sm uppercase tracking-widest mt-1;
+  }
+  
+  /* ─────────────────────────────────────────────────────────────
+     CLASS CARDS - Schedule display
+     ───────────────────────────────────────────────────────────── */
+  .class-card {
+    @apply bg-dark-800 rounded-2xl overflow-hidden
+           border border-dark-700
+           transition-all duration-[400ms] ease-out;
+  }
+  
+  .class-card:hover {
+    @apply border-primary-500/50;
+    transform: translateY(-4px);
+    box-shadow: 0 20px 40px -20px rgba(244, 63, 94, 0.3);
+  }
+  
+  .class-card-image {
+    @apply relative h-44 overflow-hidden;
+  }
+  
+  .class-card-image img {
+    @apply w-full h-full object-cover
+           transition-transform duration-500;
+  }
+  
+  .class-card:hover .class-card-image img {
+    @apply scale-110;
+  }
+  
+  .class-card-spots {
+    @apply absolute top-3 right-3 
+           bg-primary-500 text-white text-xs font-bold
+           px-3 py-1.5 rounded-full
+           shadow-lg shadow-primary-500/30;
+  }
+  
+  .class-card-spots.low {
+    @apply bg-accent-lime text-dark-950;
+  }
+  
+  .class-card-content {
+    @apply p-6;
+  }
+  
+  .class-card-header {
+    @apply flex items-start justify-between gap-4 mb-3;
+  }
+  
+  .class-card-title {
+    @apply font-display text-2xl text-white tracking-wider;
+  }
+  
+  .class-card-meta {
+    @apply text-gray-400 text-sm mb-5;
+  }
+  
+  /* Intensity badge */
+  .intensity-badge {
+    @apply text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider;
+  }
+  
+  .intensity-high {
+    @apply bg-primary-500/20 text-primary-400 border border-primary-500/30;
+  }
+  
+  .intensity-medium {
+    @apply bg-accent-lime/20 text-accent-lime border border-accent-lime/30;
+  }
+  
+  .intensity-low {
+    @apply bg-accent-cyan/20 text-accent-cyan border border-accent-cyan/30;
+  }
+  
+  .class-card-book {
+    @apply w-full py-3 rounded-lg font-bold text-sm
+           uppercase tracking-widest
+           bg-dark-700 text-white
+           border border-dark-600
+           transition-all duration-300
+           hover:bg-primary-500 hover:border-primary-500;
+  }
+  
+  /* ─────────────────────────────────────────────────────────────
+     PRICING CARDS - Membership tiers
+     ───────────────────────────────────────────────────────────── */
+  .pricing-card {
+    @apply bg-dark-800 rounded-2xl p-8
+           border border-dark-700
+           transition-all duration-[400ms] ease-out;
+  }
+  
+  .pricing-card:hover {
+    @apply border-dark-600;
+    transform: translateY(-8px);
+    box-shadow: 0 30px 60px -20px rgba(0,0,0,0.5);
+  }
+  
+  .pricing-card.featured {
+    @apply border-primary-500 relative;
+    box-shadow: 
+      0 0 0 1px rgba(244, 63, 94, 0.3),
+      0 0 40px -10px rgba(244, 63, 94, 0.3);
+  }
+  
+  .pricing-card.featured::before {
+    content: '';
+    @apply absolute -inset-px rounded-2xl pointer-events-none;
+    background: linear-gradient(
+      to bottom,
+      rgba(244, 63, 94, 0.2),
+      transparent 50%
+    );
+  }
+  
+  .pricing-badge {
+    @apply text-primary-400 text-xs font-bold uppercase tracking-widest mb-4;
+  }
+  
+  .pricing-name {
+    @apply font-display text-3xl text-white mb-2 tracking-wider;
+  }
+  
+  .pricing-amount {
+    @apply mb-6;
+  }
+  
+  .pricing-price {
+    @apply font-display text-5xl text-white tracking-wider;
+  }
+  
+  .pricing-period {
+    @apply text-gray-400;
+  }
+  
+  .pricing-note {
+    @apply text-gray-500 text-sm mb-4;
+  }
+  
+  .pricing-features {
+    @apply space-y-3 mb-8;
+  }
+  
+  .pricing-feature {
+    @apply flex items-center gap-3 text-gray-300;
+  }
+  
+  .pricing-feature-check {
+    @apply text-primary-400;
+  }
+  
+  .pricing-cta {
+    @apply w-full py-4 rounded-lg font-bold
+           uppercase tracking-widest
+           transition-all duration-300;
+  }
+  
+  .pricing-cta-primary {
+    @apply pricing-cta bg-primary-500 text-white
+           hover:bg-primary-600
+           shadow-lg shadow-primary-500/25;
+  }
+  
+  .pricing-cta-secondary {
+    @apply pricing-cta bg-dark-700 text-white
+           border border-dark-600
+           hover:bg-dark-600 hover:border-dark-500;
+  }
+  
+  /* ─────────────────────────────────────────────────────────────
+     TRAINER CARDS
+     ───────────────────────────────────────────────────────────── */
+  /* Note: Add 'group' class to the element in JSX */
+  
+  .trainer-card-image {
+    @apply relative overflow-hidden rounded-2xl mb-5 aspect-[4/5];
+  }
+  
+  .trainer-card-image img {
+    @apply w-full h-full object-cover
+           grayscale group-hover:grayscale-0
+           transition-all duration-500 ease-out;
+  }
+  
+  .trainer-card:hover .trainer-card-image img {
+    @apply scale-105;
+  }
+  
+  .trainer-card-overlay {
+    @apply absolute inset-0 
+           bg-gradient-to-t from-dark-950/80 via-transparent to-transparent
+           opacity-0 group-hover:opacity-100
+           transition-opacity duration-300;
+  }
+  
+  .trainer-card-name {
+    @apply font-display text-xl text-white tracking-wider;
+  }
+  
+  .trainer-card-specialty {
+    @apply text-primary-400 text-sm font-medium;
+  }
+  
+  .trainer-card-cert {
+    @apply text-gray-500 text-xs;
+  }
+  
+  /* ─────────────────────────────────────────────────────────────
+     AMENITIES GRID
+     ───────────────────────────────────────────────────────────── */
+  .amenity-card {
+    @apply bg-dark-800 rounded-2xl p-8 text-center
+           border border-dark-700
+           transition-all duration-300
+           hover:border-primary-500/30;
+  }
+  
+  .amenity-card:hover {
+    box-shadow: 0 0 30px -10px rgba(244, 63, 94, 0.2);
+  }
+  
+  .amenity-icon {
+    @apply text-5xl mb-4;
+  }
+  
+  .amenity-name {
+    @apply font-display text-xl text-white mb-2 tracking-wider;
+  }
+  
+  .amenity-desc {
+    @apply text-gray-400 text-sm;
+  }
+  
+  /* ─────────────────────────────────────────────────────────────
+     CTA SECTION
+     ───────────────────────────────────────────────────────────── */
+  .cta-section {
+    @apply bg-primary-500 relative overflow-hidden;
+  }
+  
+  .cta-section::before {
+    content: '';
+    @apply absolute inset-0;
+    background: 
+      radial-gradient(circle at 20% 50%, rgba(255,255,255,0.1) 0%, transparent 50%),
+      radial-gradient(circle at 80% 50%, rgba(0,0,0,0.1) 0%, transparent 50%);
+  }
+  
+  /* Geometric pattern overlay */
+  .cta-section::after {
+    content: '';
+    @apply absolute inset-0 opacity-5;
+    background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  }
+  
+  /* ─────────────────────────────────────────────────────────────
+     CONTACT INFO
+     ───────────────────────────────────────────────────────────── */
+  .contact-item {
+    @apply mb-6;
+  }
+  
+  .contact-label {
+    @apply text-white font-bold uppercase tracking-wider text-sm mb-2;
+  }
+  
+  .contact-value {
+    @apply text-gray-400;
+  }
+  
+  /* ─────────────────────────────────────────────────────────────
+     NAV STYLES
+     ───────────────────────────────────────────────────────────── */
+  .nav-link {
+    @apply text-gray-400 text-sm uppercase tracking-widest font-medium
+           transition-colors duration-200
+           hover:text-white;
+  }
+  
+  .nav-link.active {
+    @apply text-primary-500;
+  }
+  
+  /* ─────────────────────────────────────────────────────────────
+     UTILITIES
+     ───────────────────────────────────────────────────────────── */
+  .text-gradient {
+    @apply bg-clip-text text-transparent 
+           bg-gradient-to-r from-primary-400 to-primary-600;
+  }
+  
+  .glow-primary {
+    box-shadow: 0 0 40px -10px rgba(244, 63, 94, 0.5);
+  }
+  
+  /* ─────────────────────────────────────────────────────────────
+     ANIMATIONS
+     ───────────────────────────────────────────────────────────── */
+  @keyframes pulse-glow {
+    0%, 100% { box-shadow: 0 0 20px 0 rgba(244, 63, 94, 0.3); }
+    50% { box-shadow: 0 0 40px 0 rgba(244, 63, 94, 0.5); }
+  }
+  
+  .animate-pulse-glow {
+    animation: pulse-glow 2s ease-in-out infinite;
+  }
+  
+  /* Scrollbar */
+  ::-webkit-scrollbar {
+    @apply w-2;
+  }
+  
+  ::-webkit-scrollbar-track {
+    @apply bg-dark-950;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    @apply bg-dark-700 rounded-full;
+  }
+  
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-dark-600;
+  }
+}

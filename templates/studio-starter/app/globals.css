@@ -1,0 +1,241 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ═══════════════════════════════════════════════════════════════
+   LENIS SMOOTH SCROLL
+   ═══════════════════════════════════════════════════════════════ */
+html.lenis, html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+.lenis.lenis-scrolling iframe {
+  pointer-events: none;
+}
+
+/* Custom cursor - Hide default on hover devices */
+@media (hover: hover) {
+  * {
+    cursor: none !important;
+  }
+}
+
+:root {
+  --studio-bg: #0A0A0F;
+  --studio-bg-light: #12121A;
+  --studio-bg-card: #16161F;
+  --studio-violet: #8B5CF6;
+  --studio-blue: #3B82F6;
+  --studio-emerald: #10B981;
+  --studio-amber: #F59E0B;
+  --studio-pink: #EC4899;
+  --studio-text: #FFFFFF;
+  --studio-text-muted: rgba(255, 255, 255, 0.7);
+  --studio-text-dim: rgba(255, 255, 255, 0.6);
+  --studio-border: rgba(255, 255, 255, 0.08);
+  color-scheme: dark;
+}
+
+/* Dark mode is default, but support light mode query for system preference */
+@media (prefers-color-scheme: light) {
+  :root {
+    /* Could add light mode colors here if needed */
+  }
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: var(--studio-bg);
+  color: white;
+  overflow-x: hidden;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   ACCESSIBILITY: Skip Link
+   ═══════════════════════════════════════════════════════════════ */
+.skip-link {
+  @apply absolute -top-full left-4 z-[9999] px-4 py-2 rounded-lg font-semibold text-white;
+  background: linear-gradient(135deg, var(--studio-violet), var(--studio-blue));
+  transition: top 0.2s;
+}
+
+.skip-link:focus {
+  top: 1rem;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   ACCESSIBILITY: Focus Visible (WCAG 2.1 compliant)
+   ═══════════════════════════════════════════════════════════════ */
+*:focus-visible {
+  outline: 3px solid var(--studio-violet);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+button:focus-visible,
+a:focus-visible,
+[role="button"]:focus-visible {
+  outline: 3px solid var(--studio-violet);
+  outline-offset: 3px;
+  box-shadow: 0 0 0 6px rgba(139, 92, 246, 0.25);
+}
+
+/* Ensure focus is visible even on dark backgrounds */
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  outline: 3px solid var(--studio-violet);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.3);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   ACCESSIBILITY: Reduced Motion
+   ═══════════════════════════════════════════════════════════════ */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  
+  .floating-orb,
+  .scroll-indicator,
+  .gradient-bg-rotate {
+    animation: none !important;
+  }
+}
+
+/* Screen reader only */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* Gradient text utility */
+.gradient-text {
+  display: inline-block;
+  background: linear-gradient(135deg, #8B5CF6 0%, #3B82F6 50%, #10B981 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Bento tile base */
+.bento-tile {
+  @apply relative rounded-3xl border border-studio-border overflow-hidden transition-all duration-300;
+  background: #16161F;
+}
+
+.bento-tile:hover {
+  border-color: rgba(255,255,255,0.15);
+}
+
+/* Glass button */
+.glass-btn {
+  @apply px-6 py-3 rounded-xl text-sm font-medium transition-all duration-300;
+  backdrop-filter: blur(12px);
+}
+
+.glass-btn-primary {
+  background: linear-gradient(135deg, #8B5CF6 0%, #3B82F6 100%);
+}
+
+.glass-btn-secondary {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.08);
+}
+
+/* Floating orb animation */
+@keyframes float-orb {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  25% { transform: translate(30px, -25px) scale(1.1); }
+  50% { transform: translate(-20px, 15px) scale(0.9); }
+  75% { transform: translate(10px, -10px) scale(1.05); }
+}
+
+.floating-orb {
+  animation: float-orb 8s ease-in-out infinite;
+}
+
+/* Scroll indicator animation */
+@keyframes scroll-bounce {
+  0%, 100% { transform: translateY(0); opacity: 1; }
+  50% { transform: translateY(8px); opacity: 0.5; }
+}
+
+.scroll-indicator {
+  animation: scroll-bounce 1.5s ease-in-out infinite;
+}
+
+/* Gradient background rotation */
+@keyframes gradient-rotate {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.gradient-bg-rotate {
+  animation: gradient-rotate 20s linear infinite;
+}
+
+/* Hide scrollbar */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--studio-bg);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(139, 92, 246, 0.4);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(139, 92, 246, 0.6);
+}
+
+/* Mobile tap highlight removal */
+@media (max-width: 768px) {
+  * {
+    -webkit-tap-highlight-color: transparent;
+  }
+}

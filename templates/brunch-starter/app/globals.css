@@ -1,0 +1,271 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ═══════════════════════════════════════════════════════════════
+   LENIS SMOOTH SCROLL
+   ═══════════════════════════════════════════════════════════════ */
+html.lenis, html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+.lenis.lenis-scrolling iframe {
+  pointer-events: none;
+}
+
+:root {
+  --brunch-cream: #FBF7F0;
+  --brunch-peach: #F5DDD0;
+  --brunch-terracotta: #C66B3D;
+  --brunch-sage: #8B9E7C;
+  --brunch-brown: #3D2D1F;
+  --brunch-brownLight: #5A4536;
+  --brunch-brownMuted: #6B5A4A;
+  --brunch-sageDark: #4A5940;
+}
+
+/* Dark mode color scheme */
+.dark {
+  --brunch-cream: #1F1A16;
+  --brunch-peach: #2A2320;
+  --brunch-terracotta: #D4856A;
+  --brunch-sage: #6B7D5E;
+  --brunch-brown: #F5EDE0;
+  --brunch-brownLight: #D4C8BC;
+  --brunch-brownMuted: #A89A8A;
+  --brunch-sageDark: #8B9E7C;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   ACCESSIBILITY: Skip Link
+   ═══════════════════════════════════════════════════════════════ */
+.skip-link {
+  @apply absolute -top-full left-4 z-[9999] px-4 py-2 rounded-full font-semibold;
+  background: var(--brunch-terracotta);
+  color: white;
+  transition: top 0.2s;
+}
+
+.skip-link:focus {
+  top: 1rem;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   ACCESSIBILITY: Focus Visible
+   ═══════════════════════════════════════════════════════════════ */
+*:focus-visible {
+  outline: 3px solid var(--brunch-terracotta);
+  outline-offset: 3px;
+}
+
+/* Enhanced focus for buttons and links */
+a:focus-visible,
+button:focus-visible {
+  outline: 3px solid var(--brunch-terracotta);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* Focus ring for rounded buttons */
+.btn-primary:focus-visible,
+.btn-secondary:focus-visible,
+.btn-outline:focus-visible {
+  outline: 3px solid var(--brunch-brown);
+  outline-offset: 3px;
+  box-shadow: 0 0 0 6px rgba(198, 107, 61, 0.25);
+}
+
+/* Dark mode focus adjustments */
+.dark *:focus-visible {
+  outline-color: var(--brunch-terracotta);
+}
+
+.dark .btn-primary:focus-visible,
+.dark .btn-secondary:focus-visible,
+.dark .btn-outline:focus-visible {
+  outline-color: var(--brunch-cream);
+  box-shadow: 0 0 0 6px rgba(212, 133, 106, 0.3);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   ACCESSIBILITY: Reduced Motion
+   ═══════════════════════════════════════════════════════════════ */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  
+  .animate-marquee,
+  .animate-float,
+  .animate-pulse-bg {
+    animation: none !important;
+  }
+}
+
+/* Screen reader only */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* Primary button */
+.btn-primary {
+  @apply bg-brunch-terracotta text-brunch-white px-8 py-4 rounded-full font-semibold transition-all duration-200;
+  @apply border-2 border-brunch-terracotta min-h-[44px];
+}
+
+.btn-primary:hover {
+  @apply bg-brunch-terracottaDark border-brunch-terracottaDark -translate-y-0.5;
+}
+
+/* Secondary button */
+.btn-secondary {
+  @apply bg-transparent text-brunch-brown px-8 py-4 rounded-full font-semibold transition-all duration-200;
+  @apply border-2 border-brunch-brown min-h-[44px];
+}
+
+.btn-secondary:hover {
+  @apply bg-brunch-brown text-brunch-white;
+}
+
+/* Outline button */
+.btn-outline {
+  @apply inline-block text-brunch-brown px-8 py-4 rounded-full font-semibold transition-all duration-200;
+  @apply border-2 border-brunch-brown min-h-[44px];
+}
+
+.btn-outline:hover {
+  @apply bg-brunch-brown text-brunch-white;
+}
+
+/* Dark mode button adjustments */
+.dark .btn-secondary {
+  @apply text-brunch-cream border-brunch-cream;
+}
+
+.dark .btn-secondary:hover {
+  @apply bg-brunch-cream text-brunch-brown;
+}
+
+.dark .btn-outline {
+  @apply text-brunch-cream border-brunch-cream;
+}
+
+.dark .btn-outline:hover {
+  @apply bg-brunch-cream text-brunch-brown;
+}
+
+/* Marquee animation */
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.animate-marquee {
+  animation: marquee 30s linear infinite;
+}
+
+.animate-marquee:hover {
+  animation-play-state: paused;
+}
+
+/* Hero image float animation */
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-12px); }
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+/* Reserve section pulse background */
+@keyframes pulse-bg {
+  0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.5; }
+  50% { transform: translate(10%, 10%) scale(1.1); opacity: 0.8; }
+}
+
+.animate-pulse-bg {
+  animation: pulse-bg 8s ease-in-out infinite;
+}
+
+/* Section tag styling */
+.section-tag {
+  @apply text-brunch-terracotta font-semibold text-sm uppercase tracking-[0.2em] mb-4;
+}
+
+/* Section title */
+.section-title {
+  @apply font-display text-[clamp(2rem,4vw,2.75rem)] font-medium text-brunch-brown leading-tight;
+}
+
+/* Menu card hover */
+.menu-card {
+  @apply transition-all duration-300;
+}
+
+.menu-card:hover {
+  @apply -translate-y-2 shadow-xl;
+}
+
+.menu-card:hover img {
+  @apply scale-105;
+}
+
+/* Instagram item hover */
+.instagram-item:hover img {
+  @apply scale-110;
+}
+
+.instagram-item:hover .instagram-overlay {
+  @apply opacity-100;
+}
+
+/* Glassmorphism nav on scroll */
+.nav-scrolled {
+  @apply bg-brunch-cream/85 backdrop-blur-xl shadow-lg;
+}
+
+.dark .nav-scrolled {
+  @apply bg-brunch-brown/85;
+}
+
+/* Mobile nav */
+@media (max-width: 768px) {
+  .nav-desktop {
+    display: none !important;
+  }
+  .nav-mobile {
+    display: flex !important;
+  }
+}
