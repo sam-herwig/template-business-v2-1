@@ -80,45 +80,34 @@ function Hero() {
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
     if (prefersReducedMotion) return
     
+    // Refresh ScrollTrigger for SPA navigation
+    ScrollTrigger.refresh()
+    
     const ctx = gsap.context(() => {
       // SplitText on headline - words for warm, personal feel
       if (headlineRef.current) {
         const split = new SplitText(headlineRef.current, { type: 'words' })
-        gsap.from(split.words, {
-          y: 40,
-          opacity: 0,
-          stagger: 0.06,
-          duration: 1,
-          ease: 'power3.out',
-          delay: 0.2,
-        })
+        gsap.fromTo(split.words, 
+          { y: 40, opacity: 0 },
+          { y: 0, opacity: 1, stagger: 0.06, duration: 1, ease: 'power3.out', delay: 0.2 }
+        )
       }
       
-      gsap.from('.hero-subheadline', {
-        y: 30,
-        opacity: 0,
-        duration: 0.8,
-        ease: 'power3.out',
-        delay: 0.6,
-      })
+      gsap.fromTo('.hero-subheadline', 
+        { y: 30, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.8, ease: 'power3.out', delay: 0.6 }
+      )
       
-      gsap.from('.hero-cta', {
-        y: 20,
-        opacity: 0,
-        stagger: 0.1,
-        duration: 0.6,
-        ease: 'power3.out',
-        delay: 0.9,
-      })
+      gsap.fromTo('.hero-cta', 
+        { y: 20, opacity: 0 },
+        { y: 0, opacity: 1, stagger: 0.1, duration: 0.6, ease: 'power3.out', delay: 0.9 }
+      )
       
       // Image with subtle parallax
-      gsap.from('.hero-image', {
-        scale: 0.95,
-        opacity: 0,
-        duration: 1,
-        ease: 'power3.out',
-        delay: 0.3,
-      })
+      gsap.fromTo('.hero-image', 
+        { scale: 0.95, opacity: 0 },
+        { scale: 1, opacity: 1, duration: 1, ease: 'power3.out', delay: 0.3 }
+      )
       
       gsap.to('.hero-image', {
         yPercent: 10,
@@ -132,7 +121,10 @@ function Hero() {
       })
     }, heroRef)
     
-    return () => ctx.revert()
+    return () => {
+      ctx.revert()
+      ScrollTrigger.refresh()
+    }
   }, [])
   
   return (
@@ -179,39 +171,27 @@ function About() {
     
     const ctx = gsap.context(() => {
       // Image clip-path reveal
-      gsap.from('.about-image', {
-        clipPath: 'inset(100% 0 0 0)',
-        duration: 1.2,
-        ease: 'power4.out',
-        scrollTrigger: {
-          trigger: '.about-image',
-          start: 'top 80%',
-        },
-      })
+      gsap.fromTo('.about-image', 
+        { clipPath: 'inset(100% 0 0 0)' },
+        { clipPath: 'inset(0% 0 0 0)', duration: 1.2, ease: 'power4.out',
+          scrollTrigger: { trigger: '.about-image', start: 'top 80%', toggleActions: 'play none none reverse' }
+        }
+      )
       
-      gsap.from('.about-content', {
-        x: 40,
-        opacity: 0,
-        duration: 0.8,
-        ease: 'power3.out',
-        scrollTrigger: {
-          trigger: aboutRef.current,
-          start: 'top 70%',
-        },
-      })
+      gsap.fromTo('.about-content', 
+        { x: 40, opacity: 0 },
+        { x: 0, opacity: 1, duration: 0.8, ease: 'power3.out',
+          scrollTrigger: { trigger: aboutRef.current, start: 'top 70%', toggleActions: 'play none none reverse' }
+        }
+      )
       
       // Credentials stagger
-      gsap.from('.credential-badge', {
-        y: 20,
-        opacity: 0,
-        stagger: 0.1,
-        duration: 0.5,
-        ease: 'power2.out',
-        scrollTrigger: {
-          trigger: '.credentials-wrap',
-          start: 'top 85%',
-        },
-      })
+      gsap.fromTo('.credential-badge', 
+        { y: 20, opacity: 0 },
+        { y: 0, opacity: 1, stagger: 0.1, duration: 0.5, ease: 'power2.out',
+          scrollTrigger: { trigger: '.credentials-wrap', start: 'top 85%', toggleActions: 'play none none reverse' }
+        }
+      )
     }, aboutRef)
     
     return () => ctx.revert()
@@ -275,17 +255,12 @@ function Results() {
         })
       })
       
-      gsap.from('.result-item', {
-        y: 30,
-        opacity: 0,
-        stagger: 0.1,
-        duration: 0.6,
-        ease: 'power3.out',
-        scrollTrigger: {
-          trigger: resultsRef.current,
-          start: 'top 80%',
-        },
-      })
+      gsap.fromTo('.result-item', 
+        { y: 30, opacity: 0 },
+        { y: 0, opacity: 1, stagger: 0.1, duration: 0.6, ease: 'power3.out',
+          scrollTrigger: { trigger: resultsRef.current, start: 'top 80%', toggleActions: 'play none none reverse' }
+        }
+      )
     }, resultsRef)
     
     return () => ctx.revert()
@@ -317,28 +292,19 @@ function Services() {
     if (prefersReducedMotion) return
     
     const ctx = gsap.context(() => {
-      gsap.from('.services-header', {
-        y: 40,
-        opacity: 0,
-        duration: 0.8,
-        ease: 'power3.out',
-        scrollTrigger: {
-          trigger: servicesRef.current,
-          start: 'top 75%',
-        },
-      })
+      gsap.fromTo('.services-header', 
+        { y: 40, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.8, ease: 'power3.out',
+          scrollTrigger: { trigger: servicesRef.current, start: 'top 75%', toggleActions: 'play none none reverse' }
+        }
+      )
       
-      gsap.from('.service-card', {
-        y: 50,
-        opacity: 0,
-        stagger: 0.15,
-        duration: 0.8,
-        ease: 'power3.out',
-        scrollTrigger: {
-          trigger: '.services-grid',
-          start: 'top 75%',
-        },
-      })
+      gsap.fromTo('.service-card', 
+        { y: 50, opacity: 0 },
+        { y: 0, opacity: 1, stagger: 0.15, duration: 0.8, ease: 'power3.out',
+          scrollTrigger: { trigger: '.services-grid', start: 'top 75%', toggleActions: 'play none none reverse' }
+        }
+      )
     }, servicesRef)
     
     return () => ctx.revert()
@@ -389,29 +355,21 @@ function Testimonials() {
     if (prefersReducedMotion) return
     
     const ctx = gsap.context(() => {
-      gsap.from('.testimonials-header', {
-        y: 40,
-        opacity: 0,
-        duration: 0.8,
-        ease: 'power3.out',
-        scrollTrigger: {
-          trigger: testimonialsRef.current,
-          start: 'top 75%',
-        },
-      })
+      gsap.fromTo('.testimonials-header', 
+        { y: 40, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.8, ease: 'power3.out',
+          scrollTrigger: { trigger: testimonialsRef.current, start: 'top 75%', toggleActions: 'play none none reverse' }
+        }
+      )
       
-      // SplitText on testimonial quotes for elegant reveal
+      // Testimonial cards reveal
       gsap.utils.toArray<HTMLElement>('.testimonial-card').forEach((card) => {
-        gsap.from(card, {
-          y: 40,
-          opacity: 0,
-          duration: 0.8,
-          ease: 'power3.out',
-          scrollTrigger: {
-            trigger: card,
-            start: 'top 85%',
-          },
-        })
+        gsap.fromTo(card, 
+          { y: 40, opacity: 0 },
+          { y: 0, opacity: 1, duration: 0.8, ease: 'power3.out',
+            scrollTrigger: { trigger: card, start: 'top 85%', toggleActions: 'play none none reverse' }
+          }
+        )
       })
     }, testimonialsRef)
     
@@ -455,16 +413,12 @@ function LeadMagnet() {
     if (prefersReducedMotion) return
     
     const ctx = gsap.context(() => {
-      gsap.from('.lead-magnet-card', {
-        y: 50,
-        opacity: 0,
-        duration: 1,
-        ease: 'power3.out',
-        scrollTrigger: {
-          trigger: leadRef.current,
-          start: 'top 75%',
-        },
-      })
+      gsap.fromTo('.lead-magnet-card', 
+        { y: 50, opacity: 0 },
+        { y: 0, opacity: 1, duration: 1, ease: 'power3.out',
+          scrollTrigger: { trigger: leadRef.current, start: 'top 75%', toggleActions: 'play none none reverse' }
+        }
+      )
     }, leadRef)
     
     return () => ctx.revert()
@@ -510,35 +464,32 @@ function FAQSection() {
   const prefersReducedMotion = useReducedMotion()
   
   useGSAP(() => {
-    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-    if (prefersReducedMotion) return
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    if (reducedMotion) return
+    
+    // Refresh ScrollTrigger for SPA navigation
+    ScrollTrigger.refresh()
     
     const ctx = gsap.context(() => {
-      gsap.from('.faq-header', {
-        y: 40,
-        opacity: 0,
-        duration: 0.8,
-        ease: 'power3.out',
-        scrollTrigger: {
-          trigger: faqRef.current,
-          start: 'top 75%',
-        },
-      })
+      gsap.fromTo('.faq-header', 
+        { y: 40, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.8, ease: 'power3.out',
+          scrollTrigger: { trigger: faqRef.current, start: 'top 75%', toggleActions: 'play none none reverse' }
+        }
+      )
       
-      gsap.from('.faq-item', {
-        y: 30,
-        opacity: 0,
-        stagger: 0.1,
-        duration: 0.6,
-        ease: 'power3.out',
-        scrollTrigger: {
-          trigger: '.faq-list',
-          start: 'top 75%',
-        },
-      })
+      gsap.fromTo('.faq-item', 
+        { y: 30, opacity: 0 },
+        { y: 0, opacity: 1, stagger: 0.1, duration: 0.6, ease: 'power3.out',
+          scrollTrigger: { trigger: '.faq-list', start: 'top 75%', toggleActions: 'play none none reverse' }
+        }
+      )
     }, faqRef)
     
-    return () => ctx.revert()
+    return () => {
+      ctx.revert()
+      ScrollTrigger.refresh()
+    }
   }, [])
   
   return (
@@ -585,16 +536,12 @@ function CTA() {
     if (prefersReducedMotion) return
     
     const ctx = gsap.context(() => {
-      gsap.from('.cta-content', {
-        y: 50,
-        opacity: 0,
-        duration: 1,
-        ease: 'power3.out',
-        scrollTrigger: {
-          trigger: ctaRef.current,
-          start: 'top 75%',
-        },
-      })
+      gsap.fromTo('.cta-content', 
+        { y: 50, opacity: 0 },
+        { y: 0, opacity: 1, duration: 1, ease: 'power3.out',
+          scrollTrigger: { trigger: ctaRef.current, start: 'top 75%', toggleActions: 'play none none reverse' }
+        }
+      )
     }, ctaRef)
     
     return () => ctx.revert()

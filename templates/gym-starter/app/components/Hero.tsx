@@ -27,18 +27,17 @@ export function Hero() {
     const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
     if (reducedMotion) return
 
+    // Refresh ScrollTrigger for SPA navigation
+    ScrollTrigger.refresh()
+
     const ctx = gsap.context(() => {
-      // Bold SplitText animation for headline
+      // Bold SplitText animation for headline - use fromTo for SPA navigation fix
       if (headlineRef.current) {
         const split = new SplitText(headlineRef.current, { type: 'chars, words' })
-        gsap.from(split.chars, {
-          y: 100,
-          opacity: 0,
-          rotateX: -90,
-          stagger: 0.02,
-          duration: 1,
-          ease: 'back.out(1.7)',
-        })
+        gsap.fromTo(split.chars, 
+          { y: 100, opacity: 0, rotateX: -90 },
+          { y: 0, opacity: 1, rotateX: 0, stagger: 0.02, duration: 1, ease: 'back.out(1.7)' }
+        )
       }
 
       // Stats counter animation
@@ -66,7 +65,10 @@ export function Hero() {
       })
     }, heroRef)
 
-    return () => ctx.revert()
+    return () => {
+      ctx.revert()
+      ScrollTrigger.refresh()
+    }
   }, [])
 
   const itemVariants = useVariant(fadeInUp, fadeInUpReduced, prefersReducedMotion)

@@ -20,16 +20,12 @@ export function GalleryGrid({ images, onImageClick }: GalleryGridProps) {
 
     const ctx = gsap.context(() => {
       gsap.utils.toArray<HTMLElement>('.gallery-grid-item').forEach((item) => {
-        gsap.from(item, {
-          scale: 0.95,
-          opacity: 0,
-          duration: 0.6,
-          ease: 'power3.out',
-          scrollTrigger: {
-            trigger: item,
-            start: 'top 90%',
-          },
-        })
+        gsap.fromTo(item, 
+          { scale: 0.95, opacity: 0 },
+          { scale: 1, opacity: 1, duration: 0.6, ease: 'power3.out',
+            scrollTrigger: { trigger: item, start: 'top 90%', toggleActions: 'play none none reverse' }
+          }
+        )
       })
     }, gridRef)
 

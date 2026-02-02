@@ -3,7 +3,7 @@
 import { useState, useRef } from 'react'
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
 import { useGSAP } from '@gsap/react'
-import { gsap } from '@/lib/gsap'
+import { gsap, ScrollTrigger } from '@/lib/gsap'
 
 interface FAQItem {
   question: string
@@ -24,34 +24,48 @@ export function FAQAccordion({ items, title, description }: FAQAccordionProps) {
   useGSAP(() => {
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
 
+    // Refresh ScrollTrigger on mount to handle SPA navigation
+    ScrollTrigger.refresh()
+
     const ctx = gsap.context(() => {
       if (title) {
-        gsap.from('.faq-header', {
-          y: 40,
-          opacity: 0,
-          duration: 0.8,
-          ease: 'power3.out',
-          scrollTrigger: {
-            trigger: faqRef.current,
-            start: 'top 75%',
-          },
-        })
+        gsap.fromTo('.faq-header', 
+          { y: 40, opacity: 0 },
+          {
+            y: 0,
+            opacity: 1,
+            duration: 0.8,
+            ease: 'power3.out',
+            scrollTrigger: {
+              trigger: faqRef.current,
+              start: 'top 75%',
+              toggleActions: 'play none none reverse',
+            },
+          }
+        )
       }
 
-      gsap.from('.faq-item', {
-        y: 30,
-        opacity: 0,
-        stagger: 0.1,
-        duration: 0.6,
-        ease: 'power3.out',
-        scrollTrigger: {
-          trigger: '.faq-list',
-          start: 'top 75%',
-        },
-      })
+      gsap.fromTo('.faq-item', 
+        { y: 30, opacity: 0 },
+        {
+          y: 0,
+          opacity: 1,
+          stagger: 0.1,
+          duration: 0.6,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: '.faq-list',
+            start: 'top 75%',
+            toggleActions: 'play none none reverse',
+          },
+        }
+      )
     }, faqRef)
 
-    return () => ctx.revert()
+    return () => {
+      ctx.revert()
+      ScrollTrigger.refresh()
+    }
   }, [title])
 
   return (

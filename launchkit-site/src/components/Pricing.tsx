@@ -2,66 +2,47 @@
 
 import { useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
-import { Check, Sparkles, Zap, Crown } from 'lucide-react';
+import { Check, Sparkles, Crown, Shield } from 'lucide-react';
+import Link from 'next/link';
 
 const pricingTiers = [
   {
     name: 'Single Template',
-    price: '$79-129',
-    description: 'Perfect for your next project',
-    icon: Zap,
-    features: [
-      'One template of your choice',
-      'Sanity CMS included',
-      'Full source code',
-      'Comprehensive docs + video guide',
-      '1 year of updates',
-    ],
-    cta: 'Choose Template',
-    popular: false,
-  },
-  {
-    name: 'Full Bundle',
-    price: '$299',
-    originalPrice: '$499',
-    description: 'Everything you need — best value',
-    icon: Crown,
-    features: [
-      'All 13 templates included',
-      'Sanity CMS pre-configured',
-      'Full source code for everything',
-      'Video tutorials + documentation',
-      'Private Discord community',
-      'Email support (48h response)',
-      'Lifetime updates',
-      'Early access to new templates',
-    ],
-    cta: 'Get Full Bundle',
-    popular: true,
-    savings: 'Launch Price — Save $800+',
-    urgent: true,
-  },
-  {
-    name: 'Category Pack',
-    price: '$149',
-    originalPrice: '$249',
-    description: 'All templates in one category',
+    price: 99,
+    description: 'Grab exactly what you need.',
     icon: Sparkles,
     features: [
-      '3-5 templates in category',
-      'Sanity CMS included',
-      'Full source code',
-      'Docs + video guide',
+      'Full source code (no obfuscation, ever)',
+      'Sanity CMS integration + schemas',
+      'Figma design file',
+      '6 months of updates',
+      'Commercial license for 1 project',
       'Discord community access',
-      'Lifetime updates',
     ],
-    cta: 'Choose Category',
+    cta: 'Get This Template',
     popular: false,
-    savings: 'Launch Price',
+  },
+  {
+    name: 'Complete Bundle',
+    price: 299,
+    originalPrice: 1700,
+    description: 'Every template. One price. Forever yours.',
+    icon: Crown,
+    features: [
+      'All 17 templates (current + future additions)',
+      'All Figma files',
+      'Lifetime updates',
+      'Unlimited commercial projects',
+      'Priority Discord support',
+      'Early access to new releases',
+    ],
+    cta: 'Get the Full Bundle',
+    popular: true,
+    badge: 'BEST VALUE',
   },
 ];
 
-function PricingCard({ tier, index }: { tier: typeof pricingTiers[0] & { originalPrice?: string; urgent?: boolean }; index: number }) {
+function PricingCard({ tier, index }: { tier: typeof pricingTiers[0] & { originalPrice?: number; badge?: string }; index: number }) {
   const cardRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(cardRef, { once: true, margin: '-50px' });
   const Icon = tier.icon;
@@ -71,71 +52,73 @@ function PricingCard({ tier, index }: { tier: typeof pricingTiers[0] & { origina
       ref={cardRef}
       initial={{ opacity: 0, y: 50 }}
       animate={isInView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.6, delay: index * 0.15 }}
-      className={`relative ${tier.popular ? 'md:-mt-8 md:mb-8' : ''}`}
+      transition={{ duration: 0.6, delay: index * 0.15, ease: [0.16, 1, 0.3, 1] }}
+      className={`relative ${tier.popular ? 'lg:-mt-4 lg:mb-4' : ''}`}
     >
       {/* Popular Badge */}
-      {tier.popular && (
-        <div className="absolute -top-5 left-1/2 -translate-x-1/2 z-10">
-          <div className="px-4 py-1.5 bg-gradient-to-r from-purple-500 to-blue-500 rounded-full text-sm font-semibold shadow-lg shadow-purple-500/25">
-            ✨ Most Popular
+      {tier.badge && (
+        <div className="absolute -top-4 left-1/2 -translate-x-1/2 z-10">
+          <div className="px-4 py-1.5 bg-gradient-to-r from-primary to-accent rounded-full text-xs font-bold uppercase tracking-wide text-white shadow-lg shadow-primary/30">
+            {tier.badge}
           </div>
         </div>
       )}
 
       <div className={`relative h-full p-8 rounded-2xl overflow-hidden transition-all duration-300 ${
         tier.popular 
-          ? 'bg-gradient-to-b from-purple-500/20 to-blue-500/20 border-2 border-purple-500/50 glow'
-          : 'glass'
+          ? 'bg-gradient-to-b from-primary/10 to-accent/5 border-2 border-primary/50 shadow-glow'
+          : 'bg-background-muted border border-border hover:border-border-hover'
       }`}>
-        {/* Background Effect for Popular */}
+        {/* Background glow for popular */}
         {tier.popular && (
-          <div className="absolute inset-0 bg-gradient-to-br from-purple-500/10 via-transparent to-blue-500/10" />
+          <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-accent/5 pointer-events-none" />
         )}
 
         <div className="relative">
           {/* Header */}
-          <div className="flex items-center gap-3 mb-4">
+          <div className="flex items-center gap-3 mb-6">
             <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${
               tier.popular 
-                ? 'bg-gradient-to-br from-purple-500 to-blue-500'
-                : 'bg-white/10'
+                ? 'bg-gradient-to-br from-primary to-accent'
+                : 'bg-background-subtle border border-border'
             }`}>
               <Icon className="w-6 h-6 text-white" />
             </div>
             <div>
-              <h3 className="text-xl font-bold">{tier.name}</h3>
-              {tier.savings && (
-                <span className="text-sm text-green-400 font-medium">{tier.savings}</span>
-              )}
+              <h3 className="text-xl font-bold text-foreground">{tier.name}</h3>
             </div>
           </div>
 
           {/* Price */}
-          <div className="mb-4">
+          <div className="mb-2">
+            <div className="flex items-baseline gap-2">
+              <span className="text-5xl font-bold text-foreground">${tier.price}</span>
+              {tier.originalPrice && (
+                <span className="text-lg text-foreground-subtle line-through">${tier.originalPrice}+</span>
+              )}
+            </div>
             {tier.originalPrice && (
-              <span className="text-2xl text-gray-500 line-through mr-3">{tier.originalPrice}</span>
-            )}
-            <span className="text-4xl md:text-5xl font-bold">{tier.price}</span>
-            <span className="text-gray-400 ml-2">one-time</span>
-            {tier.urgent && (
-              <div className="mt-2">
-                <span className="text-sm text-orange-400 font-medium animate-pulse">🔥 Limited time offer</span>
-              </div>
+              <p className="text-sm text-foreground-muted mt-1">if bought separately</p>
             )}
           </div>
 
           {/* Description */}
-          <p className="text-gray-400 mb-6">{tier.description}</p>
+          <p className="text-foreground-muted mb-8">{tier.description}</p>
 
           {/* CTA Button */}
-          <button className={`w-full py-4 rounded-xl font-semibold transition-all duration-300 mb-8 ${
-            tier.popular
-              ? 'btn-primary'
-              : 'bg-white/10 hover:bg-white/20 border border-white/10'
-          }`}>
-            {tier.cta}
-          </button>
+          <Link 
+            href="#"
+            className={`block w-full py-4 rounded-xl font-semibold text-center transition-all duration-200 mb-8 ${
+              tier.popular
+                ? 'btn-primary'
+                : 'bg-background-subtle border border-border text-foreground hover:bg-background hover:border-border-hover'
+            }`}
+          >
+            {tier.cta} →
+          </Link>
+
+          {/* Includes label */}
+          <p className="text-sm font-semibold text-foreground mb-4">Includes:</p>
 
           {/* Features */}
           <ul className="space-y-4">
@@ -143,12 +126,12 @@ function PricingCard({ tier, index }: { tier: typeof pricingTiers[0] & { origina
               <li key={feature} className="flex items-start gap-3">
                 <div className={`w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 ${
                   tier.popular
-                    ? 'bg-gradient-to-br from-purple-500 to-blue-500'
-                    : 'bg-white/10'
+                    ? 'bg-gradient-to-br from-primary to-accent'
+                    : 'bg-primary/20'
                 }`}>
                   <Check className="w-3 h-3 text-white" />
                 </div>
-                <span className="text-gray-300">{feature}</span>
+                <span className="text-foreground-muted text-sm">{feature}</span>
               </li>
             ))}
           </ul>
@@ -162,8 +145,8 @@ export default function Pricing() {
   return (
     <section id="pricing" className="section-padding relative overflow-hidden">
       {/* Background */}
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-purple-500/5 to-transparent" />
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-purple-500/10 rounded-full blur-[150px]" />
+      <div className="absolute inset-0 section-gradient pointer-events-none" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-primary/10 rounded-full blur-[150px] pointer-events-none" />
 
       <div className="container-custom relative">
         {/* Section Header */}
@@ -172,9 +155,9 @@ export default function Pricing() {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="inline-block px-4 py-2 rounded-full glass text-sm text-purple-400 mb-6"
+            className="inline-block px-4 py-2 rounded-full bg-primary-muted text-primary text-sm font-semibold mb-6"
           >
-            Simple Pricing
+            Pricing
           </motion.span>
           
           <motion.h2
@@ -184,8 +167,8 @@ export default function Pricing() {
             transition={{ delay: 0.1 }}
             className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6"
           >
-            One Price,{' '}
-            <span className="gradient-text">Lifetime Access</span>
+            Simple Pricing.{' '}
+            <span className="gradient-text">Serious Value.</span>
           </motion.h2>
           
           <motion.p
@@ -193,42 +176,58 @@ export default function Pricing() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.2 }}
-            className="text-xl text-gray-400 max-w-2xl mx-auto"
+            className="text-xl text-foreground-muted max-w-2xl mx-auto"
           >
             No subscriptions. No hidden fees. Buy once, use forever.
           </motion.p>
         </div>
 
-        {/* Pricing Cards - Reordered for visual hierarchy */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto items-start">
-          {/* Single Template */}
-          <PricingCard tier={pricingTiers[0]} index={0} />
-          
-          {/* Full Bundle (Popular - in the middle) */}
-          <PricingCard tier={pricingTiers[1]} index={1} />
-          
-          {/* Category Pack */}
-          <PricingCard tier={pricingTiers[2]} index={2} />
+        {/* Pricing Cards */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-4xl mx-auto">
+          {pricingTiers.map((tier, index) => (
+            <PricingCard key={tier.name} tier={tier} index={index} />
+          ))}
         </div>
+
+        {/* Money-Back Guarantee */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="mt-16 max-w-2xl mx-auto"
+        >
+          <div className="flex items-start gap-4 p-6 bg-background-muted rounded-xl border border-border">
+            <div className="w-12 h-12 rounded-xl bg-success/20 flex items-center justify-center flex-shrink-0">
+              <Shield className="w-6 h-6 text-success" />
+            </div>
+            <div>
+              <h4 className="font-semibold text-foreground mb-2">14-Day Money-Back Guarantee</h4>
+              <p className="text-foreground-muted text-sm leading-relaxed">
+                Not what you expected? Email us within 14 days for a full refund. No forms, 
+                no guilt trips, no questions. We&apos;d rather you be happy.
+              </p>
+            </div>
+          </div>
+        </motion.div>
 
         {/* Trust Elements */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="mt-16 flex flex-wrap justify-center gap-8 text-gray-400"
+          className="mt-12 flex flex-wrap justify-center gap-8 text-foreground-muted text-sm"
         >
           <div className="flex items-center gap-2">
-            <Check className="w-5 h-5 text-green-500" />
+            <Check className="w-4 h-4 text-success" />
             <span>Secure checkout</span>
           </div>
           <div className="flex items-center gap-2">
-            <Check className="w-5 h-5 text-green-500" />
+            <Check className="w-4 h-4 text-success" />
             <span>Instant download</span>
           </div>
           <div className="flex items-center gap-2">
-            <Check className="w-5 h-5 text-green-500" />
-            <span>30-day money-back guarantee</span>
+            <Check className="w-4 h-4 text-success" />
+            <span>Lifetime access</span>
           </div>
         </motion.div>
       </div>

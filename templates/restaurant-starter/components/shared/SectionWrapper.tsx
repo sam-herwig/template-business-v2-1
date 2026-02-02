@@ -39,16 +39,12 @@ export function SectionWrapper({
     if (prefersReducedMotion) return
 
     const ctx = gsap.context(() => {
-      gsap.from('.section-header', {
-        y: 40,
-        opacity: 0,
-        duration: 0.8,
-        ease: 'power3.out',
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: 'top 80%',
-        },
-      })
+      gsap.fromTo('.section-header', 
+        { y: 40, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.8, ease: 'power3.out',
+          scrollTrigger: { trigger: sectionRef.current, start: 'top 80%', toggleActions: 'play none none reverse' }
+        }
+      )
     }, sectionRef)
 
     return () => ctx.revert()

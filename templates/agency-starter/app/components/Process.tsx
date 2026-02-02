@@ -22,28 +22,19 @@ export default function Process({ steps }: ProcessProps) {
     if (prefersReducedMotion) return
     
     const ctx = gsap.context(() => {
-      gsap.from('.process-header', {
-        y: 40,
-        opacity: 0,
-        duration: 0.8,
-        ease: 'power3.out',
-        scrollTrigger: {
-          trigger: processRef.current,
-          start: 'top 75%',
-        },
-      })
+      gsap.fromTo('.process-header', 
+        { y: 40, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.8, ease: 'power3.out',
+          scrollTrigger: { trigger: processRef.current, start: 'top 75%', toggleActions: 'play none none reverse' }
+        }
+      )
       
-      gsap.from('.process-step', {
-        y: 50,
-        opacity: 0,
-        stagger: 0.15,
-        duration: 0.8,
-        ease: 'power3.out',
-        scrollTrigger: {
-          trigger: '.process-grid',
-          start: 'top 75%',
-        },
-      })
+      gsap.fromTo('.process-step', 
+        { y: 50, opacity: 0 },
+        { y: 0, opacity: 1, stagger: 0.15, duration: 0.8, ease: 'power3.out',
+          scrollTrigger: { trigger: '.process-grid', start: 'top 75%', toggleActions: 'play none none reverse' }
+        }
+      )
     }, processRef)
     
     return () => ctx.revert()

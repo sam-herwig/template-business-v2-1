@@ -54,35 +54,25 @@ export function PageHero({
       // Title animation
       if (titleRef.current) {
         const titleSplit = new SplitText(titleRef.current, { type: 'words' })
-        gsap.from(titleSplit.words, {
-          y: 50,
-          opacity: 0,
-          stagger: 0.06,
-          duration: 1,
-          ease: 'power3.out',
-          delay: 0.2,
-        })
+        gsap.fromTo(titleSplit.words, 
+          { y: 50, opacity: 0 },
+          { y: 0, opacity: 1, stagger: 0.06, duration: 1, ease: 'power3.out', delay: 0.2 }
+        )
       }
 
       // Subtitle animation
       if (subtitle) {
-        gsap.from('.page-hero-subtitle', {
-          y: 30,
-          opacity: 0,
-          duration: 0.8,
-          ease: 'power3.out',
-          delay: 0.5,
-        })
+        gsap.fromTo('.page-hero-subtitle', 
+          { y: 30, opacity: 0 },
+          { y: 0, opacity: 1, duration: 0.8, ease: 'power3.out', delay: 0.5 }
+        )
       }
 
       // Breadcrumb animation
-      gsap.from('.page-hero-breadcrumb', {
-        y: 20,
-        opacity: 0,
-        duration: 0.6,
-        ease: 'power2.out',
-        delay: 0.1,
-      })
+      gsap.fromTo('.page-hero-breadcrumb', 
+        { y: 20, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.6, ease: 'power2.out', delay: 0.1 }
+      )
     }, heroRef)
 
     return () => ctx.revert()

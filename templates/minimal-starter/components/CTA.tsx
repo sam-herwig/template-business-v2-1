@@ -26,40 +26,27 @@ export default function CTA({
     const ctx = gsap.context(() => {
       if (headlineRef.current) {
         const split = new SplitText(headlineRef.current, { type: 'words' })
-        gsap.from(split.words, {
-          y: 40,
-          opacity: 0,
-          stagger: 0.05,
-          duration: 0.8,
-          ease: 'power3.out',
-          scrollTrigger: {
-            trigger: ctaRef.current,
-            start: 'top 75%',
-          },
-        })
+        gsap.fromTo(split.words, 
+          { y: 40, opacity: 0 },
+          { y: 0, opacity: 1, stagger: 0.05, duration: 0.8, ease: 'power3.out',
+            scrollTrigger: { trigger: ctaRef.current, start: 'top 75%', toggleActions: 'play none none reverse' }
+          }
+        )
       }
 
-      gsap.from('.cta-subheadline', {
-        y: 30,
-        opacity: 0,
-        duration: 0.8,
-        ease: 'power3.out',
-        scrollTrigger: {
-          trigger: ctaRef.current,
-          start: 'top 70%',
-        },
-      })
+      gsap.fromTo('.cta-subheadline', 
+        { y: 30, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.8, ease: 'power3.out',
+          scrollTrigger: { trigger: ctaRef.current, start: 'top 70%', toggleActions: 'play none none reverse' }
+        }
+      )
 
-      gsap.from('.cta-button', {
-        y: 20,
-        opacity: 0,
-        duration: 0.6,
-        ease: 'power3.out',
-        scrollTrigger: {
-          trigger: ctaRef.current,
-          start: 'top 65%',
-        },
-      })
+      gsap.fromTo('.cta-button', 
+        { y: 20, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.6, ease: 'power3.out',
+          scrollTrigger: { trigger: ctaRef.current, start: 'top 65%', toggleActions: 'play none none reverse' }
+        }
+      )
     }, ctaRef)
 
     return () => ctx.revert()

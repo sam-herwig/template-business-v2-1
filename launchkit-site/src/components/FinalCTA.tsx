@@ -3,22 +3,37 @@
 import { useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { gsap } from 'gsap';
-import { Rocket, ArrowRight, Shield, Zap, Download } from 'lucide-react';
+import { ArrowRight, Sparkles } from 'lucide-react';
+import Link from 'next/link';
 
 export default function FinalCTA() {
   const sectionRef = useRef<HTMLElement>(null);
   const glowRef = useRef<HTMLDivElement>(null);
+  const accentGlowRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    // Animate the glow effect
+    // Animate the primary glow effect
     if (glowRef.current) {
       gsap.to(glowRef.current, {
-        scale: 1.2,
-        opacity: 0.8,
+        scale: 1.15,
+        opacity: 0.7,
         duration: 3,
         ease: 'power1.inOut',
         repeat: -1,
         yoyo: true,
+      });
+    }
+
+    // Animate the accent glow effect
+    if (accentGlowRef.current) {
+      gsap.to(accentGlowRef.current, {
+        scale: 1.2,
+        opacity: 0.5,
+        duration: 4,
+        ease: 'power1.inOut',
+        repeat: -1,
+        yoyo: true,
+        delay: 0.5,
       });
     }
   }, []);
@@ -26,19 +41,30 @@ export default function FinalCTA() {
   return (
     <section ref={sectionRef} className="section-padding relative overflow-hidden">
       {/* Background Effects */}
-      <div className="absolute inset-0 bg-gradient-to-t from-purple-500/10 via-transparent to-transparent" />
+      <div className="absolute inset-0 bg-gradient-to-t from-primary/10 via-transparent to-transparent pointer-events-none" />
+      
+      {/* Primary glow */}
       <div
         ref={glowRef}
-        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-purple-500/20 rounded-full blur-[150px]"
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-primary/25 rounded-full blur-[150px] pointer-events-none"
       />
+      
+      {/* Accent glow */}
+      <div
+        ref={accentGlowRef}
+        className="absolute bottom-0 right-1/4 w-[400px] h-[300px] bg-accent/20 rounded-full blur-[120px] pointer-events-none"
+      />
+
+      {/* Grid pattern */}
+      <div className="absolute inset-0 grid-pattern opacity-50 pointer-events-none" />
 
       <div className="container-custom relative">
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
-          className="max-w-4xl mx-auto text-center"
+          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+          className="max-w-3xl mx-auto text-center"
         >
           {/* Icon */}
           <motion.div
@@ -46,96 +72,51 @@ export default function FinalCTA() {
             whileInView={{ scale: 1 }}
             viewport={{ once: true }}
             transition={{ type: 'spring', stiffness: 200, delay: 0.2 }}
-            className="inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-gradient-to-br from-purple-500 to-blue-500 mb-8 glow"
+            className="inline-flex items-center justify-center w-16 h-16 rounded-2xl mb-8 relative"
+            style={{ 
+              background: 'linear-gradient(135deg, #8B5CF6 0%, #FF6B6B 100%)',
+              boxShadow: '0 0 60px rgba(139, 92, 246, 0.5)'
+            }}
           >
-            <Rocket className="w-10 h-10 text-white" />
+            <Sparkles className="w-8 h-8 text-white" />
           </motion.div>
 
           {/* Headline */}
           <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
-            Ready to{' '}
-            <span className="gradient-text">Ship?</span>
+            Your Weekend Project{' '}
+            <span className="gradient-text">Starts Here.</span>
           </h2>
 
           {/* Subheadline */}
-          <p className="text-xl text-gray-400 mb-8 max-w-2xl mx-auto">
-            Stop building from scratch. Get the complete bundle and launch your next project 
-            this weekend.
+          <p className="text-xl text-foreground-muted mb-10 max-w-2xl mx-auto">
+            Stop wasting sprints on scaffolding. Grab a template, ship something real, 
+            and finally clear that &quot;someday&quot; list.
           </p>
-
-          {/* Early Bird Badge */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.3 }}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-orange-500/20 to-pink-500/20 border border-orange-500/30 mb-8"
-          >
-            <span className="text-orange-400">🔥</span>
-            <span className="text-sm font-medium text-orange-400">Early Bird Pricing — Limited Time</span>
-          </motion.div>
-
-          {/* Price Display */}
-          <div className="mb-8">
-            <div className="flex items-center justify-center gap-4">
-              <span className="text-2xl text-gray-500 line-through">$799</span>
-              <span className="text-6xl md:text-7xl font-bold gradient-text">$249</span>
-            </div>
-            <p className="text-gray-400 mt-2">One-time payment • Lifetime access</p>
-          </div>
 
           {/* CTA Button */}
           <motion.div
-            whileHover={{ scale: 1.05 }}
+            whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
           >
-            <button className="btn-primary text-lg px-12 py-5 group">
-              Get All 13 Templates Now
-              <ArrowRight className="w-5 h-5 ml-2 inline-block group-hover:translate-x-1 transition-transform" />
-            </button>
+            <Link 
+              href="#templates" 
+              className="btn-primary text-lg px-10 py-5 inline-flex items-center gap-3 group"
+            >
+              Browse Templates
+              <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-200" />
+            </Link>
           </motion.div>
 
-          {/* Trust Elements */}
-          <div className="flex flex-wrap justify-center gap-6 mt-12 text-sm text-gray-400">
-            <div className="flex items-center gap-2">
-              <Shield className="w-4 h-4 text-green-500" />
-              <span>Secure Checkout</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <Download className="w-4 h-4 text-blue-500" />
-              <span>Instant Access</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <Zap className="w-4 h-4 text-yellow-500" />
-              <span>30-Day Guarantee</span>
-            </div>
-          </div>
-
-          {/* Testimonial/Social Proof */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
+          {/* Social proof */}
+          <motion.p
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
             transition={{ delay: 0.5 }}
-            className="mt-16 p-8 glass rounded-2xl text-left max-w-2xl mx-auto"
+            className="mt-8 text-foreground-subtle text-sm"
           >
-            <div className="flex items-start gap-4">
-              <div className="w-12 h-12 rounded-full bg-gradient-to-br from-purple-500 to-blue-500 flex items-center justify-center flex-shrink-0">
-                <span className="text-lg font-bold">JD</span>
-              </div>
-              <div>
-                <p className="text-gray-300 mb-4 leading-relaxed">
-                  &quot;I used to spend 2-3 weeks just on the frontend for client projects. 
-                  With LaunchKit, I shipped a complete restaurant website in a weekend. 
-                  The code quality is exactly what I&apos;d write myself — maybe better.&quot;
-                </p>
-                <div>
-                  <p className="font-semibold">Jake Developer</p>
-                  <p className="text-sm text-gray-500">Freelance Developer</p>
-                </div>
-              </div>
-            </div>
-          </motion.div>
+            Trusted by 500+ developers and agencies
+          </motion.p>
         </motion.div>
       </div>
     </section>

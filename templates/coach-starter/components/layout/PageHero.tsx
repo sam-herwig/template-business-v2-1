@@ -43,50 +43,33 @@ export function PageHero({
     const ctx = gsap.context(() => {
       if (headlineRef.current) {
         const split = new SplitText(headlineRef.current, { type: 'words' })
-        gsap.from(split.words, {
-          y: 40,
-          opacity: 0,
-          stagger: 0.06,
-          duration: 1,
-          ease: 'power3.out',
-          delay: 0.1,
-        })
+        gsap.fromTo(split.words, 
+          { y: 40, opacity: 0 },
+          { y: 0, opacity: 1, stagger: 0.06, duration: 1, ease: 'power3.out', delay: 0.1 }
+        )
       }
 
       if (eyebrow) {
-        gsap.from('.hero-eyebrow', {
-          y: 20,
-          opacity: 0,
-          duration: 0.6,
-          ease: 'power3.out',
-        })
+        gsap.fromTo('.hero-eyebrow', 
+          { y: 20, opacity: 0 },
+          { y: 0, opacity: 1, duration: 0.6, ease: 'power3.out' }
+        )
       }
 
-      gsap.from('.hero-subheadline', {
-        y: 30,
-        opacity: 0,
-        duration: 0.8,
-        ease: 'power3.out',
-        delay: 0.4,
-      })
+      gsap.fromTo('.hero-subheadline', 
+        { y: 30, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.8, ease: 'power3.out', delay: 0.4 }
+      )
 
-      gsap.from('.hero-cta', {
-        y: 20,
-        opacity: 0,
-        stagger: 0.1,
-        duration: 0.6,
-        ease: 'power3.out',
-        delay: 0.6,
-      })
+      gsap.fromTo('.hero-cta', 
+        { y: 20, opacity: 0 },
+        { y: 0, opacity: 1, stagger: 0.1, duration: 0.6, ease: 'power3.out', delay: 0.6 }
+      )
 
-      gsap.from('.hero-check', {
-        y: 20,
-        opacity: 0,
-        stagger: 0.1,
-        duration: 0.5,
-        ease: 'power3.out',
-        delay: 0.7,
-      })
+      gsap.fromTo('.hero-check', 
+        { y: 20, opacity: 0 },
+        { y: 0, opacity: 1, stagger: 0.1, duration: 0.5, ease: 'power3.out', delay: 0.7 }
+      )
     }, heroRef)
 
     return () => ctx.revert()

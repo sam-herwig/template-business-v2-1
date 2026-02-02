@@ -28,16 +28,12 @@ export function CTASection({
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
 
     const ctx = gsap.context(() => {
-      gsap.from('.cta-content', {
-        y: 50,
-        opacity: 0,
-        duration: 1,
-        ease: 'power3.out',
-        scrollTrigger: {
-          trigger: ctaRef.current,
-          start: 'top 75%',
-        },
-      })
+      gsap.fromTo('.cta-content', 
+        { y: 50, opacity: 0 },
+        { y: 0, opacity: 1, duration: 1, ease: 'power3.out',
+          scrollTrigger: { trigger: ctaRef.current, start: 'top 75%', toggleActions: 'play none none reverse' }
+        }
+      )
     }, ctaRef)
 
     return () => ctx.revert()

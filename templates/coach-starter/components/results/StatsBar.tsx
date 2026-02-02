@@ -41,17 +41,12 @@ export function StatsBar({ stats }: StatsBarProps) {
         })
       })
 
-      gsap.from('.stat-item', {
-        y: 30,
-        opacity: 0,
-        stagger: 0.1,
-        duration: 0.6,
-        ease: 'power3.out',
-        scrollTrigger: {
-          trigger: statsRef.current,
-          start: 'top 80%',
-        },
-      })
+      gsap.fromTo('.stat-item', 
+        { y: 30, opacity: 0 },
+        { y: 0, opacity: 1, stagger: 0.1, duration: 0.6, ease: 'power3.out',
+          scrollTrigger: { trigger: statsRef.current, start: 'top 80%', toggleActions: 'play none none reverse' }
+        }
+      )
     }, statsRef)
 
     return () => ctx.revert()

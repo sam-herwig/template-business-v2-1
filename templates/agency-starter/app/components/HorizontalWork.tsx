@@ -67,19 +67,18 @@ export default function HorizontalWork({ projects }: HorizontalWorkProps) {
       // Image reveal on each card - use stored animation reference
       if (scrollAnimationRef.current) {
         gsap.utils.toArray<HTMLElement>('.project-image').forEach((img) => {
-          gsap.from(img, {
-            scale: 1.3,
-            opacity: 0.5,
-            duration: 1,
-            ease: 'power3.out',
-            scrollTrigger: {
-              trigger: img,
-              start: 'left 80%',
-              end: 'left 20%',
-              scrub: 1,
-              containerAnimation: scrollAnimationRef.current!,
-            },
-          })
+          gsap.fromTo(img, 
+            { scale: 1.3, opacity: 0.5 },
+            { scale: 1, opacity: 1, duration: 1, ease: 'power3.out',
+              scrollTrigger: {
+                trigger: img,
+                start: 'left 80%',
+                end: 'left 20%',
+                scrub: 1,
+                containerAnimation: scrollAnimationRef.current!,
+              }
+            }
+          )
         })
       }
     }, sectionRef)

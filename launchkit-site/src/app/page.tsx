@@ -10,8 +10,8 @@ import Footer from '@/components/Footer';
 export default function Home() {
   return (
     <main className="relative">
-      {/* Noise Overlay */}
-      <div className="fixed inset-0 pointer-events-none noise z-50" />
+      {/* Grain Texture Overlay */}
+      <div className="fixed inset-0 pointer-events-none grain z-50" />
       
       {/* Navigation */}
       <Navbar />

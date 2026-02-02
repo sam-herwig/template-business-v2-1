@@ -22,27 +22,19 @@ export function ProcessTimeline({ steps, title }: ProcessTimelineProps) {
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
 
     const ctx = gsap.context(() => {
-      gsap.from('.timeline-step', {
-        y: 40,
-        opacity: 0,
-        stagger: 0.15,
-        duration: 0.8,
-        ease: 'power3.out',
-        scrollTrigger: {
-          trigger: timelineRef.current,
-          start: 'top 75%',
-        },
-      })
+      gsap.fromTo('.timeline-step', 
+        { y: 40, opacity: 0 },
+        { y: 0, opacity: 1, stagger: 0.15, duration: 0.8, ease: 'power3.out',
+          scrollTrigger: { trigger: timelineRef.current, start: 'top 75%', toggleActions: 'play none none reverse' }
+        }
+      )
 
-      gsap.from('.timeline-line', {
-        scaleX: 0,
-        duration: 1.2,
-        ease: 'power3.out',
-        scrollTrigger: {
-          trigger: timelineRef.current,
-          start: 'top 75%',
-        },
-      })
+      gsap.fromTo('.timeline-line', 
+        { scaleX: 0 },
+        { scaleX: 1, duration: 1.2, ease: 'power3.out',
+          scrollTrigger: { trigger: timelineRef.current, start: 'top 75%', toggleActions: 'play none none reverse' }
+        }
+      )
     }, timelineRef)
 
     return () => ctx.revert()

@@ -5,43 +5,44 @@ import './globals.css';
 const inter = Inter({ 
   subsets: ['latin'],
   variable: '--font-inter',
+  display: 'swap',
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://launchkit.dev'),
-  title: 'LaunchKit — 13 Premium Next.js Templates | Ship Your Website This Weekend',
-  description: '13 production-ready Next.js templates. Multi-page. Dark mode. Responsive. SaaS, Agency, Local Business, and Creative templates to launch your project fast.',
+  metadataBase: new URL('https://craftedkit.com'),
+  title: 'Crafted Kit — Premium Next.js Templates | Ship in Days, Not Months',
+  description: 'Premium Next.js templates with Sanity CMS baked in. Beautiful, responsive, dark mode ready—so you can skip the setup and get straight to the good part.',
   keywords: [
     'Next.js templates',
     'React templates',
+    'Sanity CMS templates',
     'website templates',
     'SaaS template',
     'agency template',
-    'restaurant template',
     'Tailwind CSS',
     'TypeScript',
-    'Framer Motion',
+    'production-ready templates',
   ],
-  authors: [{ name: 'LaunchKit' }],
+  authors: [{ name: 'Crafted Kit' }],
   openGraph: {
-    title: 'LaunchKit — 13 Premium Next.js Templates',
-    description: 'Ship your website this weekend with production-ready templates.',
-    url: 'https://launchkit.dev',
-    siteName: 'LaunchKit',
+    title: 'Crafted Kit — Premium Next.js Templates',
+    description: 'Ship in days, not months. Premium templates with Sanity CMS baked in.',
+    url: 'https://craftedkit.com',
+    siteName: 'Crafted Kit',
     type: 'website',
     images: [
       {
         url: '/og-image.png',
         width: 1200,
         height: 630,
-        alt: 'LaunchKit - Premium Next.js Templates',
+        alt: 'Crafted Kit - Premium Next.js Templates',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'LaunchKit — 13 Premium Next.js Templates',
-    description: 'Ship your website this weekend with production-ready templates.',
+    title: 'Crafted Kit — Premium Next.js Templates',
+    description: 'Ship in days, not months. Premium templates with Sanity CMS baked in.',
     images: ['/og-image.png'],
   },
   robots: {

@@ -43,55 +43,39 @@ export default function About({ stats, team }: AboutProps) {
       })
       
       // Stats stagger
-      gsap.from('.stat-item', {
-        y: 40,
-        opacity: 0,
-        stagger: 0.1,
-        duration: 0.8,
-        ease: 'power3.out',
-        scrollTrigger: {
-          trigger: '.stats-grid',
-          start: 'top 80%',
-        },
-      })
+      gsap.fromTo('.stat-item', 
+        { y: 40, opacity: 0 },
+        { y: 0, opacity: 1, stagger: 0.1, duration: 0.8, ease: 'power3.out',
+          scrollTrigger: { trigger: '.stats-grid', start: 'top 80%', toggleActions: 'play none none reverse' }
+        }
+      )
       
       // Team header
-      gsap.from('.team-header', {
-        y: 40,
-        opacity: 0,
-        duration: 0.8,
-        ease: 'power3.out',
-        scrollTrigger: {
-          trigger: '.team-header',
-          start: 'top 80%',
-        },
-      })
+      gsap.fromTo('.team-header', 
+        { y: 40, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.8, ease: 'power3.out',
+          scrollTrigger: { trigger: '.team-header', start: 'top 80%', toggleActions: 'play none none reverse' }
+        }
+      )
       
       // Team members with image reveal
       gsap.utils.toArray<HTMLElement>('.team-member').forEach((member) => {
-        gsap.from(member, {
-          y: 60,
-          opacity: 0,
-          duration: 0.8,
-          ease: 'power3.out',
-          scrollTrigger: {
-            trigger: member,
-            start: 'top 85%',
-          },
-        })
+        gsap.fromTo(member, 
+          { y: 60, opacity: 0 },
+          { y: 0, opacity: 1, duration: 0.8, ease: 'power3.out',
+            scrollTrigger: { trigger: member, start: 'top 85%', toggleActions: 'play none none reverse' }
+          }
+        )
         
         // Image clip reveal
         const img = member.querySelector('.team-image')
         if (img) {
-          gsap.from(img, {
-            clipPath: 'inset(100% 0 0 0)',
-            duration: 1.2,
-            ease: 'power4.out',
-            scrollTrigger: {
-              trigger: member,
-              start: 'top 85%',
-            },
-          })
+          gsap.fromTo(img, 
+            { clipPath: 'inset(100% 0 0 0)' },
+            { clipPath: 'inset(0% 0 0 0)', duration: 1.2, ease: 'power4.out',
+              scrollTrigger: { trigger: member, start: 'top 85%', toggleActions: 'play none none reverse' }
+            }
+          )
         }
       })
     }, aboutRef)

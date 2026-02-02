@@ -25,43 +25,43 @@ export default function Hero({ content }: HeroProps) {
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
     if (prefersReducedMotion) return
     
+    // Refresh ScrollTrigger on mount for SPA navigation
+    ScrollTrigger.refresh()
+    
     const ctx = gsap.context(() => {
       const tl = gsap.timeline({ defaults: { ease: 'power4.out' } })
       
-      // SplitText animation for each headline line
+      // SplitText animation for each headline line - use fromTo to fix SPA navigation
       headlineRefs.current.forEach((ref, i) => {
         if (!ref) return
         const split = new SplitText(ref, { type: 'chars, words' })
-        tl.from(split.chars, {
-          y: 120,
-          opacity: 0,
-          rotateX: -90,
-          stagger: 0.02,
-          duration: 1.2,
-        }, i * 0.2)
+        tl.fromTo(split.chars, 
+          { y: 120, opacity: 0, rotateX: -90 },
+          { y: 0, opacity: 1, rotateX: 0, stagger: 0.02, duration: 1.2 },
+          i * 0.2
+        )
       })
       
       // Subheadline
-      tl.from('.hero-subheadline', {
-        y: 40,
-        opacity: 0,
-        duration: 0.8,
-      }, '-=0.6')
+      tl.fromTo('.hero-subheadline', 
+        { y: 40, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.8 },
+        '-=0.6'
+      )
       
       // CTAs with stagger
-      tl.from('.hero-cta', {
-        y: 30,
-        opacity: 0,
-        stagger: 0.1,
-        duration: 0.6,
-      }, '-=0.4')
+      tl.fromTo('.hero-cta', 
+        { y: 30, opacity: 0 },
+        { y: 0, opacity: 1, stagger: 0.1, duration: 0.6 },
+        '-=0.4'
+      )
       
       // Clients marquee
-      tl.from('.clients-section', {
-        y: 30,
-        opacity: 0,
-        duration: 0.6,
-      }, '-=0.3')
+      tl.fromTo('.clients-section', 
+        { y: 30, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.6 },
+        '-=0.3'
+      )
       
       // Infinite marquee animation
       if (marqueeRef.current) {
@@ -89,7 +89,10 @@ export default function Hero({ content }: HeroProps) {
       })
     }, heroRef)
     
-    return () => ctx.revert()
+    return () => {
+      ctx.revert()
+      ScrollTrigger.refresh()
+    }
   }, [])
   
   return (

@@ -23,29 +23,20 @@ export default function CTA() {
       // SplitText on CTA headline
       if (headlineRef.current) {
         const split = new SplitText(headlineRef.current, { type: 'words' })
-        gsap.from(split.words, {
-          y: 60,
-          opacity: 0,
-          stagger: 0.05,
-          duration: 1,
-          ease: 'power3.out',
-          scrollTrigger: {
-            trigger: ctaRef.current,
-            start: 'top 70%',
-          },
-        })
+        gsap.fromTo(split.words, 
+          { y: 60, opacity: 0 },
+          { y: 0, opacity: 1, stagger: 0.05, duration: 1, ease: 'power3.out',
+            scrollTrigger: { trigger: ctaRef.current, start: 'top 70%', toggleActions: 'play none none reverse' }
+          }
+        )
       }
       
-      gsap.from('.cta-content', {
-        y: 30,
-        opacity: 0,
-        duration: 0.8,
-        ease: 'power3.out',
-        scrollTrigger: {
-          trigger: '.cta-content',
-          start: 'top 80%',
-        },
-      })
+      gsap.fromTo('.cta-content', 
+        { y: 30, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.8, ease: 'power3.out',
+          scrollTrigger: { trigger: '.cta-content', start: 'top 80%', toggleActions: 'play none none reverse' }
+        }
+      )
       
       // Background glow parallax
       gsap.to('.cta-glow', {

@@ -30,16 +30,12 @@ export function CTABanner({
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
     if (prefersReducedMotion) return
 
-    gsap.from('.cta-banner-content', {
-      y: 40,
-      opacity: 0,
-      duration: 0.8,
-      ease: 'power3.out',
-      scrollTrigger: {
-        trigger: ctaRef.current,
-        start: 'top 80%',
-      },
-    })
+    gsap.fromTo('.cta-banner-content', 
+      { y: 40, opacity: 0 },
+      { y: 0, opacity: 1, duration: 0.8, ease: 'power3.out',
+        scrollTrigger: { trigger: ctaRef.current, start: 'top 80%', toggleActions: 'play none none reverse' }
+      }
+    )
   }, [])
 
   const bgClasses = {

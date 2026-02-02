@@ -24,37 +24,26 @@ export default function PageHeader({ tag, title, description, centered = true, c
     const ctx = gsap.context(() => {
       if (titleRef.current) {
         const split = new SplitText(titleRef.current, { type: 'words' })
-        gsap.from(split.words, {
-          y: 50,
-          opacity: 0,
-          stagger: 0.03,
-          duration: 0.8,
-          ease: 'power3.out',
-        })
+        gsap.fromTo(split.words, 
+          { y: 50, opacity: 0 },
+          { y: 0, opacity: 1, stagger: 0.03, duration: 0.8, ease: 'power3.out' }
+        )
       }
 
-      gsap.from('.page-header-tag', {
-        y: 20,
-        opacity: 0,
-        duration: 0.6,
-        ease: 'power3.out',
-      })
+      gsap.fromTo('.page-header-tag', 
+        { y: 20, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.6, ease: 'power3.out' }
+      )
 
-      gsap.from('.page-header-desc', {
-        y: 30,
-        opacity: 0,
-        duration: 0.8,
-        delay: 0.2,
-        ease: 'power3.out',
-      })
+      gsap.fromTo('.page-header-desc', 
+        { y: 30, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.8, delay: 0.2, ease: 'power3.out' }
+      )
 
-      gsap.from('.page-header-children', {
-        y: 20,
-        opacity: 0,
-        duration: 0.6,
-        delay: 0.4,
-        ease: 'power3.out',
-      })
+      gsap.fromTo('.page-header-children', 
+        { y: 20, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.6, delay: 0.4, ease: 'power3.out' }
+      )
     }, headerRef)
 
     return () => ctx.revert()

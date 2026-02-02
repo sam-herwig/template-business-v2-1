@@ -84,29 +84,20 @@ export default function AboutPage() {
 
     const ctx = gsap.context(() => {
       // Hero image reveal
-      gsap.from('.about-hero-image', {
-        clipPath: 'inset(100% 0 0 0)',
-        duration: 1.2,
-        ease: 'power4.out',
-        delay: 0.3,
-      })
+      gsap.fromTo('.about-hero-image', 
+        { clipPath: 'inset(100% 0 0 0)' },
+        { clipPath: 'inset(0% 0 0 0)', duration: 1.2, ease: 'power4.out', delay: 0.3 }
+      )
 
-      gsap.from('.about-hero-content', {
-        x: 40,
-        opacity: 0,
-        duration: 0.8,
-        ease: 'power3.out',
-        delay: 0.5,
-      })
+      gsap.fromTo('.about-hero-content', 
+        { x: 40, opacity: 0 },
+        { x: 0, opacity: 1, duration: 0.8, ease: 'power3.out', delay: 0.5 }
+      )
 
-      gsap.from('.credential-chip', {
-        y: 20,
-        opacity: 0,
-        stagger: 0.1,
-        duration: 0.5,
-        ease: 'power2.out',
-        delay: 0.8,
-      })
+      gsap.fromTo('.credential-chip', 
+        { y: 20, opacity: 0 },
+        { y: 0, opacity: 1, stagger: 0.1, duration: 0.5, ease: 'power2.out', delay: 0.8 }
+      )
     }, heroRef)
 
     return () => ctx.revert()
@@ -116,28 +107,19 @@ export default function AboutPage() {
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
 
     const ctx = gsap.context(() => {
-      gsap.from('.story-chapter', {
-        y: 40,
-        opacity: 0,
-        stagger: 0.2,
-        duration: 0.8,
-        ease: 'power3.out',
-        scrollTrigger: {
-          trigger: storyRef.current,
-          start: 'top 70%',
-        },
-      })
+      gsap.fromTo('.story-chapter', 
+        { y: 40, opacity: 0 },
+        { y: 0, opacity: 1, stagger: 0.2, duration: 0.8, ease: 'power3.out',
+          scrollTrigger: { trigger: storyRef.current, start: 'top 70%', toggleActions: 'play none none reverse' }
+        }
+      )
 
-      gsap.from('.pull-quote', {
-        scale: 0.95,
-        opacity: 0,
-        duration: 0.8,
-        ease: 'power3.out',
-        scrollTrigger: {
-          trigger: '.pull-quote',
-          start: 'top 80%',
-        },
-      })
+      gsap.fromTo('.pull-quote', 
+        { scale: 0.95, opacity: 0 },
+        { scale: 1, opacity: 1, duration: 0.8, ease: 'power3.out',
+          scrollTrigger: { trigger: '.pull-quote', start: 'top 80%', toggleActions: 'play none none reverse' }
+        }
+      )
     }, storyRef)
 
     return () => ctx.revert()

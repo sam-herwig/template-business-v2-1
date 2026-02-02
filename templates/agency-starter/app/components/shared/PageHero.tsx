@@ -21,25 +21,17 @@ export default function PageHero({ title, subtitle, alignment = 'left' }: PageHe
     const ctx = gsap.context(() => {
       if (titleRef.current) {
         const split = new SplitText(titleRef.current, { type: 'words' })
-        gsap.from(split.words, {
-          y: 80,
-          opacity: 0,
-          rotateX: -45,
-          stagger: 0.04,
-          duration: 1,
-          ease: 'power3.out',
-          delay: 0.2,
-        })
+        gsap.fromTo(split.words, 
+          { y: 80, opacity: 0, rotateX: -45 },
+          { y: 0, opacity: 1, rotateX: 0, stagger: 0.04, duration: 1, ease: 'power3.out', delay: 0.2 }
+        )
       }
 
       if (subtitle) {
-        gsap.from('.page-hero-subtitle', {
-          y: 30,
-          opacity: 0,
-          duration: 0.8,
-          ease: 'power3.out',
-          delay: 0.5,
-        })
+        gsap.fromTo('.page-hero-subtitle', 
+          { y: 30, opacity: 0 },
+          { y: 0, opacity: 1, duration: 0.8, ease: 'power3.out', delay: 0.5 }
+        )
       }
     }, heroRef)
 

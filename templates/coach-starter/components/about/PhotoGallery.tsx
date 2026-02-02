@@ -24,17 +24,12 @@ export function PhotoGallery({ photos }: PhotoGalleryProps) {
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
 
     const ctx = gsap.context(() => {
-      gsap.from('.gallery-item', {
-        y: 40,
-        opacity: 0,
-        stagger: 0.1,
-        duration: 0.8,
-        ease: 'power3.out',
-        scrollTrigger: {
-          trigger: galleryRef.current,
-          start: 'top 75%',
-        },
-      })
+      gsap.fromTo('.gallery-item', 
+        { y: 40, opacity: 0 },
+        { y: 0, opacity: 1, stagger: 0.1, duration: 0.8, ease: 'power3.out',
+          scrollTrigger: { trigger: galleryRef.current, start: 'top 75%', toggleActions: 'play none none reverse' }
+        }
+      )
     }, galleryRef)
 
     return () => ctx.revert()

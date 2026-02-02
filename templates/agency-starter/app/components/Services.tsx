@@ -25,29 +25,20 @@ export default function Services({ services }: ServicesProps) {
     
     const ctx = gsap.context(() => {
       // Header animation
-      gsap.from('.services-header', {
-        y: 60,
-        opacity: 0,
-        duration: 1,
-        ease: 'power3.out',
-        scrollTrigger: {
-          trigger: servicesRef.current,
-          start: 'top 75%',
-        },
-      })
+      gsap.fromTo('.services-header', 
+        { y: 60, opacity: 0 },
+        { y: 0, opacity: 1, duration: 1, ease: 'power3.out',
+          scrollTrigger: { trigger: servicesRef.current, start: 'top 75%', toggleActions: 'play none none reverse' }
+        }
+      )
       
       // Service items stagger
-      gsap.from('.service-item', {
-        x: -40,
-        opacity: 0,
-        stagger: 0.15,
-        duration: 0.8,
-        ease: 'power3.out',
-        scrollTrigger: {
-          trigger: '.services-list',
-          start: 'top 70%',
-        },
-      })
+      gsap.fromTo('.service-item', 
+        { x: -40, opacity: 0 },
+        { x: 0, opacity: 1, stagger: 0.15, duration: 0.8, ease: 'power3.out',
+          scrollTrigger: { trigger: '.services-list', start: 'top 70%', toggleActions: 'play none none reverse' }
+        }
+      )
     }, servicesRef)
     
     return () => ctx.revert()
