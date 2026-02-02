@@ -1,28 +1,23 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import Image from 'next/image'
-import { motion, AnimatePresence } from 'framer-motion'
+import Link from 'next/link'
+import { motion } from 'framer-motion'
 import { 
   ShoppingBag, 
   CalendarDays, 
   MapPin, 
   Instagram, 
-  Facebook, 
   X,
-  Menu as MenuIcon,
   ChevronRight,
   Clock,
   Phone,
   Mail,
   ExternalLink,
-  Sun,
-  Moon,
-  Leaf,
-  Coffee,
-  Heart,
   Sparkles
 } from 'lucide-react'
+import { Nav, Footer } from './_components'
 
 // ═══════════════════════════════════════════════════════════════
 // DATA - Would come from Sanity CMS in production
@@ -56,7 +51,7 @@ const siteConfig = {
 const announcement = {
   active: true,
   message: '🥞 New: Pumpkin Spice Pancakes — Limited Time!',
-  link: '#menu',
+  link: '/menu',
 }
 
 const menuHighlights = [
@@ -150,9 +145,9 @@ function AnnouncementBar() {
 
   return (
     <div className="announcement-bar bg-sage text-white relative">
-      <a href={announcement.link} className="hover:underline">
+      <Link href={announcement.link} className="hover:underline">
         {announcement.message}
-      </a>
+      </Link>
       <button
         onClick={() => setIsVisible(false)}
         className="absolute right-4 top-1/2 -translate-y-1/2 p-1 hover:bg-white/10 rounded-full transition-colors"
@@ -161,210 +156,6 @@ function AnnouncementBar() {
         <X className="w-4 h-4" />
       </button>
     </div>
-  )
-}
-
-// ═══════════════════════════════════════════════════════════════
-// DARK MODE TOGGLE
-// ═══════════════════════════════════════════════════════════════
-
-function DarkModeToggle() {
-  const [isDark, setIsDark] = useState(false)
-
-  useEffect(() => {
-    setIsDark(document.documentElement.classList.contains('dark'))
-  }, [])
-
-  const toggleDarkMode = () => {
-    const newIsDark = !isDark
-    setIsDark(newIsDark)
-    
-    if (newIsDark) {
-      document.documentElement.classList.add('dark')
-      localStorage.setItem('theme', 'dark')
-    } else {
-      document.documentElement.classList.remove('dark')
-      localStorage.setItem('theme', 'light')
-    }
-  }
-
-  return (
-    <button
-      onClick={toggleDarkMode}
-      className="p-2 min-w-[44px] min-h-[44px] flex items-center justify-center rounded-full hover:bg-charcoal/10 dark:hover:bg-white/10 transition-colors"
-      aria-label={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
-    >
-      {isDark ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
-    </button>
-  )
-}
-
-// ═══════════════════════════════════════════════════════════════
-// MOBILE MENU
-// ═══════════════════════════════════════════════════════════════
-
-function MobileMenu({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {
-  useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = 'hidden'
-    } else {
-      document.body.style.overflow = ''
-    }
-    return () => {
-      document.body.style.overflow = ''
-    }
-  }, [isOpen])
-
-  return (
-    <AnimatePresence>
-      {isOpen && (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          className="fixed inset-0 z-[60] lg:hidden"
-        >
-          {/* Backdrop */}
-          <motion.div
-            className="absolute inset-0 bg-charcoal/60 dark:bg-black/80"
-            onClick={onClose}
-            aria-hidden="true"
-          />
-          
-          {/* Drawer */}
-          <motion.nav
-            initial={{ x: '100%' }}
-            animate={{ x: 0 }}
-            exit={{ x: '100%' }}
-            transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-            className="absolute top-0 right-0 w-[85%] max-w-sm h-full bg-cream dark:bg-dark-bg p-8 flex flex-col"
-            aria-label="Mobile navigation"
-          >
-            <button
-              onClick={onClose}
-              className="self-end p-2 min-w-[44px] min-h-[44px] flex items-center justify-center text-charcoal dark:text-cream"
-              aria-label="Close menu"
-            >
-              <X className="w-6 h-6" />
-            </button>
-            
-            <div className="flex flex-col gap-6 mt-8">
-              {['Menu', 'About', 'Locations'].map((item) => (
-                <a
-                  key={item}
-                  href={`#${item.toLowerCase()}`}
-                  onClick={onClose}
-                  className="text-xl font-medium text-charcoal dark:text-cream hover:text-coral transition-colors py-2"
-                >
-                  {item}
-                </a>
-              ))}
-            </div>
-            
-            <div className="mt-8 pt-8 border-t border-charcoal/10 dark:border-white/10">
-              <a 
-                href="#order" 
-                onClick={onClose}
-                className="btn-ghost w-full justify-center mb-4"
-              >
-                <ShoppingBag className="w-4 h-4" />
-                Order Online
-              </a>
-              <a 
-                href="#reserve" 
-                onClick={onClose} 
-                className="btn-primary w-full justify-center"
-              >
-                <CalendarDays className="w-4 h-4" />
-                Reserve a Table
-              </a>
-            </div>
-            
-            <div className="mt-auto pt-8 text-charcoal-light dark:text-cream/70 text-sm">
-              <p className="flex items-center gap-2 mb-2">
-                <Clock className="w-4 h-4" />
-                Mon-Sun 7am - 3pm
-              </p>
-              <p className="flex items-center gap-2">
-                <Phone className="w-4 h-4" />
-                {siteConfig.phone}
-              </p>
-            </div>
-          </motion.nav>
-        </motion.div>
-      )}
-    </AnimatePresence>
-  )
-}
-
-// ═══════════════════════════════════════════════════════════════
-// NAVIGATION
-// ═══════════════════════════════════════════════════════════════
-
-function Navigation() {
-  const [scrolled, setScrolled] = useState(false)
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
-
-  useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 50)
-    window.addEventListener('scroll', handleScroll, { passive: true })
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [])
-
-  return (
-    <header>
-      <nav 
-        className={`fixed top-0 left-0 right-0 z-50 flex justify-between items-center px-4 lg:px-16 transition-all duration-300 ${
-          scrolled ? 'nav-scrolled h-16' : 'h-[72px]'
-        }`}
-        aria-label="Main navigation"
-      >
-        {/* Logo */}
-        <a href="/" className="flex items-center gap-2 group">
-          <span 
-            className="text-2xl transition-transform duration-300 group-hover:rotate-[15deg]" 
-            aria-hidden="true"
-          >
-            ☀️
-          </span>
-          <span className="font-display text-xl lg:text-2xl font-semibold text-charcoal dark:text-cream">
-            {siteConfig.name}
-          </span>
-        </a>
-        
-        {/* Desktop Nav */}
-        <div className="hidden lg:flex items-center gap-8">
-          <a href="#menu" className="nav-link">Menu</a>
-          <a href="#about" className="nav-link">About</a>
-          <a href="#location" className="nav-link">Locations</a>
-          
-          <DarkModeToggle />
-          
-          <a href="#order" className="btn-ghost">
-            Order Online
-          </a>
-          <a href="#reserve" className="btn-primary text-sm px-6 py-3 min-h-0">
-            Reserve
-            <ExternalLink className="w-4 h-4" />
-          </a>
-        </div>
-
-        {/* Mobile Controls */}
-        <div className="flex lg:hidden items-center gap-2">
-          <DarkModeToggle />
-          <button
-            onClick={() => setMobileMenuOpen(true)}
-            className="p-2 min-w-[44px] min-h-[44px] flex items-center justify-center"
-            aria-label="Open menu"
-            aria-expanded={mobileMenuOpen}
-          >
-            <MenuIcon className="w-6 h-6 text-charcoal dark:text-cream" />
-          </button>
-        </div>
-      </nav>
-
-      <MobileMenu isOpen={mobileMenuOpen} onClose={() => setMobileMenuOpen(false)} />
-    </header>
   )
 }
 
@@ -378,7 +169,7 @@ function Hero() {
       {/* Background texture */}
       <div className="texture-paper" aria-hidden="true" />
       
-      <div className="container-wide">
+      <div className="max-w-7xl mx-auto px-4 md:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center">
           {/* Content */}
           <motion.div 
@@ -389,24 +180,24 @@ function Hero() {
           >
             <p className="section-tag">{siteConfig.tagline}</p>
             
-            <h1 className="font-display text-display-xl text-charcoal dark:text-cream mb-6">
+            <h1 className="font-display text-5xl md:text-6xl lg:text-7xl text-charcoal dark:text-cream mb-6 leading-tight">
               Start Your Day
               <br />
               <span className="text-coral">Sunny Side Up</span>
             </h1>
             
-            <p className="text-body-lg text-charcoal-light dark:text-cream/80 max-w-lg mx-auto lg:mx-0 mb-8">
+            <p className="text-lg md:text-xl text-charcoal-light dark:text-cream/80 max-w-lg mx-auto lg:mx-0 mb-8">
               {siteConfig.description}
             </p>
             
             <div className="flex gap-4 flex-wrap justify-center lg:justify-start">
-              <a href="#order" className="btn-primary">
+              <Link href="/menu" className="btn-primary">
                 <ShoppingBag className="w-5 h-5" />
                 Order Online
-              </a>
-              <a href="#reserve" className="btn-secondary">
+              </Link>
+              <Link href="/contact#reserve" className="btn-secondary">
                 Make a Reservation
-              </a>
+              </Link>
             </div>
           </motion.div>
 
@@ -465,9 +256,9 @@ function Hero() {
 
 function QuickActions() {
   const actions = [
-    { icon: ShoppingBag, label: 'Order Online', href: '#order' },
-    { icon: CalendarDays, label: 'Reservations', href: '#reserve' },
-    { icon: MapPin, label: 'Find a Location', href: '#location' },
+    { icon: ShoppingBag, label: 'Order Online', href: '/menu' },
+    { icon: CalendarDays, label: 'Reservations', href: '/contact#reserve' },
+    { icon: MapPin, label: 'Find Us', href: '/contact' },
   ]
 
   return (
@@ -475,7 +266,7 @@ function QuickActions() {
       <div className="max-w-3xl mx-auto bg-white dark:bg-dark-elevated rounded-2xl shadow-card p-5 lg:p-6">
         <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4">
           {actions.map((action, index) => (
-            <a
+            <Link
               key={action.label}
               href={action.href}
               className={`quick-action flex-1 justify-center sm:justify-start ${
@@ -486,7 +277,7 @@ function QuickActions() {
               <span className="font-body font-medium text-charcoal dark:text-cream">
                 {action.label}
               </span>
-            </a>
+            </Link>
           ))}
         </div>
       </div>
@@ -501,7 +292,7 @@ function QuickActions() {
 function About() {
   return (
     <section id="about" className="section-padding" aria-labelledby="about-heading">
-      <div className="container-wide">
+      <div className="max-w-7xl mx-auto px-4 md:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24 items-center">
           {/* Image */}
           <motion.div 
@@ -549,7 +340,7 @@ function About() {
             transition={{ duration: 0.6 }}
           >
             <p className="section-tag">Our Story</p>
-            <h2 id="about-heading" className="font-display text-h2 text-charcoal dark:text-cream mb-6">
+            <h2 id="about-heading" className="font-display text-3xl md:text-4xl text-charcoal dark:text-cream mb-6">
               Where Every Morning Feels Like Sunday
             </h2>
             
@@ -560,18 +351,13 @@ function About() {
             
             <p className="text-lg text-charcoal-light dark:text-cream/80 leading-relaxed mb-8">
               Our team sources ingredients from Colorado farms, roasts our coffee in-house, 
-              and treats every guest like a neighbor popping by for a bite. Whether you&apos;re 
-              fueling up for a mountain adventure or recovering from one, we&apos;ve got you.
+              and treats every guest like a neighbor popping by for a bite.
             </p>
             
-            <div className="flex flex-col">
-              <span className="font-script text-2xl text-charcoal dark:text-cream">
-                — Maria & Jake
-              </span>
-              <span className="text-charcoal-light dark:text-cream/70 text-sm mt-1">
-                Founders
-              </span>
-            </div>
+            <Link href="/about" className="btn-text group">
+              Learn More About Us
+              <ChevronRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+            </Link>
           </motion.div>
         </div>
       </div>
@@ -586,7 +372,7 @@ function About() {
 function MenuHighlights() {
   return (
     <section id="menu" className="section-padding bg-white dark:bg-dark-card" aria-labelledby="menu-heading">
-      <div className="container-wide">
+      <div className="max-w-7xl mx-auto px-4 md:px-8">
         {/* Header */}
         <motion.div 
           className="text-center max-w-2xl mx-auto mb-12"
@@ -596,11 +382,11 @@ function MenuHighlights() {
           transition={{ duration: 0.6 }}
         >
           <p className="section-tag">The Good Stuff</p>
-          <h2 id="menu-heading" className="font-display text-h2 text-charcoal dark:text-cream mb-4">
+          <h2 id="menu-heading" className="font-display text-3xl md:text-4xl text-charcoal dark:text-cream mb-4">
             Menu Favorites
           </h2>
           <p className="text-lg text-charcoal-light dark:text-cream/80">
-            Can&apos;t-miss dishes our regulars swear by
+            Can't-miss dishes our regulars swear by
           </p>
         </motion.div>
 
@@ -634,14 +420,14 @@ function MenuHighlights() {
               {/* Content */}
               <div className="p-5">
                 <div className="flex justify-between items-start gap-2 mb-2">
-                  <h3 className="font-display text-h4 text-charcoal dark:text-cream">
+                  <h3 className="font-display text-lg text-charcoal dark:text-cream">
                     {item.name}
                   </h3>
                   <span className="text-coral font-semibold whitespace-nowrap">
                     {formatPrice(item.price)}
                   </span>
                 </div>
-                <p className="text-body-sm text-charcoal-light dark:text-cream/70">
+                <p className="text-sm text-charcoal-light dark:text-cream/70">
                   {item.description}
                 </p>
               </div>
@@ -657,10 +443,10 @@ function MenuHighlights() {
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.4 }}
         >
-          <a href="#" className="btn-outline group">
+          <Link href="/menu" className="btn-outline group">
             See Full Menu
             <ChevronRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-          </a>
+          </Link>
         </motion.div>
       </div>
     </section>
@@ -674,7 +460,7 @@ function MenuHighlights() {
 function Location() {
   return (
     <section id="location" className="section-padding" aria-labelledby="location-heading">
-      <div className="container-wide">
+      <div className="max-w-7xl mx-auto px-4 md:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16">
           {/* Map Placeholder */}
           <motion.div 
@@ -713,13 +499,13 @@ function Location() {
             transition={{ duration: 0.6 }}
           >
             <p className="section-tag">Find Us</p>
-            <h2 id="location-heading" className="font-display text-h2 text-charcoal dark:text-cream mb-8">
+            <h2 id="location-heading" className="font-display text-3xl md:text-4xl text-charcoal dark:text-cream mb-8">
               Come Hungry, Leave Happy
             </h2>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               <div>
-                <h3 className="text-coral text-overline uppercase tracking-widest mb-3 flex items-center gap-2">
+                <h3 className="text-coral text-sm uppercase tracking-widest mb-3 flex items-center gap-2">
                   <MapPin className="w-4 h-4" />
                   Address
                 </h3>
@@ -730,7 +516,7 @@ function Location() {
               </div>
               
               <div>
-                <h3 className="text-coral text-overline uppercase tracking-widest mb-3 flex items-center gap-2">
+                <h3 className="text-coral text-sm uppercase tracking-widest mb-3 flex items-center gap-2">
                   <Clock className="w-4 h-4" />
                   Hours
                 </h3>
@@ -741,7 +527,7 @@ function Location() {
               </div>
               
               <div>
-                <h3 className="text-coral text-overline uppercase tracking-widest mb-3 flex items-center gap-2">
+                <h3 className="text-coral text-sm uppercase tracking-widest mb-3 flex items-center gap-2">
                   <Phone className="w-4 h-4" />
                   Phone
                 </h3>
@@ -753,7 +539,7 @@ function Location() {
               </div>
               
               <div>
-                <h3 className="text-coral text-overline uppercase tracking-widest mb-3 flex items-center gap-2">
+                <h3 className="text-coral text-sm uppercase tracking-widest mb-3 flex items-center gap-2">
                   <Mail className="w-4 h-4" />
                   Email
                 </h3>
@@ -766,10 +552,10 @@ function Location() {
             </div>
 
             <div className="mt-8 pt-8 border-t border-charcoal/10 dark:border-white/10">
-              <a href="#reserve" className="btn-primary">
+              <Link href="/contact#reserve" className="btn-primary">
                 <CalendarDays className="w-5 h-5" />
                 Book a Table
-              </a>
+              </Link>
             </div>
           </motion.div>
         </div>
@@ -785,7 +571,7 @@ function Location() {
 function InstagramFeed() {
   return (
     <section className="section-padding bg-sage-light dark:bg-dark-card" aria-labelledby="instagram-heading">
-      <div className="container-wide">
+      <div className="max-w-7xl mx-auto px-4 md:px-8">
         {/* Header */}
         <motion.div 
           className="text-center mb-10"
@@ -795,7 +581,7 @@ function InstagramFeed() {
           transition={{ duration: 0.6 }}
         >
           <p className="section-tag">Follow the Vibes</p>
-          <h2 id="instagram-heading" className="font-display text-h2 text-charcoal dark:text-cream">
+          <h2 id="instagram-heading" className="font-display text-3xl md:text-4xl text-charcoal dark:text-cream">
             <a 
               href={siteConfig.social.instagram}
               target="_blank"
@@ -878,9 +664,9 @@ function Newsletter() {
 
   return (
     <section className="section-padding" aria-labelledby="newsletter-heading">
-      <div className="container-wide">
+      <div className="max-w-7xl mx-auto px-4 md:px-8">
         <motion.div 
-          className="bg-peach dark:bg-coral/20 rounded-4xl p-8 md:p-16 text-center max-w-3xl mx-auto"
+          className="bg-peach dark:bg-coral/20 rounded-[32px] p-8 md:p-16 text-center max-w-3xl mx-auto"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -889,7 +675,7 @@ function Newsletter() {
           {/* Icon */}
           <span className="text-5xl mb-4 block" aria-hidden="true">🍳</span>
           
-          <h2 id="newsletter-heading" className="font-display text-h2 text-charcoal dark:text-cream mb-3">
+          <h2 id="newsletter-heading" className="font-display text-3xl md:text-4xl text-charcoal dark:text-cream mb-3">
             Get 10% Off Your First Order
           </h2>
           
@@ -919,98 +705,6 @@ function Newsletter() {
         </motion.div>
       </div>
     </section>
-  )
-}
-
-// ═══════════════════════════════════════════════════════════════
-// FOOTER
-// ═══════════════════════════════════════════════════════════════
-
-function Footer() {
-  const footerLinks = [
-    { label: 'Menu', href: '#menu' },
-    { label: 'About', href: '#about' },
-    { label: 'Catering', href: '#' },
-    { label: 'Careers', href: '#' },
-    { label: 'Gift Cards', href: '#' },
-  ]
-
-  return (
-    <footer className="bg-charcoal text-white px-4 md:px-16 pt-16 pb-8">
-      <div className="container-wide">
-        {/* Top Section */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 pb-8 border-b border-white/10">
-          {/* Brand */}
-          <div>
-            <div className="flex items-center gap-2 mb-3">
-              <span className="text-2xl" aria-hidden="true">☀️</span>
-              <span className="font-display text-xl font-semibold">{siteConfig.name}</span>
-            </div>
-            <p className="text-white/60 text-sm">
-              Denver&apos;s happiest breakfast spot.
-            </p>
-          </div>
-
-          {/* Links */}
-          <nav className="flex flex-wrap gap-x-6 gap-y-2" aria-label="Footer navigation">
-            {footerLinks.map((link) => (
-              <a 
-                key={link.label}
-                href={link.href}
-                className="text-white/70 hover:text-white transition-colors text-sm py-1"
-              >
-                {link.label}
-              </a>
-            ))}
-          </nav>
-
-          {/* Social */}
-          <nav className="flex gap-4 md:justify-end" aria-label="Social media">
-            <a 
-              href={siteConfig.social.instagram}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="p-2 text-white/70 hover:text-white transition-colors"
-              aria-label="Instagram"
-            >
-              <Instagram className="w-5 h-5" />
-            </a>
-            <a 
-              href={siteConfig.social.facebook}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="p-2 text-white/70 hover:text-white transition-colors"
-              aria-label="Facebook"
-            >
-              <Facebook className="w-5 h-5" />
-            </a>
-            <a 
-              href={siteConfig.social.tiktok}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="p-2 text-white/70 hover:text-white transition-colors"
-              aria-label="TikTok"
-            >
-              <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-5.2 1.74 2.89 2.89 0 012.31-4.64 2.93 2.93 0 01.88.13V9.4a6.84 6.84 0 00-1-.05A6.33 6.33 0 005 20.1a6.34 6.34 0 0010.86-4.43v-7a8.16 8.16 0 004.77 1.52v-3.4a4.85 4.85 0 01-1-.1z"/>
-              </svg>
-            </a>
-          </nav>
-        </div>
-
-        {/* Bottom Section */}
-        <div className="pt-8 text-center">
-          <p className="text-white/50 text-sm mb-4">
-            {siteConfig.hours.weekday} Mon–Fri • {siteConfig.hours.weekend} Sat–Sun • {siteConfig.phone}
-          </p>
-          <p className="text-white/40 text-xs">
-            © {new Date().getFullYear()} {siteConfig.name}. Made with{' '}
-            <Heart className="w-3 h-3 inline text-coral" />{' '}
-            in Colorado. • <a href="#" className="hover:text-white">Privacy</a> • <a href="#" className="hover:text-white">Terms</a>
-          </p>
-        </div>
-      </div>
-    </footer>
   )
 }
 
@@ -1082,7 +776,7 @@ export default function BrunchPage() {
       <StructuredData />
       <SkipLink />
       <AnnouncementBar />
-      <Navigation />
+      <Nav />
       <main id="main-content">
         <Hero />
         <QuickActions />

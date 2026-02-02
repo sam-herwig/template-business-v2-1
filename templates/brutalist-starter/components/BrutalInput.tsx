@@ -3,19 +3,40 @@
 import { forwardRef } from 'react'
 import { motion } from 'framer-motion'
 
-interface BrutalInputProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'className'> {
+interface BrutalInputProps {
   label: string
   error?: string
+  id?: string
+  name?: string
+  type?: string
+  placeholder?: string
+  required?: boolean
+  value?: string
+  onChange?: React.ChangeEventHandler<HTMLInputElement>
+  onBlur?: React.FocusEventHandler<HTMLInputElement>
 }
 
-interface BrutalTextareaProps extends Omit<React.TextareaHTMLAttributes<HTMLTextAreaElement>, 'className'> {
+interface BrutalTextareaProps {
   label: string
   error?: string
+  id?: string
+  name?: string
+  placeholder?: string
+  required?: boolean
+  rows?: number
+  value?: string
+  onChange?: React.ChangeEventHandler<HTMLTextAreaElement>
+  onBlur?: React.FocusEventHandler<HTMLTextAreaElement>
 }
 
-interface BrutalSelectProps extends Omit<React.SelectHTMLAttributes<HTMLSelectElement>, 'className'> {
+interface BrutalSelectProps {
   label: string
   error?: string
+  id?: string
+  name?: string
+  required?: boolean
+  value?: string
+  onChange?: React.ChangeEventHandler<HTMLSelectElement>
   options: { value: string; label: string }[]
 }
 
@@ -29,7 +50,7 @@ interface BrutalRadioGroupProps {
 }
 
 export const BrutalInput = forwardRef<HTMLInputElement, BrutalInputProps>(
-  ({ label, error, id, ...props }, ref) => {
+  ({ label, error, id, name, type = 'text', placeholder, required, value, onChange, onBlur }, ref) => {
     const inputId = id || label.toLowerCase().replace(/\s+/g, '-')
     
     return (
@@ -39,11 +60,18 @@ export const BrutalInput = forwardRef<HTMLInputElement, BrutalInputProps>(
           className="block font-display font-bold text-sm uppercase tracking-wide mb-2 text-brutal-black dark:text-brutal-bg"
         >
           {label}
-          {props.required && <span className="text-brutal-pink ml-1">*</span>}
+          {required && <span className="text-brutal-pink ml-1">*</span>}
         </label>
         <motion.input
           ref={ref}
           id={inputId}
+          name={name}
+          type={type}
+          placeholder={placeholder}
+          required={required}
+          value={value}
+          onChange={onChange}
+          onBlur={onBlur}
           className="w-full p-4 font-body text-base border-[3px] border-brutal-black dark:border-brutal-bg bg-brutal-bg dark:bg-brutal-black text-brutal-black dark:text-brutal-bg placeholder:text-brutal-black/40 dark:placeholder:text-brutal-bg/40 focus:outline-none transition-all"
           style={{ boxShadow: '4px 4px 0 #1a1a1a' }}
           whileFocus={{
@@ -52,7 +80,6 @@ export const BrutalInput = forwardRef<HTMLInputElement, BrutalInputProps>(
             boxShadow: '6px 6px 0 #1a1a1a',
             borderColor: '#FF5CAA',
           }}
-          {...props}
         />
         {error && (
           <p className="mt-2 font-body text-sm text-brutal-pink">{error}</p>
@@ -64,7 +91,7 @@ export const BrutalInput = forwardRef<HTMLInputElement, BrutalInputProps>(
 BrutalInput.displayName = 'BrutalInput'
 
 export const BrutalTextarea = forwardRef<HTMLTextAreaElement, BrutalTextareaProps>(
-  ({ label, error, id, ...props }, ref) => {
+  ({ label, error, id, name, placeholder, required, rows, value, onChange, onBlur }, ref) => {
     const inputId = id || label.toLowerCase().replace(/\s+/g, '-')
     
     return (
@@ -74,11 +101,18 @@ export const BrutalTextarea = forwardRef<HTMLTextAreaElement, BrutalTextareaProp
           className="block font-display font-bold text-sm uppercase tracking-wide mb-2 text-brutal-black dark:text-brutal-bg"
         >
           {label}
-          {props.required && <span className="text-brutal-pink ml-1">*</span>}
+          {required && <span className="text-brutal-pink ml-1">*</span>}
         </label>
         <motion.textarea
           ref={ref}
           id={inputId}
+          name={name}
+          placeholder={placeholder}
+          required={required}
+          rows={rows}
+          value={value}
+          onChange={onChange}
+          onBlur={onBlur}
           className="w-full p-4 font-body text-base border-[3px] border-brutal-black dark:border-brutal-bg bg-brutal-bg dark:bg-brutal-black text-brutal-black dark:text-brutal-bg placeholder:text-brutal-black/40 dark:placeholder:text-brutal-bg/40 focus:outline-none transition-all resize-none min-h-[160px]"
           style={{ boxShadow: '4px 4px 0 #1a1a1a' }}
           whileFocus={{
@@ -87,7 +121,6 @@ export const BrutalTextarea = forwardRef<HTMLTextAreaElement, BrutalTextareaProp
             boxShadow: '6px 6px 0 #1a1a1a',
             borderColor: '#FF5CAA',
           }}
-          {...props}
         />
         {error && (
           <p className="mt-2 font-body text-sm text-brutal-pink">{error}</p>
@@ -99,7 +132,7 @@ export const BrutalTextarea = forwardRef<HTMLTextAreaElement, BrutalTextareaProp
 BrutalTextarea.displayName = 'BrutalTextarea'
 
 export const BrutalSelect = forwardRef<HTMLSelectElement, BrutalSelectProps>(
-  ({ label, error, id, options, ...props }, ref) => {
+  ({ label, error, id, name, required, value, onChange, options }, ref) => {
     const inputId = id || label.toLowerCase().replace(/\s+/g, '-')
     
     return (
@@ -109,11 +142,15 @@ export const BrutalSelect = forwardRef<HTMLSelectElement, BrutalSelectProps>(
           className="block font-display font-bold text-sm uppercase tracking-wide mb-2 text-brutal-black dark:text-brutal-bg"
         >
           {label}
-          {props.required && <span className="text-brutal-pink ml-1">*</span>}
+          {required && <span className="text-brutal-pink ml-1">*</span>}
         </label>
         <motion.select
           ref={ref}
           id={inputId}
+          name={name}
+          required={required}
+          value={value}
+          onChange={onChange}
           className="w-full p-4 font-body text-base border-[3px] border-brutal-black dark:border-brutal-bg bg-brutal-bg dark:bg-brutal-black text-brutal-black dark:text-brutal-bg focus:outline-none transition-all cursor-pointer appearance-none"
           style={{ 
             boxShadow: '4px 4px 0 #1a1a1a',
@@ -128,7 +165,6 @@ export const BrutalSelect = forwardRef<HTMLSelectElement, BrutalSelectProps>(
             boxShadow: '6px 6px 0 #1a1a1a',
             borderColor: '#FF5CAA',
           }}
-          {...props}
         >
           <option value="">Select...</option>
           {options.map((option) => (

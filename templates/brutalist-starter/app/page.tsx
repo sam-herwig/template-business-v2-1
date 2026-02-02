@@ -1,9 +1,10 @@
 'use client'
 
-import { useState, useEffect, useRef, useMemo, useCallback } from 'react'
+import { useState, useRef, useMemo } from 'react'
 import { motion, useInView, AnimatePresence } from 'framer-motion'
 import { Canvas, useFrame } from '@react-three/fiber'
 import Image from 'next/image'
+import Link from 'next/link'
 import * as THREE from 'three'
 import { 
   Palette, 
@@ -11,12 +12,10 @@ import {
   Smartphone, 
   Rocket, 
   TrendingUp, 
-  Sparkles,
-  Twitter,
-  Instagram,
-  Dribbble,
-  Linkedin
+  Sparkles
 } from 'lucide-react'
+import { Nav } from '@/components/Nav'
+import { Footer } from '@/components/Footer'
 
 // ═══════════════════════════════════════════════════════════════
 // TYPE DEFINITIONS
@@ -33,6 +32,7 @@ interface Project {
   readonly category: string
   readonly image: string
   readonly color: string
+  readonly slug: string
 }
 
 interface Testimonial {
@@ -218,173 +218,6 @@ function MarqueeStrip({
 }
 
 // ═══════════════════════════════════════════════════════════════
-// MOBILE MENU COMPONENT
-// ═══════════════════════════════════════════════════════════════
-interface MobileMenuProps {
-  readonly isOpen: boolean
-  readonly onClose: () => void
-}
-
-function MobileMenu({ isOpen, onClose }: MobileMenuProps): JSX.Element {
-  // Handle body scroll lock
-  useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = 'hidden'
-    } else {
-      document.body.style.overflow = ''
-    }
-    return () => {
-      document.body.style.overflow = ''
-    }
-  }, [isOpen])
-
-  // Handle escape key
-  useEffect(() => {
-    const handleEscape = (e: KeyboardEvent) => {
-      if (e.key === 'Escape' && isOpen) {
-        onClose()
-      }
-    }
-    
-    document.addEventListener('keydown', handleEscape)
-    return () => document.removeEventListener('keydown', handleEscape)
-  }, [isOpen, onClose])
-
-  return (
-    <AnimatePresence>
-      {isOpen && (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          className="fixed inset-0 z-[60] md:hidden"
-          role="dialog"
-          aria-modal="true"
-          aria-label="Mobile navigation menu"
-        >
-          {/* Backdrop */}
-          <motion.div
-            className="absolute inset-0 bg-brutal-black/80"
-            onClick={onClose}
-            aria-hidden="true"
-          />
-          {/* Menu */}
-          <motion.nav
-            initial={{ x: '100%' }}
-            animate={{ x: 0 }}
-            exit={{ x: '100%' }}
-            transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-            className="absolute top-0 right-0 w-[80%] max-w-sm h-full bg-brutal-bg dark:bg-brutal-black border-l-[3px] border-brutal-black dark:border-brutal-bg p-8 flex flex-col"
-            aria-label="Mobile navigation"
-          >
-            <button
-              onClick={onClose}
-              className="self-end p-2 min-w-[44px] min-h-[44px] flex items-center justify-center rounded-sm"
-              aria-label="Close navigation menu"
-            >
-              <span className="font-display font-bold text-2xl" aria-hidden="true">✕</span>
-            </button>
-            <ul className="flex flex-col gap-6 mt-8 list-none" role="list">
-              {['Work', 'About', 'Contact'].map((item) => (
-                <li key={item}>
-                  <a
-                    href={`#${item.toLowerCase()}`}
-                    onClick={onClose}
-                    className="font-display font-semibold text-2xl text-brutal-black dark:text-brutal-bg uppercase hover:text-brutal-pink transition-colors py-2 block"
-                  >
-                    {item}
-                  </a>
-                </li>
-              ))}
-            </ul>
-            <div className="mt-auto">
-              <BrutalButton color="#FF5CAA" ariaLabel="Start a conversation">
-                Let&apos;s Talk
-              </BrutalButton>
-            </div>
-          </motion.nav>
-        </motion.div>
-      )}
-    </AnimatePresence>
-  )
-}
-
-// ═══════════════════════════════════════════════════════════════
-// NAVIGATION COMPONENT
-// ═══════════════════════════════════════════════════════════════
-function Nav(): JSX.Element {
-  const [scrolled, setScrolled] = useState(false)
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
-  
-  const handleCloseMenu = useCallback(() => {
-    setMobileMenuOpen(false)
-  }, [])
-  
-  useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 50)
-    window.addEventListener('scroll', handleScroll, { passive: true })
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [])
-  
-  return (
-    <header>
-      <motion.nav
-        className={`fixed top-0 left-0 right-0 z-50 px-4 md:px-8 py-4 flex justify-between items-center transition-all duration-300 ${
-          scrolled 
-            ? 'bg-brutal-bg dark:bg-brutal-black border-b-[3px] border-brutal-black dark:border-brutal-bg' 
-            : 'bg-transparent'
-        }`}
-        aria-label="Main navigation"
-      >
-        {/* Logo */}
-        <motion.a
-          href="/"
-          className="font-display font-extrabold text-2xl text-brutal-black dark:text-brutal-bg flex items-center gap-2"
-          whileHover={{ scale: 1.05 }}
-          aria-label="SMASH Studio - Home"
-        >
-          <span 
-            className="inline-block w-8 h-8 bg-brutal-pink border-[3px] border-brutal-black dark:border-brutal-bg transform rotate-45" 
-            aria-hidden="true" 
-          />
-          <span>SMASH</span>
-        </motion.a>
-        
-        {/* Desktop Nav Links */}
-        <div className="hidden md:flex gap-8 items-center">
-          {['Work', 'About', 'Contact'].map((item) => (
-            <motion.a
-              key={item}
-              href={`#${item.toLowerCase()}`}
-              className="font-display font-semibold text-brutal-black dark:text-brutal-bg uppercase hover:text-brutal-pink transition-colors py-2 px-1"
-              whileHover={{ y: -2 }}
-            >
-              {item}
-            </motion.a>
-          ))}
-          <BrutalButton color="#FF5CAA" ariaLabel="Start a conversation">
-            Let&apos;s Talk
-          </BrutalButton>
-        </div>
-
-        {/* Mobile Menu Button */}
-        <button
-          onClick={() => setMobileMenuOpen(true)}
-          className="md:hidden p-2 min-w-[44px] min-h-[44px] flex items-center justify-center rounded-sm"
-          aria-label="Open navigation menu"
-          aria-expanded={mobileMenuOpen}
-          aria-controls="mobile-menu"
-        >
-          <span className="font-display font-bold text-2xl text-brutal-black dark:text-brutal-bg" aria-hidden="true">☰</span>
-        </button>
-      </motion.nav>
-
-      <MobileMenu isOpen={mobileMenuOpen} onClose={handleCloseMenu} />
-    </header>
-  )
-}
-
-// ═══════════════════════════════════════════════════════════════
 // HERO SECTION
 // ═══════════════════════════════════════════════════════════════
 const HERO_SHAPES: readonly FloatingShape[] = [
@@ -482,10 +315,10 @@ function Hero(): JSX.Element {
           transition={{ delay: 0.8 }}
           className="flex gap-4 md:gap-6 justify-center flex-wrap"
         >
-          <BrutalButton color="#3B82F6" size="large" href="#work" ariaLabel="View our portfolio">
+          <BrutalButton color="#3B82F6" size="large" href="/work" ariaLabel="View our portfolio">
             <span>See Our Work →</span>
           </BrutalButton>
-          <BrutalButton color="#FFE600" size="large" href="#contact" ariaLabel="Start a new project">
+          <BrutalButton color="#FFE600" size="large" href="/contact" ariaLabel="Start a new project">
             <span>Start a Project</span>
           </BrutalButton>
         </motion.div>
@@ -729,10 +562,10 @@ function TruchetBackground(): JSX.Element {
 // WORK/PORTFOLIO SECTION
 // ═══════════════════════════════════════════════════════════════
 const PROJECTS: readonly Project[] = [
-  { title: 'CRYPTO CHAOS', category: 'Branding + Web', image: 'https://picsum.photos/seed/crypto/800/600', color: '#A855F7' },
-  { title: 'NEON NIGHTS', category: 'App Design', image: 'https://picsum.photos/seed/neon/800/600', color: '#FF5CAA' },
-  { title: 'ORGANIC ORIGINS', category: 'Brand Identity', image: 'https://picsum.photos/seed/organic/800/600', color: '#22C55E' },
-  { title: 'RETRO REWIND', category: 'Web + Motion', image: 'https://picsum.photos/seed/retro/800/600', color: '#FF6B35' },
+  { title: 'CRYPTO CHAOS', category: 'Branding + Web', image: 'https://picsum.photos/seed/crypto/800/600', color: '#A855F7', slug: 'crypto-chaos' },
+  { title: 'NEON NIGHTS', category: 'App Design', image: 'https://picsum.photos/seed/neon/800/600', color: '#FF5CAA', slug: 'neon-nights' },
+  { title: 'ORGANIC ORIGINS', category: 'Brand Identity', image: 'https://picsum.photos/seed/organic/800/600', color: '#22C55E', slug: 'organic-origins' },
+  { title: 'RETRO REWIND', category: 'Web + Motion', image: 'https://picsum.photos/seed/retro/800/600', color: '#FF6B35', slug: 'retro-rewind' },
 ] as const
 
 function Work(): JSX.Element {
@@ -824,8 +657,8 @@ function ProjectCard({ project, index }: ProjectCardProps): JSX.Element {
       className="relative aspect-[4/3] border-[4px] border-brutal-bg overflow-hidden cursor-pointer group"
       style={{ boxShadow: `8px 8px 0 ${project.color}` }}
     >
-      <a 
-        href="#" 
+      <Link 
+        href={`/work/${project.slug}`}
         className="block w-full h-full focus:outline-none focus-visible:ring-4 focus-visible:ring-brutal-yellow focus-visible:ring-offset-2" 
         aria-label={`View ${project.title} project - ${project.category}`}
       >
@@ -882,7 +715,7 @@ function ProjectCard({ project, index }: ProjectCardProps): JSX.Element {
             </motion.div>
           )}
         </AnimatePresence>
-      </a>
+      </Link>
     </motion.article>
   )
 }
@@ -1018,6 +851,7 @@ function CTA(): JSX.Element {
             color="#1a1a1a" 
             shadowColor="#FFE600" 
             size="large"
+            href="/contact"
             ariaLabel="Start a conversation with our team"
           >
             <span>Start a Conversation →</span>
@@ -1025,119 +859,6 @@ function CTA(): JSX.Element {
         </motion.div>
       </div>
     </section>
-  )
-}
-
-// ═══════════════════════════════════════════════════════════════
-// FOOTER
-// ═══════════════════════════════════════════════════════════════
-const FOOTER_NAV_LINKS = ['Work', 'Services', 'About', 'Careers'] as const
-
-interface SocialLink {
-  readonly name: string
-  readonly icon: React.ReactNode
-  readonly href: string
-}
-
-const SOCIAL_LINKS: readonly SocialLink[] = [
-  { name: 'Twitter', icon: <Twitter className="w-5 h-5" />, href: 'https://twitter.com/smashstudio' },
-  { name: 'Instagram', icon: <Instagram className="w-5 h-5" />, href: 'https://instagram.com/smashstudio' },
-  { name: 'Dribbble', icon: <Dribbble className="w-5 h-5" />, href: 'https://dribbble.com/smashstudio' },
-  { name: 'LinkedIn', icon: <Linkedin className="w-5 h-5" />, href: 'https://linkedin.com/company/smashstudio' },
-]
-
-function Footer(): JSX.Element {
-  return (
-    <footer 
-      className="bg-brutal-black dark:bg-brutal-bg py-12 md:py-16 px-4 md:px-8"
-      role="contentinfo"
-    >
-      <div className="max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-12">
-        {/* Brand */}
-        <div>
-          <div className="font-display font-extrabold text-3xl text-brutal-bg dark:text-brutal-black flex items-center gap-2 mb-4">
-            <span 
-              className="inline-block w-7 h-7 bg-brutal-pink border-[3px] border-brutal-bg dark:border-brutal-black transform rotate-45" 
-              aria-hidden="true" 
-            />
-            <span>SMASH</span>
-          </div>
-          <p className="font-body text-brutal-bg/70 dark:text-brutal-black/70 leading-relaxed">
-            Denver&apos;s boldest creative agency. <br />
-            Making brands that refuse to blend in.
-          </p>
-        </div>
-        
-        {/* Links */}
-        <nav aria-label="Footer navigation - Studio">
-          <h4 className="font-display font-bold text-brutal-bg dark:text-brutal-black uppercase mb-4">
-            Studio
-          </h4>
-          <ul className="list-none" role="list">
-            {FOOTER_NAV_LINKS.map((link) => (
-              <li key={link}>
-                <a
-                  href="#"
-                  className="block font-body text-brutal-bg/70 dark:text-brutal-black/70 hover:text-brutal-bg dark:hover:text-brutal-black transition-colors mb-2 py-1"
-                >
-                  {link}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </nav>
-        
-        {/* Social */}
-        <nav aria-label="Social media links">
-          <h4 className="font-display font-bold text-brutal-bg dark:text-brutal-black uppercase mb-4">
-            Connect
-          </h4>
-          <ul className="list-none" role="list">
-            {SOCIAL_LINKS.map((link) => (
-              <li key={link.name}>
-                <a
-                  href={link.href}
-                  className="flex items-center gap-2 font-body text-brutal-bg/70 dark:text-brutal-black/70 hover:text-brutal-bg dark:hover:text-brutal-black transition-colors mb-2 py-1"
-                  aria-label={`Follow us on ${link.name} (opens in new tab)`}
-                  rel="noopener noreferrer"
-                  target="_blank"
-                >
-                  {link.icon}
-                  <span>{link.name}</span>
-                </a>
-              </li>
-            ))}
-          </ul>
-        </nav>
-        
-        {/* Contact */}
-        <div>
-          <h4 className="font-display font-bold text-brutal-bg dark:text-brutal-black uppercase mb-4">
-            Say Hi
-          </h4>
-          <a
-            href="mailto:hello@smash.studio"
-            className="font-body text-brutal-yellow hover:underline focus:underline"
-          >
-            hello@smash.studio
-          </a>
-          <address className="font-body text-brutal-bg/70 dark:text-brutal-black/70 mt-4 leading-relaxed not-italic">
-            1234 Larimer St<br />
-            Denver, CO 80202
-          </address>
-        </div>
-      </div>
-      
-      {/* Bottom bar */}
-      <div className="max-w-6xl mx-auto mt-12 pt-8 border-t border-brutal-bg/20 dark:border-brutal-black/20 flex flex-col sm:flex-row justify-between items-center gap-4">
-        <span className="font-body text-sm text-brutal-bg/50 dark:text-brutal-black/50">
-          © {new Date().getFullYear()} SMASH Studio. All rights reserved.
-        </span>
-        <span className="font-body text-sm text-brutal-bg/50 dark:text-brutal-black/50">
-          Built with 🔥 in Denver
-        </span>
-      </div>
-    </footer>
   )
 }
 
