@@ -4,7 +4,8 @@ import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence, useInView } from 'framer-motion';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/dist/ScrollTrigger';
-import { ExternalLink, Eye, ChevronRight } from 'lucide-react';
+import { Eye, ChevronRight } from 'lucide-react';
+import Link from 'next/link';
 import { templates, categories, type Category, type Template } from '@/lib/templates';
 
 // Register GSAP plugin
@@ -36,62 +37,60 @@ function TemplateCard({ template, index }: { template: Template; index: number }
       transition={{ duration: 0.6, delay: index * 0.1 }}
       className={`group relative ${isLarge ? 'md:col-span-2 md:row-span-2' : ''}`}
     >
-      <div className="relative h-full glass rounded-2xl overflow-hidden card-hover">
-        {/* Image Container */}
-        <div className="relative aspect-[16/10] overflow-hidden bg-gradient-to-br from-gray-900 to-gray-800">
-          {/* Placeholder gradient when no image */}
-          <div className={`absolute inset-0 bg-gradient-to-br ${categoryColors[template.category]} opacity-20`} />
-          
-          {/* Template preview placeholder */}
-          <div className="absolute inset-0 flex flex-col items-center justify-center p-8">
-            <div className="w-16 h-16 rounded-2xl bg-white/10 backdrop-blur-sm flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-              <span className="text-3xl font-bold">{template.name[0]}</span>
+      <Link href={`/templates/${template.slug}`} className="block h-full">
+        <div className="relative h-full glass rounded-2xl overflow-hidden card-hover">
+          {/* Image Container */}
+          <div className="relative aspect-[16/10] overflow-hidden bg-gradient-to-br from-gray-900 to-gray-800">
+            {/* Placeholder gradient when no image */}
+            <div className={`absolute inset-0 bg-gradient-to-br ${categoryColors[template.category]} opacity-20`} />
+            
+            {/* Template preview placeholder */}
+            <div className="absolute inset-0 flex flex-col items-center justify-center p-8">
+              <div className="w-16 h-16 rounded-2xl bg-white/10 backdrop-blur-sm flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                <span className="text-3xl font-bold">{template.name[0]}</span>
+              </div>
+              <span className="text-lg font-semibold text-white/80">{template.name}</span>
             </div>
-            <span className="text-lg font-semibold text-white/80">{template.name}</span>
+
+            {/* Hover Overlay */}
+            <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center gap-4">
+              <span className="flex items-center gap-2 px-4 py-2 bg-white text-black rounded-lg font-medium">
+                <Eye className="w-4 h-4" />
+                View Details
+              </span>
+            </div>
+
+            {/* Price Badge */}
+            <div className="absolute top-4 right-4 px-3 py-1.5 rounded-full bg-black/50 backdrop-blur-sm border border-white/10">
+              <span className="text-sm font-bold">${template.price}</span>
+            </div>
+
+            {/* Category Badge */}
+            <div className={`absolute top-4 left-4 px-3 py-1.5 rounded-full bg-gradient-to-r ${categoryColors[template.category]}`}>
+              <span className="text-xs font-semibold uppercase tracking-wide">{template.category}</span>
+            </div>
           </div>
 
-          {/* Hover Overlay */}
-          <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center gap-4">
-            <button className="flex items-center gap-2 px-4 py-2 bg-white text-black rounded-lg font-medium hover:bg-gray-100 transition-colors">
-              <Eye className="w-4 h-4" />
-              Live Demo
-            </button>
-            <button className="flex items-center gap-2 px-4 py-2 glass rounded-lg font-medium hover:bg-white/20 transition-colors">
-              <ChevronRight className="w-4 h-4" />
-              Details
-            </button>
-          </div>
-
-          {/* Price Badge */}
-          <div className="absolute top-4 right-4 px-3 py-1.5 rounded-full bg-black/50 backdrop-blur-sm border border-white/10">
-            <span className="text-sm font-bold">${template.price}</span>
-          </div>
-
-          {/* Category Badge */}
-          <div className={`absolute top-4 left-4 px-3 py-1.5 rounded-full bg-gradient-to-r ${categoryColors[template.category]}`}>
-            <span className="text-xs font-semibold uppercase tracking-wide">{template.category}</span>
+          {/* Card Content */}
+          <div className="p-5">
+            <h3 className="text-lg font-bold mb-2 group-hover:text-purple-400 transition-colors">
+              {template.name}
+            </h3>
+            <p className="text-sm text-gray-400 mb-4">{template.description}</p>
+            
+            {/* Quick Actions */}
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2 text-sm text-gray-500">
+                <div className="w-2 h-2 rounded-full bg-green-500" />
+                <span>Available</span>
+              </div>
+              <span className="text-purple-400 group-hover:text-purple-300 transition-colors flex items-center gap-1">
+                View <ChevronRight className="w-4 h-4" />
+              </span>
+            </div>
           </div>
         </div>
-
-        {/* Card Content */}
-        <div className="p-5">
-          <h3 className="text-lg font-bold mb-2 group-hover:text-purple-400 transition-colors">
-            {template.name}
-          </h3>
-          <p className="text-sm text-gray-400 mb-4">{template.description}</p>
-          
-          {/* Quick Actions */}
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2 text-sm text-gray-500">
-              <div className="w-2 h-2 rounded-full bg-green-500" />
-              <span>Available</span>
-            </div>
-            <button className="text-purple-400 hover:text-purple-300 transition-colors">
-              <ExternalLink className="w-4 h-4" />
-            </button>
-          </div>
-        </div>
-      </div>
+      </Link>
     </motion.div>
   );
 }
